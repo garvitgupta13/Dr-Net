@@ -3,7 +3,7 @@ const {
   getPatients,
   getPatient,
   updatePatient
-} = require("../controllers/patient");
+} = require("../controllers/patientController");
 
 //! Get all patients
 router.get("/", getPatients);

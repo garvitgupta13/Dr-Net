@@ -3,7 +3,7 @@ const app = Express();
 const morgan = require("morgan");
 const cors = require("cors");
 const usersRoute = require("./routes/usersRoute");
-const patient = require("./routes/patient");
+const patientRoute = require("./routes/patientRoute");
 const bodyParser = require("body-parser");
 
 //Connecting to DB
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 // require("./startup/routes")(app);
 
 app.use("/api/users", usersRoute);
-app.use("/api/patient", patient);
+app.use("/api/patient", patientRoute);
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {
