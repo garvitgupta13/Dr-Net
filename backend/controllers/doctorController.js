@@ -51,7 +51,7 @@ const updateDoctor = async (req, res) => {
         }
         //Update the doctorinfo
         const doctorInfo = await Doctor.findByIdAndUpdate(
-            doctor.patientInfo,
+            doctor.doctorInfo,
             {
                 yearsOfExperience: req.body.yearsOfExperience,
                 domain: req.body.domain,
@@ -68,8 +68,27 @@ const updateDoctor = async (req, res) => {
     }
 };
 
+const addReview = async (req, res) => {
+    try {
+        let doctor = await User.findById(req.params.id);
+        if (!doctor) return res.send(404).send("Doctor not found");
+        //Get the doctor
+        doctor = await Doctor.findById(doctor.doctorInfo);
+        //Add the review in array
+        let reviews = [...doctor.reviews, req.body];
+        //Update the reviews array
+        const doctorInfo = await Doctor.findByIdAndUpdate(doctor._id, { reviews }, { new: true });
+        res.status(200).send(doctorInfo);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(400).send(err);
+    }
+}
+
 module.exports = {
     getDoctors,
     getDoctor,
-    updateDoctor
+    updateDoctor,
+    addReview
 };

@@ -30,7 +30,7 @@ const DoctorSchema = new Schema({
     documentImage: {
         type: String
     },
-    review: [
+    reviews: [
         {
             _id: {
                 type: Schema.Types.ObjectId,
