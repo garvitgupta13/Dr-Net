@@ -28,23 +28,16 @@ const UserSchema = new Schema({
     },
     role : {
         type : String,
-        default : "patient",
         enum : ["admin", "patient", "doctor"]
     },
-    patientInfo : [
-        {
-            type: Schema.Types.ObjectId,
-            ref : 'Patient',
-            required : true
-        }
-    ],
-    doctorInfo : [
-        {
-            type: Schema.Types.ObjectId,
-            ref : 'Doctor',
-            required : true
-        }
-    ],
+    patientInfo : {
+        type: Schema.Types.ObjectId,
+        ref : 'Patient'
+    },
+    doctorInfo :{
+        type: Schema.Types.ObjectId,
+        ref : 'Doctor',
+    },
 })
 
 
