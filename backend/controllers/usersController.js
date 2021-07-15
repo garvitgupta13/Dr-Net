@@ -13,7 +13,6 @@ const {
 const userSignUp = async (userDetails, role, res) => {
     try {
 
-        // TODO : check validation for body using Joi/ express validator (pending)
 
         const { error } = validateSignUp(userDetails)
 
@@ -64,7 +63,7 @@ const userSignUp = async (userDetails, role, res) => {
                 diseaseDescription: userDetails.diseaseDescription
             })
 
-            user.patientInfo.push(patientInformation)
+            user.patientInfo = patientInformation
             await patientInformation.save()
 
             // remove the unwanted material from the document
@@ -85,7 +84,7 @@ const userSignUp = async (userDetails, role, res) => {
                 // timeSlot : 
             })
 
-            user.doctorInfo.push(doctorInformation)
+            user.doctorInfo = doctorInformation
             await doctorInformation.save()
 
             // remove the unwanted material from the document
@@ -120,16 +119,9 @@ const userSignIn = async (userDetails, role, res) => {
 
         let user;
         if(role === "patient"){
-            user = await User.findOne({ email }).populate("patientInfo", {
-                age : 1,
-                height : 1,
-                weight : 1,
-                bloodType : 1,
-                education : 1,
-                diseaseDescription : 1
-            })
+            user = await User.findOne({ email }).select("-doctorInfo").populate("patientInfo")
         }else if(role === "doctor"){
-            user = await User.findOne({ email }).populate("doctorInfo", {
+            user = await User.findOne({ email }).select("-patientInfo").populate("doctorInfo", {
                 domain : 1,
                 yearsOfExperience : 1,
                 education : 1,
@@ -172,6 +164,24 @@ const userSignIn = async (userDetails, role, res) => {
 }
 
 
+// const getAllPatients = async (body, res) => {
+//     try{
+//         const patients = await User.find({ role : "patient" })
+//             .select('-doctorInfo -__v')
+//             .populate("patientInfo")
+
+//         return res.status(200).json({
+//             status : "success",
+//             data : patients
+//         })
+
+//     }catch(err){
+//         console.log(err.message);
+//         res.status(400).json({ err });
+//     }
+// }
+
+
 const checkEmail = async (email) => {
     let user = await User.findOne({ email });
     return user ? false : true;
@@ -180,5 +190,5 @@ const checkEmail = async (email) => {
 
 module.exports = {
     userSignUp,
-    userSignIn
+    userSignIn,
 };
