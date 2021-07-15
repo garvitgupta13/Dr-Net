@@ -29,7 +29,28 @@ const DoctorSchema = new Schema({
     ],
     documentImage : {
         type : String
-    }
+    },
+    review : [
+        {
+            _id : {
+                type : Schema.Types.ObjectId,
+                index : true,
+                auto : true
+            },
+            reviewerId : {
+                type : Schema.Types.ObjectId,
+                ref : 'Patient'
+            },
+            body : {
+                type : String
+            },
+            rating : {
+                type : Number,
+                min : 1,
+                max : 5
+            }
+        },{ timestamps : true }
+    ]
 },{ timestamps : true})
 
 

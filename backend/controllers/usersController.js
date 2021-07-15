@@ -117,13 +117,7 @@ const userSignIn = async (userDetails, role, res) => {
     } else if (role === "doctor") {
       user = await User.findOne({ email })
         .select("-patientInfo")
-        .populate("doctorInfo", {
-          domain: 1,
-          yearsOfExperience: 1,
-          education: 1,
-          documentImage: 1,
-          timeSlot: 0
-        });
+        .populate("doctorInfo");
     }
 
     // const user = await User.findOne({ email })
