@@ -109,7 +109,6 @@ const userSignUp = async (userDetails, role, res) => {
 
 const userSignIn = async (userDetails, role, res) => {
     try {
-        //TODO : Validate req body
 
         // Check if email and password are correct or not
 
@@ -121,13 +120,7 @@ const userSignIn = async (userDetails, role, res) => {
         if(role === "patient"){
             user = await User.findOne({ email }).select("-doctorInfo").populate("patientInfo")
         }else if(role === "doctor"){
-            user = await User.findOne({ email }).select("-patientInfo").populate("doctorInfo", {
-                domain : 1,
-                yearsOfExperience : 1,
-                education : 1,
-                documentImage : 1,
-                timeSlot : 0
-            })
+            user = await User.findOne({ email }).select("-patientInfo").populate("doctorInfo")
         }
 
         // const user = await User.findOne({ email })

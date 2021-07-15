@@ -4,7 +4,6 @@ const router = require('express').Router();
 const {
     userSignUp,
     userSignIn,
-    getAllPatients
 } = require('../controllers/usersController')
 
 
@@ -25,13 +24,9 @@ router.post('/patient/signin', async(req, res) => {
 
 //! Sign In for doctor
 router.post('/doctor/signin', async(req, res) => {
-    await userSignIn(req.body, "patient", res)
+    await userSignIn(req.body, "doctor", res)
 })
 
-//! Get all patients
-// router.get('/patients', async (req, res) => {
-//     await getAllPatients(req.body, res)
-// })
 
 
 module.exports = router
