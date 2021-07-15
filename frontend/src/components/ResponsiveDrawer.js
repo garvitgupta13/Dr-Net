@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ResponsiveDrawer = (props) => {
 
+  console.log("drawer width is", drawerWidth);
   const history = useHistory();
   //const location = useLocation();
   const classes = useStyles();
@@ -166,7 +167,7 @@ const ResponsiveDrawer = (props) => {
               paper: classes.drawerPaper,
             }}
             ModalProps={{
-              keepMounted: false, // Better open performance on mobile.
+              keepMounted: false,
             }}
           >
             {drawer}
