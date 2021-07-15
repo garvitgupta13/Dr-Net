@@ -108,7 +108,8 @@ const userSignIn = async (userDetails, role, res) => {
 
     // Check if email and password are correct or not
 
-    const { error } = validateSignIn(userDetails);
+    const signInError = validateSignIn(userDetails);
+    if (signInError) return res.status(400).send(signInError.details[0].message);
 
     const { email, password } = userDetails;
 

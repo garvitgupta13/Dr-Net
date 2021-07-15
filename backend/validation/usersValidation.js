@@ -68,11 +68,11 @@ function validateSignUp(data) {
 
 const validateSignIn = (data) => {
     const signInSchema = Joi.object({
-        email: Joi.string().min(6).required().email(),
+        email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
     });
-
-    return signInSchema.validate(data);
+    const { error, value } = signInSchema.validate(data);
+    return error;
 };
 
 
