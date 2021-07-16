@@ -56,7 +56,9 @@ const updateDoctor = async (req, res) => {
                 yearsOfExperience: req.body.yearsOfExperience,
                 domain: req.body.domain,
                 education: req.body.education,
-                bio: req.body.bio
+                bio: req.body.bio,
+                fees: req.body.fees,
+                status: req.body.status
                 // timeSlot: req.body.timeSlot
             },
             { new: true }

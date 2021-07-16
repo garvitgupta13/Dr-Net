@@ -11,6 +11,15 @@ const DoctorSchema = new Schema({
         type: Number,
         required: false
     },
+    fees: {
+        type: Number,
+        required: false
+    },
+    status: {
+        type: Boolean,
+        default: false,
+        required: false
+    },
     education: {
         type: String,
         required: false,

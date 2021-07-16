@@ -76,7 +76,9 @@ const userSignUp = async (userDetails, role, res) => {
         domain: userDetails.domain,
         yearsOfExperience: userDetails.yearsOfExperience,
         education: userDetails.education,
-        bio: userDetails.bio
+        bio: userDetails.bio,
+        fees: userDetails.fees,
+        status: userDetails.status
         // timeSlot :
       });
 
