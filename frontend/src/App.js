@@ -32,7 +32,7 @@ const theme = createTheme({
 function App() {
   return (
     // if !isLogged in than LandingPage
-<React.Fragment>
+<div style={{backgroundColor: '#F4E5D3'}}>
  <Router>
    <ThemeProvider theme = {theme}>
      <Layout/>
@@ -43,7 +43,7 @@ function App() {
      </Switch>
    </ThemeProvider>
  </Router>
-</React.Fragment>
+</div>
   );
 }
 
