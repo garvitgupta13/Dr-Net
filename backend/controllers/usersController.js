@@ -3,6 +3,7 @@ const Patient = require("../models/Patients");
 const Doctor = require("../models/Doctors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const jwtGenerator = require("../utils/jwtGenerator");
 require("dotenv").config();
 
 const {
@@ -89,7 +90,7 @@ const userSignUp = async (userDetails, role, res) => {
 
     await user.save();
 
-    const token = await user.generateAuthToken();
+    const token = jwtGenerator(user)
 
     return res.status(201).json({
       status: "success",
@@ -143,7 +144,7 @@ const userSignIn = async (userDetails, role, res) => {
     if (!isMatchPassword)
       return res.status(400).send("password is incorrect");
 
-    const token = await user.generateAuthToken();
+    const token = jwtGenerator(user)
 
     return res.status(201).json({
       status: "success",

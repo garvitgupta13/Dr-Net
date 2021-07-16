@@ -42,20 +42,6 @@ const UserSchema = new Schema({
 
 
 
-// Method to generate Authentication token....
-
-UserSchema.methods.generateAuthToken = async () => {
-    const user = this
-
-    const payload = {
-        id : user._id,
-        name : user.name
-    }
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY,  { expiresIn: 31556926 })
-
-    return token
-}
 
 
 
