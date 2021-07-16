@@ -1,5 +1,6 @@
 const User = require("../models/Users");
 const Doctor = require("../models/Doctors");
+const Patient = require("../models/Patients");
 
 const getDoctors = async (req, res) => {
     try {
@@ -88,9 +89,29 @@ const addReview = async (req, res) => {
     }
 }
 
+
+const addConsultation = async (req, res) => {
+    try {
+        let patient = await User.findById(req.params.patientId);
+        if (!patient) return res.send(404).send("Patient not found");
+
+        req.body.doctorId = req.params.doctorId;
+
+        patient = await Patient.findById(patient.patientInfo);
+        let medicalHistory = [...patient.medicalHistory, req.body];
+
+        const patientInfo = await Patient.findByIdAndUpdate(patient._id, { medicalHistory }, { new: true });
+        return res.status(200).send(patientInfo);
+    } catch (err) {
+        console.error(err);
+        res.status(400).send(err);
+    }
+}
+
 module.exports = {
     getDoctors,
     getDoctor,
     updateDoctor,
-    addReview
+    addReview,
+    addConsultation
 };
