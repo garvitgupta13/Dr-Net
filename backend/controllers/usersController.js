@@ -12,9 +12,11 @@ const {
 
 const userSignUp = async (userDetails, role, res) => {
   try {
-    const { error } = validateSignUp(userDetails);
+    const userError = validateSignUp(userDetails);
 
-    if (error) return res.status(400).send(error);
+    if (userError) {
+      return res.status(400).send(userError.details[0].message);
+    }
 
     // check if the email is present in the DB or not
     const emailNotTaken = checkEmail(userDetails.email);
@@ -73,7 +75,8 @@ const userSignUp = async (userDetails, role, res) => {
       const doctorInformation = new Doctor({
         domain: userDetails.domain,
         yearsOfExperience: userDetails.yearsOfExperience,
-        education: userDetails.education
+        education: userDetails.education,
+        bio: userDetails.bio
         // timeSlot :
       });
 
@@ -94,8 +97,8 @@ const userSignUp = async (userDetails, role, res) => {
       token: token
     });
   } catch (err) {
-    console.log(err.message);
-    res.status(400).json({ err });
+    console.log(err);
+    res.status(400).send(err);
   }
 };
 
@@ -105,7 +108,8 @@ const userSignIn = async (userDetails, role, res) => {
 
     // Check if email and password are correct or not
 
-    const { error } = validateSignIn(userDetails);
+    const signInError = validateSignIn(userDetails);
+    if (signInError) return res.status(400).send(signInError.details[0].message);
 
     const { email, password } = userDetails;
 
@@ -123,7 +127,7 @@ const userSignIn = async (userDetails, role, res) => {
     // const user = await User.findOne({ email })
 
     if (!user) {
-      return res.status(400).send("email or password is incorrect");
+      return res.status(400).send("email is incorrect");
       // throw new Error('email or password is incorrect')
     }
 
@@ -137,7 +141,7 @@ const userSignIn = async (userDetails, role, res) => {
     const isMatchPassword = await bcrypt.compare(password, user.password);
 
     if (!isMatchPassword)
-      return res.status(400).send("email or password is incorrect");
+      return res.status(400).send("password is incorrect");
 
     const token = await user.generateAuthToken();
 

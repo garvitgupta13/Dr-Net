@@ -1,41 +1,5 @@
-const User = require("../models/Users");
 const Patient = require("../models/Patients");
-
-const getPatients = async (req, res) => {
-  try {
-    const patients = await User.find({ role: "patient" })
-      .select("-doctorInfo -password -_v")
-      .populate("patientInfo");
-
-    return res.status(200).json({
-      status: "success",
-      data: patients
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(400).send(err);
-  }
-};
-
-const getPatient = async (req, res) => {
-  try {
-    const patient = await User.findById(req.params.id)
-      .select("-doctorInfo -password -_v")
-      .populate("patientInfo");
-
-    if (!patient) {
-      return res.send(404).send("Patient not found");
-    }
-
-    return res.status(200).json({
-      status: "success",
-      data: patient
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(400).send(err);
-  }
-};
+const User = require("../models/Users");
 
 const updatePatient = async (req, res) => {
   try {
@@ -62,7 +26,43 @@ const updatePatient = async (req, res) => {
       },
       { new: true }
     );
-    res.status(200).send("Patient's deatails updated");
+    res.status(200).send("Patient's details updated");
+  } catch (err) {
+    console.error(err);
+    res.status(400).send(err);
+  }
+};
+
+const getPatient = async (req, res) => {
+  try {
+    const patient = await User.findById(req.params.id)
+      .select("-doctorInfo -password -_v")
+      .populate("patientInfo");
+
+    if (!patient) {
+      return res.send(404).send("Patient not found");
+    }
+
+    return res.status(200).json({
+      status: "success",
+      data: patient
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(400).send(err);
+  }
+};
+
+const getPatients = async (req, res) => {
+  try {
+    const patients = await User.find({ role: "patient" })
+      .select("-doctorInfo -password -_v")
+      .populate("patientInfo");
+
+    return res.status(200).json({
+      status: "success",
+      data: patients
+    });
   } catch (err) {
     console.error(err);
     res.status(400).send(err);
