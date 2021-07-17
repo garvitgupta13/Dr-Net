@@ -3,6 +3,10 @@ const User = require("../models/Users");
 
 const updatePatient = async (req, res) => {
   try {
+    //If anyone else try to update the details then block him
+    if (req.user._id != req.params.id)
+      return res.status(403).send("ACESS DENIED!!");
+
     //update the patient's name
     const patient = await User.findByIdAndUpdate(
       req.params.id,
