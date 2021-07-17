@@ -85,7 +85,7 @@ const ResponsiveDrawer = (props) => {
     {
       text: 'Home',
       icon: <HomeIcon fontSize="large" className={classes.darkColor}/>,
-      path: '/patient',
+      path: '/AllDoctors',
     },
     {
       text: 'Info',

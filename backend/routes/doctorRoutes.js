@@ -3,10 +3,10 @@ const authVerify = require('../middleware/authVerify')
 const { getDoctors, getDoctor, updateDoctor, addReview, addConsultation } = require("../controllers/doctorController");
 
 //! Get all doctor
-router.get('/',authVerify, getDoctors);
+router.get('/', getDoctors);
 
 //! Get a doctor
-router.get('/:id', authVerify, getDoctor);
+router.get('/:id', getDoctor);
 
 //! Update a doctor
 router.put('/:id', authVerify, updateDoctor);
