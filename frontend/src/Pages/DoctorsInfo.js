@@ -2,32 +2,286 @@ import React from 'react';
 import {useParams} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
+import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import Rating from '@material-ui/lab/Rating';
+import CreateIcon from '@material-ui/icons/Create';
+import SaveIcon from '@material-ui/icons/Save';
+import {useState} from 'react';
+import Review from '../components/UI/Review';
+import Button from '@material-ui/core/Button';
+import { createTheme,ThemeProvider } from '@material-ui/core/styles';
 
 const drawerWidth = 220;
+
+const Dummy_Reviews = [
+  {
+       id:'01',
+       name:'Manan Deol',
+       time:"10:30",
+       stars: 5,
+       review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+
+  },
+  {
+    id:'02',
+    name:'Shakti Man',
+    time:"10:30",
+    stars: 5,
+    review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+  },
+  {
+    id:'03',
+    name:'Bhargav Gohil',
+    time:"10:30",
+    stars: 4,
+    review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+  },
+  {
+    id:'04',
+    name:'Animesh Kumar',
+    time:"10:30",
+    stars: 4,
+    review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+  },
+  {
+    id:'05',
+    name:'Garvit Gupta',
+    time:"10:30",
+    stars: 5,
+    review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+  },
+
+]
+const DummyDoctors = [
+  {
+    id:"01",
+    name:"Dr. Json",
+    years:"10",
+    speciality:"Dentist",
+    status:"Available",
+    timing:"10am - 5pm",
+    rating:4,
+    education:"MBBS",
+    pay:"500",
+  },
+  {
+    id:"02",
+    name:"Dr. Ben",
+    years:"10",
+    speciality:"Cardiologists",
+    status:"Available",
+    timing:"10am - 5pm",
+    rating:4,
+    education:"MD MBBS",
+    pay:"500",
+  },
+  {
+    id:"03",
+    name:"Dr. Michael",
+    years:"10",
+    speciality:"Dermatologists",
+    status:"Not Available",
+    rating:5,
+    timing:"10am - 5pm",
+    education:"MBBS",
+    pay:"500",
+  },
+  {
+    id:"04",
+    name:"Dr. Peterson",
+    years:"10",
+    speciality:"Endocrinologists",
+    status:"Available",
+    timing:"10am - 5pm",
+    rating:5,
+    education:"MD MBBS",
+    pay:"500",
+  },
+  {
+    id:"05",
+    name:"Dr. Gulati",
+    years:"10",
+    speciality:"Physicians",
+    status:"Not Available",
+    timing:"10am - 5pm",
+    rating:4,
+    education:"MBBS",
+    pay:"500",
+  },
+  {
+    id:"06",
+    name:"Dr. Ojha",
+    years:"10",
+    speciality:"Gastroenterologists",
+    status:"Available",
+    rating:4,
+    timing:"10am - 5pm",
+    education:"MBBS",
+    pay:"500",
+  },
+]
+
 
 const useStyle = makeStyles({
      'container':{
        marginTop:"80px",
        width: `calc(100% - ${drawerWidth}px)`,
        marginLeft: drawerWidth,
-       ['@media (max-width:600px)']: { // eslint-disable-line no-useless-computed-key
+       ['@media (max-width:660px)']: { // eslint-disable-line no-useless-computed-key
         width:"100%",
         marginLeft:"0px",
+        backgroundColor:"#F4E5D3",
       },
     },
+    'main':{
+      backgroundColor:'#F9F3EC',
+       borderRadius:'30px',
+       marginBottom:'20px',
+    },
+    'heading':{
+        color: '#936B3D',
+        fontWeight:"bold",
+        marginTop:"0px",
+        fontSize:'17px',
+        marginLeft:'5px',
+    },
+    'underheading':{
+      color:'#936B3D',
+      fontWeight:"normal",
+      position:"absolute",
+      marginTop:"-42px",
+      fontSize:"20px"
+    },
+    'main2':{
+      backgroundColor:'#F9F3EC',
+      borderRadius:'30px',
+      paddingTop:'20px',
+
+    }
 })
 
 const DoctorsInfo = (props) => {
 
+  const [canChange,setCanChange] = useState(false);
   const params = useParams();
   const {doctorId} = params;
 
   const classes = useStyle();
 
-  console.log("YUp doctors info", doctorId);
+  const doctor = DummyDoctors.filter(doctor => doctor.id === doctorId);
+
+  const handleChange = () =>{
+     setCanChange(!canChange);
+  }
+
+  const formSubmitHandler = () =>{
+    console.log("submit form here");
+  }
+
+  if(doctor.length < 1)
+  {
+      return <p className='centered focus'>No Such Doctor Exist</p>;
+  }
+
+  const addReviewHandler = () =>{
+    console.log('Add a review');
+  }
+
+  const bookAppointment = () =>{
+    console.log('Book Appointment');
+  }
+  const availability =  (doctor[0].status === 'Available') ? '#34A853' : '#F31313';
+
    return (
      <Container className = {classes.container}>
+      <Grid container spacing = {3}>
+        <Grid item xs={12} md={12} lg={6} key="01" className={classes.underGrid}>
+          <Card className = {classes.main} elevation = {5}>
+               <CardHeader style={{position:"relative"}}
+                  avatar = {
+                  <Avatar style={{ height: '70px', width: '70px' }} className={classes.avatar}>{doctor[0].name[4].toUpperCase()}</Avatar>
+                  }
 
+                  title={
+                  <div>
+                    <Typography gutterBottom variant="h5" component="h2" style={{color:'#936B3D'}}>
+                       {doctor[0].name}
+                     </Typography>
+                      <Rating name="read-only" value={doctor[0].rating} readOnly />
+                  </div>
+                  }
+
+                  subheader = {
+                   <div>
+                      <p style={{color:'#E1701A',margin:"0px"}}>
+                         {`${doctor[0].years} years`}
+                      </p>
+                      <p style={{color:'#E1701A',margin:"0px"}}>
+                         {`${doctor[0].education} `}
+                       </p>
+                       <span style = {{ position:"absolute",width:"100px", right:"30px",top:"10px",borderRadius:'20px',border: `1px solid ${availability}` ,display:'block',padding:'5px', color: `${availability}`,textAlign:"center" }}>{doctor[0].status}</span>
+                   </div>
+                  }
+
+                 />
+            </Card>
+            <Card className = {classes.main} elevation={5}>
+               <Typography variant = "h5" component="h2" style={{color:'#936B3D',textAlign:'center'}}>
+                    More Information
+               </Typography>
+               <div style={{marginTop:'10px',marginBottom:'10px',paddingLeft:'10px',paddingTop:'10px'}}>
+                 <h3 className = {classes.heading}>Speciality :</h3>
+                 <span className={classes.underheading} style={{marginLeft:"100px"}}>{doctor[0].speciality}</span>
+                 <h3 className = {classes.heading}>Sub Speciality :</h3>
+                 <span className={classes.underheading} style={{marginLeft:"140px"}}>None</span>
+                 <h3 className = {classes.heading}>Years Of Experience:</h3>
+                 <span className={classes.underheading} style={{marginLeft:"180px"}}>{doctor[0].years}</span>
+                 <h3 className = {classes.heading}>Education :</h3>
+                 <span className={classes.underheading} style={{marginLeft:"100px"}}>{doctor[0].education}</span>
+                </div>
+            </Card>
+            <Card className = {classes.main} elevation={5}>
+             <form style={{position:'relative'}} onSubmit={formSubmitHandler}>
+               <Typography variant = "h5" component="h2" style={{color:'#936B3D',textAlign:'center'}}>
+                    Available During
+               </Typography>
+              {!canChange && <CreateIcon onClick={handleChange} style={{position:'absolute',right:'40px',top:'20px'}}/>}
+              {canChange && <SaveIcon onClick={handleChange} style={{position:'absolute',right:'40px',top:'20px'}} />}
+                  <div className={classes.controlGroup}>
+
+                  </div>
+              </form>
+            </Card>
+            <Button variant="contained" onClick={bookAppointment} style={{backgroundColor:'#F9F3EC',color:'#936B3D',borderRadius:'40px',height:'50px',width:'150px',marginLeft:'35%',marginTop:'12px'}}>
+               Book Appointment
+            </Button>
+          </Grid>
+          <Grid item xs={12} md={12} lg={6} key="02" className={classes.underGrid}>
+            <Card className = {classes.main2} elevation={5}>
+               <Typography variant = "h5" component="h2" style={{color:'#936B3D',textAlign:'center'}}>
+                    REVIEWS
+               </Typography>
+                   {
+                     Dummy_Reviews.map( review=> (
+                          <Review
+                              id ={review.id}
+                              name = {review.name}
+                              time = {review.time}
+                              star = {review.stars}
+                              review = {review.review}
+                          />
+                     ))
+                   }
+            </Card>
+            <Button variant="contained" onClick={addReviewHandler} style={{backgroundColor:'#F9F3EC',color:'#936B3D',borderRadius:'40px',height:'50px',width:'150px',marginLeft:'35%',marginTop:'12px'}}>
+               Add Review
+            </Button>
+          </Grid>
+      </Grid>
      </Container>
    )
 }
