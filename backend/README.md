@@ -29,4 +29,5 @@
 
 
 **doctorToken**: token recieved after doctor logs in
+
 **patientToken**: token recieved after patient logs in
