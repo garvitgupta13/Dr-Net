@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import { createTheme,ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 import AllDoctors from './Pages/AllDoctors';
+import DoctorsInfo from './Pages/DoctorsInfo';
 
 const theme = createTheme({
   typograhy:{
@@ -37,8 +38,11 @@ function App() {
    <ThemeProvider theme = {theme}>
      <Layout/>
      <Switch>
-       <Route exact path="/patient">
+       <Route exact path="/Alldoctors">
             <AllDoctors/>
+       </Route>
+       <Route exact path="/AllDoctors/:doctorId">
+            <DoctorsInfo/>
        </Route>
      </Switch>
    </ThemeProvider>

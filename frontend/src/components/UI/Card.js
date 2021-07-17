@@ -9,6 +9,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import {orange} from '@material-ui/core/colors';
+import {Link} from 'react-router-dom';
 
 const useStyle = makeStyles({
    avatar:{
@@ -44,37 +45,43 @@ const useStyle = makeStyles({
 
 });
 
-const DoctorCard = ({id,name,years,speciality,status,timing,pay} ) => {
-
-    const avatarClickHandler= () =>{
-       console.log("Avatar is Clicked");
-    };
+const DoctorCard = ({id,name,years,speciality,status,timing,pay,education} ) => {
 
     const classes = useStyle();
 
     const availability =  (status === 'Available') ? '#34A853' : '#F31313';
-    console.log(availability);
+
     return(
       <div>
         <Card className={classes.main} elevation={5}>
           <CardHeader
+
             avatar={
-              <Avatar onClick={avatarClickHandler} style={{ height: '70px', width: '70px' }} className={classes.avatar}>{name[4].toUpperCase()}</Avatar>
+              <Link to={`/AllDoctors/${id}`} style={{textDecoration:'none'}}>
+              <Avatar style={{ height: '70px', width: '70px' }} className={classes.avatar}>{name[4].toUpperCase()}</Avatar>
+              </Link>
             }
 
             title={
-              <Typography gutterBottom variant="h4" component="h2" style={{color:'#936B3D'}}>
+            <Link to={`/AllDoctors/${id}`} style={{textDecoration:'none'}}>
+              <Typography gutterBottom variant="h5" component="h2" style={{color:'#936B3D'}}>
                  {name}
                </Typography>
+            </Link>
             }
 
             subheader = {
-              <Typography gutterBottom variant="body2" style={{color:'#E1701A'}}>
-                 {`${years} years`}
-               </Typography>
+             <div>
+                <p style={{color:'#E1701A',margin:"0px"}}>
+                   {`${years} years`}
+                </p>
+                <p style={{color:'#E1701A',margin:"0px"}}>
+                   {`${education} `}
+                 </p>
+             </div>
             }
-
           />
+
           <CardContent>
               <ListItem>
                  <h3 className = {classes.heading}>Speciality :</h3>
@@ -92,7 +99,7 @@ const DoctorCard = ({id,name,years,speciality,status,timing,pay} ) => {
               <div className={classes.div}>
                 <p style={{marginBottom:"-23px",color:'#6F502C',marginLeft:"20px",fontSize:"20px"}}>₹{pay}</p>
                 <span style = {{float:"right",marginBottom:"20px"}}>
-                  <a href="/patient" style={{color:'#E1701A',textDecoration:'none'}}>  Book Appointment </a>
+                   <Link to={`/AllDoctors/${id}`} style={{ color:'#E1701A',textDecoration:'none'}} >  Book Appointment </Link>
                 </span>
               </div>
           </CardContent>
