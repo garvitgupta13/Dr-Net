@@ -57,7 +57,9 @@ function validateSignUp(data) {
         bio: Joi.string().allow(''),
         startTime: Joi.string(),
         endTime: Joi.string(),
-        documentImage: Joi.string()
+        documentImage: Joi.string(),
+        fees: Joi.number(),
+        status: Joi.boolean()
     })
     const { error, value } = schema.validate(data);
     return error;

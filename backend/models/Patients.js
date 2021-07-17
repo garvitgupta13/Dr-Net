@@ -22,43 +22,47 @@ const PatientSchema = new Schema({
         enum: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
     },
     education: {
-        type : String,
-        required : false
+        type: String,
+        required: false
     },
     diseaseDescription: {
-        type : String,
-        required : false
+        type: String,
+        required: false
     },
-    medicalHistory : [
+    medicalHistory: [
         {
-            _id : {
-                type : Schema.Types.ObjectId,
-                index : true,
-                auto : true
+            _id: {
+                type: Schema.Types.ObjectId,
+                index: true,
+                auto: true
             },
-            prescription : {
-                type : String,
-                minLength : 2,
-                maxLength : 1000,
-                trim : true
+            prescription: {
+                type: String,
+                minLength: 2,
+                maxLength: 1000,
+                trim: true
             },
-            doctorId : {
-                type : Schema.Types.ObjectId,
-                ref : 'Doctor'
+            doctorId: {
+                type: Schema.Types.ObjectId,
+                ref: 'Doctor'
             },
-            recommendedTests : {
-                type : String,
-                minLength : 2,
-                maxLength : 1000,
-                trim : true
+            recommendedTests: {
+                type: String,
+                minLength: 0,
+                maxLength: 1000,
+                trim: true
             },
-            createdAt : {
-                type : Date,
-                default : Date.now()
+            disease: {
+                type: String,
+                trim: true
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now()
             }
         }
     ],
-},{ timestamps: true })
+}, { timestamps: true })
 
 
 const Patient = mongoose.model('Patient', PatientSchema);

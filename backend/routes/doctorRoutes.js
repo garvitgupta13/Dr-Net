@@ -1,15 +1,19 @@
 const router = require("express").Router();
-const { getDoctors, getDoctor, updateDoctor, addReview } = require("../controllers/doctorController");
+const authVerify = require('../middleware/authVerify')
+const { getDoctors, getDoctor, updateDoctor, addReview, addConsultation } = require("../controllers/doctorController");
 
 //! Get all doctor
-router.get('/', getDoctors);
+router.get('/',authVerify, getDoctors);
 
 //! Get a doctor
-router.get('/:id', getDoctor);
+router.get('/:id', authVerify, getDoctor);
 
 //! Update a doctor
-router.put('/:id', updateDoctor);
+router.put('/:id', authVerify, updateDoctor);
 
+//! Add review
 router.post('/review/:id', addReview);
 
+//!Add consultation
+router.put('/consultation/:doctorId/:patientId', addConsultation);
 module.exports = router;
