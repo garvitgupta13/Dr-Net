@@ -58,6 +58,8 @@ const userSignUp = async (userDetails, role, res) => {
         bloodType: userDetails.bloodType,
         education: userDetails.education,
         diseaseDescription: userDetails.diseaseDescription
+        //! remember to add here after patient model is created
+
       });
 
       user.patientInfo = patientInformation;
@@ -79,8 +81,12 @@ const userSignUp = async (userDetails, role, res) => {
         education: userDetails.education,
         bio: userDetails.bio,
         fees: userDetails.fees,
-        status: userDetails.status
-        // timeSlot :
+        status: userDetails.status,
+        startTime : userDetails.startTime,
+        endTime : userDetails.endTime,
+        bio : userDetails.bio,
+        documentImage : userDetails.documentImage,
+        //! remember to add here after doctor model is created
       });
 
       user.doctorInfo = doctorInformation;

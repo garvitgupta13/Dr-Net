@@ -10,10 +10,12 @@ const appointmentSchema = new Schema({
         type : Date
     },
     doctorId : {
-        type : Schema.Types.ObjectId
+        type : Schema.Types.ObjectId,
+        ref : 'Doctor'
     },
     patientId : {
-        type : Schema.Types.ObjectId
+        type : Schema.Types.ObjectId,
+        ref : 'Patient'
     },
     status :{
         type : String,
