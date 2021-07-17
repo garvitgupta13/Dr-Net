@@ -26,3 +26,7 @@
 | **GET** | /          | getAll patients               |                                                               | (**Authorization**,patientToken) |
 | **GET** | /patientId | getDoctor with patientId      |                                                               | (**Authorization**,patientToken) |
 | **PUT** | /patientId | Update patient with patientId | name,age,height,weight,bloodType,education,diseaseDescription | (**Authorization**,patientToken) |
+
+
+**doctorToken**: token recieved after doctor logs in
+**patientToken**: token recieved after patient logs in
