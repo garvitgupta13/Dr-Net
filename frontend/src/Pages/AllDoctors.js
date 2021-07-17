@@ -72,7 +72,7 @@ const useStyle = makeStyles(
       marginTop:"80px",
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
-      ['@media (max-width:600px)']: { // eslint-disable-line no-useless-computed-key
+      ['@media (max-width:660px)']: { // eslint-disable-line no-useless-computed-key
        width:"100%",
        height:"100%",
        marginLeft:"0px",
@@ -105,7 +105,6 @@ const AllDoctors = (props) => {
    if(error){
      return <p className='centered focus'>{error}</p>;
    }
-
 
   // console.log(AllDoctors);
    let DoctorArray  = [];
