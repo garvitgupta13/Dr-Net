@@ -11,7 +11,7 @@ import Rating from '@material-ui/lab/Rating';
 import CreateIcon from '@material-ui/icons/Create';
 import SaveIcon from '@material-ui/icons/Save';
 import {useState,useEffect} from 'react';
-import Review from '../components/UI/Review';
+import Review from '../components/Review';
 import Button from '@material-ui/core/Button';
 import { createTheme,ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -173,6 +173,8 @@ const DoctorsInfo = (props) => {
   const [doctor,setDoctor] = useState(null);
   const [error,setError] = useState(null);
   const params = useParams();
+
+  //console.log(params);
   const classes = useStyle();
    const {doctorId} = params;
 
@@ -212,7 +214,6 @@ const DoctorsInfo = (props) => {
 
   const availability =  (doctor.doctorInfo.status === true) ? '#34A853' : '#F31313';
   const status = (doctor.doctorInfo.status === true) ? 'Available' : 'Not Available';
-  console.log(reviews);
 
    let allReviews = [];
    let overallRating = 0;
@@ -305,6 +306,7 @@ const DoctorsInfo = (props) => {
                    {
                      allReviews.map( review=> (
                           <Review
+                              key={review.id}
                               id ={review.id}
                               reviewerId = {review.reviewerId}
                               time = "5 July 10:30 pm"

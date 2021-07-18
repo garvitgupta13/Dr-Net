@@ -6,6 +6,7 @@ import { createTheme,ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 import AllDoctors from './Pages/AllDoctors';
 import DoctorsInfo from './Pages/DoctorsInfo';
+import PatientInfo from './Pages/PatientInfo';
 
 const breakpointValues = {
   xs: 0,
@@ -43,7 +44,7 @@ const theme = createTheme({
 
 function App() {
   return (
-    
+
 <div style={{backgroundColor: '#F4E5D3',height:'100%'}}>
  <Router>
    <ThemeProvider theme = {theme}>
@@ -54,6 +55,9 @@ function App() {
        </Route>
        <Route exact path="/AllDoctors/:doctorId">
             <DoctorsInfo/>
+       </Route>
+       <Route exact path="/:patientId">
+            <PatientInfo/>
        </Route>
      </Switch>
    </ThemeProvider>

@@ -81,6 +81,7 @@ const ResponsiveDrawer = (props) => {
   //const location = useLocation();
   const classes = useStyles();
 
+  const dummyId = "60f04fa72f37f83170f620f2";
   const menuItems = [
     {
       text: 'Home',
@@ -90,7 +91,7 @@ const ResponsiveDrawer = (props) => {
     {
       text: 'Info',
       icon: <PersonIcon fontSize="large" className={classes.darkColor}/>,
-      path: '/patient/person',
+      path: `/${dummyId}`,
     },
     {
       text: 'Appointment',

@@ -53,7 +53,6 @@ const Review = ({id,reviewerId,time,star,review}) => {
     return null;
 
     const patientName = name.name;
-    console.log(patientName);
 
    return (
      <Card className = {classes.main} elevation ={0} key={id}>
