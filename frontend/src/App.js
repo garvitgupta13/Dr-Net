@@ -43,7 +43,7 @@ const theme = createTheme({
 
 function App() {
   return (
-    // if !isLogged in than LandingPage
+    
 <div style={{backgroundColor: '#F4E5D3',height:'100%'}}>
  <Router>
    <ThemeProvider theme = {theme}>

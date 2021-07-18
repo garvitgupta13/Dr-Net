@@ -4,9 +4,10 @@ const authVerify = require('../middleware/authVerify')
 
 //! Get all patients
 router.get('/', authVerify, getPatients);
-
+// router.get('/', getPatients);
 //! Get a patient
 router.get('/:id', authVerify, getPatient);
+// router.get('/:id', getPatient);
 
 //! Update a patient
 router.put('/:id', authVerify, updatePatient);

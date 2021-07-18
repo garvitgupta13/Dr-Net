@@ -6,6 +6,10 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
+import axios from 'axios';
+import {useState,useEffect} from 'react';
+
+const NODE_DOMAIN = 'http://localhost:5000/api';
 
 const useStyle = makeStyles({
 
@@ -30,31 +34,44 @@ const useStyle = makeStyles({
     }
 });
 
-const Review = ({id,name,time,star,review}) => {
+const Review = ({id,reviewerId,time,star,review}) => {
 
   const classes = useStyle();
+  const [name,setName] = useState(null);
+  const [error,setError] = useState(null);
 
-  console.log("Yo Reviews bruh");
-  console.log(id,name,time,star,review);
+  useEffect(()=>{
+    axios.get(`${NODE_DOMAIN}/patient/${reviewerId}`).then((response)=>{
+      setName(response.data.data);
+    }).catch(error=>{
+      setError(error);
+    });
+  },[reviewerId]);
+
+
+   if(!name)
+    return null;
+
+    const patientName = name.name;
+    console.log(patientName);
 
    return (
-     <Card className = {classes.main} elevation ={0}>
+     <Card className = {classes.main} elevation ={0} key={id}>
          <CardHeader
             avatar ={
               <Avatar style={{height:'60px',width:'60px'}}>
-                 {name[0].toUpperCase()}
+                 {patientName[0].toUpperCase()}
               </Avatar>
             }
 
             title={
             <div>
               <Typography gutterBottom variant="h6" component="h2" style={{color:'#936B3D'}}>
-                 {name}
+                 {patientName}
               </Typography>
               <Rating className={classes.rating} name="read-only" value={star} readOnly />
             </div>
             }
-
                 subheader = {
                   <p style={{color:'#E1701A',marginTop:"-10px"}}>
                      {time}
@@ -64,7 +81,7 @@ const Review = ({id,name,time,star,review}) => {
          />
 
          <CardContent>
-            <Typography variant="body2" style={{marginTop:'-20px'}}>
+            <Typography variant="body2" style={{marginTop:'-20px',color:'#936B3D'}}>
                {review}
             </Typography>
          </CardContent>

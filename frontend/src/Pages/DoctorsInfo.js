@@ -10,120 +10,122 @@ import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import CreateIcon from '@material-ui/icons/Create';
 import SaveIcon from '@material-ui/icons/Save';
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import Review from '../components/UI/Review';
 import Button from '@material-ui/core/Button';
 import { createTheme,ThemeProvider } from '@material-ui/core/styles';
+import axios from 'axios';
 
+const NODE_DOMAIN = 'http://localhost:5000/api';
 const drawerWidth = 220;
 
-const Dummy_Reviews = [
-  {
-       id:'01',
-       name:'Manan Deol',
-       time:"10:30",
-       stars: 5,
-       review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
-
-  },
-  {
-    id:'02',
-    name:'Shakti Man',
-    time:"10:30",
-    stars: 5,
-    review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
-  },
-  {
-    id:'03',
-    name:'Bhargav Gohil',
-    time:"10:30",
-    stars: 4,
-    review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
-  },
-  {
-    id:'04',
-    name:'Animesh Kumar',
-    time:"10:30",
-    stars: 4,
-    review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
-  },
-  {
-    id:'05',
-    name:'Garvit Gupta',
-    time:"10:30",
-    stars: 5,
-    review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
-  },
-
-]
-const DummyDoctors = [
-  {
-    id:"01",
-    name:"Dr. Json",
-    years:"10",
-    speciality:"Dentist",
-    status:"Available",
-    timing:"10am - 5pm",
-    rating:4,
-    education:"MBBS",
-    pay:"500",
-  },
-  {
-    id:"02",
-    name:"Dr. Ben",
-    years:"10",
-    speciality:"Cardiologists",
-    status:"Available",
-    timing:"10am - 5pm",
-    rating:4,
-    education:"MD MBBS",
-    pay:"500",
-  },
-  {
-    id:"03",
-    name:"Dr. Michael",
-    years:"10",
-    speciality:"Dermatologists",
-    status:"Not Available",
-    rating:5,
-    timing:"10am - 5pm",
-    education:"MBBS",
-    pay:"500",
-  },
-  {
-    id:"04",
-    name:"Dr. Peterson",
-    years:"10",
-    speciality:"Endocrinologists",
-    status:"Available",
-    timing:"10am - 5pm",
-    rating:5,
-    education:"MD MBBS",
-    pay:"500",
-  },
-  {
-    id:"05",
-    name:"Dr. Gulati",
-    years:"10",
-    speciality:"Physicians",
-    status:"Not Available",
-    timing:"10am - 5pm",
-    rating:4,
-    education:"MBBS",
-    pay:"500",
-  },
-  {
-    id:"06",
-    name:"Dr. Ojha",
-    years:"10",
-    speciality:"Gastroenterologists",
-    status:"Available",
-    rating:4,
-    timing:"10am - 5pm",
-    education:"MBBS",
-    pay:"500",
-  },
-]
+// const Dummy_Reviews = [
+//   {
+//        id:'01',
+//        name:'Manan Deol',
+//        time:"10:30",
+//        stars: 5,
+//        review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+//
+//   },
+//   {
+//     id:'02',
+//     name:'Shakti Man',
+//     time:"10:30",
+//     stars: 5,
+//     review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+//   },
+//   {
+//     id:'03',
+//     name:'Bhargav Gohil',
+//     time:"10:30",
+//     stars: 4,
+//     review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+//   },
+//   {
+//     id:'04',
+//     name:'Animesh Kumar',
+//     time:"10:30",
+//     stars: 4,
+//     review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+//   },
+//   {
+//     id:'05',
+//     name:'Garvit Gupta',
+//     time:"10:30",
+//     stars: 5,
+//     review:"It was a nice Experience.He is a nice guy and solves every problem genty.It was a nice Experience.He is a nice guy and solves every problem genty",
+//   },
+//
+// ]
+// const DummyDoctors = [
+//   {
+//     id:"01",
+//     name:"Dr. Json",
+//     years:"10",
+//     speciality:"Dentist",
+//     status:"Available",
+//     timing:"10am - 5pm",
+//     rating:4,
+//     education:"MBBS",
+//     pay:"500",
+//   },
+//   {
+//     id:"02",
+//     name:"Dr. Ben",
+//     years:"10",
+//     speciality:"Cardiologists",
+//     status:"Available",
+//     timing:"10am - 5pm",
+//     rating:4,
+//     education:"MD MBBS",
+//     pay:"500",
+//   },
+//   {
+//     id:"03",
+//     name:"Dr. Michael",
+//     years:"10",
+//     speciality:"Dermatologists",
+//     status:"Not Available",
+//     rating:5,
+//     timing:"10am - 5pm",
+//     education:"MBBS",
+//     pay:"500",
+//   },
+//   {
+//     id:"04",
+//     name:"Dr. Peterson",
+//     years:"10",
+//     speciality:"Endocrinologists",
+//     status:"Available",
+//     timing:"10am - 5pm",
+//     rating:5,
+//     education:"MD MBBS",
+//     pay:"500",
+//   },
+//   {
+//     id:"05",
+//     name:"Dr. Gulati",
+//     years:"10",
+//     speciality:"Physicians",
+//     status:"Not Available",
+//     timing:"10am - 5pm",
+//     rating:4,
+//     education:"MBBS",
+//     pay:"500",
+//   },
+//   {
+//     id:"06",
+//     name:"Dr. Ojha",
+//     years:"10",
+//     speciality:"Gastroenterologists",
+//     status:"Available",
+//     rating:4,
+//     timing:"10am - 5pm",
+//     education:"MBBS",
+//     pay:"500",
+//   },
+// ]
 
 
 const useStyle = makeStyles({
@@ -166,25 +168,38 @@ const useStyle = makeStyles({
 
 const DoctorsInfo = (props) => {
 
+
   const [canChange,setCanChange] = useState(false);
+  const [doctor,setDoctor] = useState(null);
+  const [error,setError] = useState(null);
   const params = useParams();
-  const {doctorId} = params;
-
   const classes = useStyle();
+   const {doctorId} = params;
 
-  const doctor = DummyDoctors.filter(doctor => doctor.id === doctorId);
+
+
+  useEffect(()=>{
+    axios.get(`${NODE_DOMAIN}/doctor/${doctorId}`).then((response)=>{
+      setDoctor(response.data.data);
+    }).catch(error=>{
+      setError(error);
+    });
+  },[]);
+
+   if(!doctor)
+   {
+      return <p className='centered focus'>No Such Doctor Exist</p>;
+   }
+
+  const reviews = doctor.doctorInfo.reviews;
+
 
   const handleChange = () =>{
-     setCanChange(!canChange);
+     setCanChange(prevState => !prevState);
   }
 
   const formSubmitHandler = () =>{
     console.log("submit form here");
-  }
-
-  if(doctor.length < 1)
-  {
-      return <p className='centered focus'>No Such Doctor Exist</p>;
   }
 
   const addReviewHandler = () =>{
@@ -194,8 +209,30 @@ const DoctorsInfo = (props) => {
   const bookAppointment = () =>{
     console.log('Book Appointment');
   }
-  const availability =  (doctor[0].status === 'Available') ? '#34A853' : '#F31313';
 
+  const availability =  (doctor.doctorInfo.status === true) ? '#34A853' : '#F31313';
+  const status = (doctor.doctorInfo.status === true) ? 'Available' : 'Not Available';
+  console.log(reviews);
+
+   let allReviews = [];
+   let overallRating = 0;
+   for(let i = 0 ;i < reviews.length ; i++)
+   {
+         let id = reviews[i]._id;
+         let ratingGiven = reviews[i].rating;
+         let feedback = reviews[i].feedback;
+         let reviewerId = reviews[i].reviewerId;
+         overallRating += ratingGiven;
+
+         allReviews.push({
+           id:id,
+           rating:ratingGiven,
+           feedback:feedback,
+           reviewerId:reviewerId,
+         })
+   }
+
+   const rating = Math.ceil(overallRating/reviews.length);
    return (
      <Container className = {classes.container}>
       <Grid container spacing = {3}>
@@ -203,27 +240,27 @@ const DoctorsInfo = (props) => {
           <Card className = {classes.main} elevation = {5}>
                <CardHeader style={{position:"relative"}}
                   avatar = {
-                  <Avatar style={{ height: '70px', width: '70px' }} className={classes.avatar}>{doctor[0].name[4].toUpperCase()}</Avatar>
+                  <Avatar style={{ height: '70px', width: '70px' }} className={classes.avatar}>{doctor.name[4].toUpperCase()}</Avatar>
                   }
 
                   title={
                   <div>
                     <Typography gutterBottom variant="h5" component="h2" style={{color:'#936B3D'}}>
-                       {doctor[0].name}
+                       {doctor.name}
                      </Typography>
-                      <Rating name="read-only" value={doctor[0].rating} readOnly />
+                      <Rating name="read-only" value={rating} readOnly />
                   </div>
                   }
 
                   subheader = {
                    <div>
                       <p style={{color:'#E1701A',margin:"0px"}}>
-                         {`${doctor[0].years} years`}
+                         {`${doctor.doctorInfo.yearsOfExperience} years`}
                       </p>
                       <p style={{color:'#E1701A',margin:"0px"}}>
-                         {`${doctor[0].education} `}
+                         {`${doctor.doctorInfo.education} `}
                        </p>
-                       <span style = {{ position:"absolute",width:"100px", right:"30px",top:"10px",borderRadius:'20px',border: `1px solid ${availability}` ,display:'block',padding:'5px', color: `${availability}`,textAlign:"center" }}>{doctor[0].status}</span>
+                       <span style = {{ position:"absolute",width:"100px", right:"30px",top:"10px",borderRadius:'20px',border: `1px solid ${availability}` ,display:'block',padding:'5px', color: `${availability}`,textAlign:"center" }}>{status}</span>
                    </div>
                   }
 
@@ -235,13 +272,13 @@ const DoctorsInfo = (props) => {
                </Typography>
                <div style={{marginTop:'10px',marginBottom:'10px',paddingLeft:'10px',paddingTop:'10px'}}>
                  <h3 className = {classes.heading}>Speciality :</h3>
-                 <span className={classes.underheading} style={{marginLeft:"100px"}}>{doctor[0].speciality}</span>
+                 <span className={classes.underheading} style={{marginLeft:"100px"}}>{doctor.doctorInfo.domain}</span>
                  <h3 className = {classes.heading}>Sub Speciality :</h3>
                  <span className={classes.underheading} style={{marginLeft:"140px"}}>None</span>
                  <h3 className = {classes.heading}>Years Of Experience:</h3>
-                 <span className={classes.underheading} style={{marginLeft:"180px"}}>{doctor[0].years}</span>
+                 <span className={classes.underheading} style={{marginLeft:"180px"}}>{doctor.doctorInfo.yearsOfExperience}</span>
                  <h3 className = {classes.heading}>Education :</h3>
-                 <span className={classes.underheading} style={{marginLeft:"100px"}}>{doctor[0].education}</span>
+                 <span className={classes.underheading} style={{marginLeft:"100px"}}>{doctor.doctorInfo.education}</span>
                 </div>
             </Card>
             <Card className = {classes.main} elevation={5}>
@@ -266,13 +303,13 @@ const DoctorsInfo = (props) => {
                     REVIEWS
                </Typography>
                    {
-                     Dummy_Reviews.map( review=> (
+                     allReviews.map( review=> (
                           <Review
                               id ={review.id}
-                              name = {review.name}
-                              time = {review.time}
-                              star = {review.stars}
-                              review = {review.review}
+                              reviewerId = {review.reviewerId}
+                              time = "5 July 10:30 pm"
+                              star = {review.rating}
+                              review = {review.feedback}
                           />
                      ))
                    }

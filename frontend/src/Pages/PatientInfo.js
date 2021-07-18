@@ -1,53 +1,21 @@
 import React from 'react';
+import {useParams} from 'react-router-dom';
+import {makeStyles} from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import Container from '@material-ui/core/Container';
+import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import CreateIcon from '@material-ui/icons/Create';
+import SaveIcon from '@material-ui/icons/Save';
+import {useState,useEffect} from 'react';
+import axios from 'axios';
 
-const DummyPatients = [
-  {
-    id: '01',
-    Name:'Joy Kapoor',
-    Age:'20',
-    Height:'160',
-    BloodGroup:'A+',
-    MaritalStatus:'Unmarried',
-    Allergies:'None',
-  },
-  {
-    id: '01',
-    Name:'Joy Kapoor',
-    Age:'20',
-    Height:'160',
-    BloodGroup:'A+',
-    MaritalStatus:'Unmarried',
-    Allergies:'None',
-  },
-  {
-    id: '02',
-    Name:'Neha Kapoor',
-    Age:'21',
-    Height:'150',
-    BloodGroup:'AB+',
-    MaritalStatus:'Unmarried',
-    Allergies:'Pineapple',
-  },
-  {
-    id: '03',
-    Name:'Sandeep Maheshwari',
-    Age:'31',
-    Height:'168',
-    BloodGroup:'B+',
-    MaritalStatus:'Married',
-    Allergies:'Negativity',
-  },
-  {
-    id: '04',
-    Name:'Bhargav Gohil',
-    Age:'21',
-    Height:'170',
-    BloodGroup:'AB+',
-    MaritalStatus:'Unmarried',
-    Allergies:'Sun',
-  },
-]
 const PatientInfo = () => {
+
+  
 return (
   <div>
   </div>
