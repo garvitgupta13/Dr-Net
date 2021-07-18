@@ -11,13 +11,12 @@ module.exports = async (req, res, next) => {
 
         const checkVerification = jwt.verify(token, process.env.JWT_SECRET_KEY);
         
-        let typeId = mongoose.Types.ObjectId(checkVerification.id)
 
         const user = await User.findOne({
-            _id : typeId
+            _id : checkVerification._id
         });
 
-        // console.log(checkVerification);
+        // console.log(checkVerification._id);
         // console.log(user);
 
         req.token = token;

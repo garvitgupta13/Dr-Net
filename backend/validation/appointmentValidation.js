@@ -1,5 +1,6 @@
 const Joi = require('joi')
 const Appointment = require('../models/appointment')
+const Doctor = require("../models/Doctors");
 const moment = require('moment')
 
 const schema = Joi.object({
@@ -8,7 +9,7 @@ const schema = Joi.object({
 });
 
 
-const validateAppointment = async (req, appointment) => {
+const validateAppointment = async (req, appointment, res) => {
     const joiValidation = (params) => {
         return schema.validate(params)
     }
@@ -27,6 +28,21 @@ const validateAppointment = async (req, appointment) => {
         throw new Error('invalid time range');
     }
 
+    const doctorDetail = await Doctor.findOne({ _id: req.params.id })
+    
+    if (!doctorDetail) {
+        throw new Error('doctor not found');
+    }
+
+    const doctorStartTime = moment(doctorDetail.startTime)
+    const doctorEndTime = moment(doctorDetail.endTime)
+
+    if(startTime.isBefore(doctorStartTime) || endTime.isAfter(doctorEndTime)) {
+        return res.status(400).json({
+            message: 'doctor not available at this time'
+        })
+    }
+
     const allAppointments = await Appointment.find({ doctorId: req.params.id })
 
     allAppointments.forEach((appointment) => {
@@ -38,7 +54,9 @@ const validateAppointment = async (req, appointment) => {
             startTime.isSame(appointment.endTime) ||
             endTime.isSame(appointment.startTime)
         ){
-            throw new Error('This time is not available')
+            return res.status(400).json({
+                message: 'this time is not available'
+            })
         }
     })
 

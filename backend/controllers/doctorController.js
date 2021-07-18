@@ -40,6 +40,10 @@ const getDoctor = async (req, res) => {
 
 const updateDoctor = async (req, res) => {
     try {
+        //If anyone else try to update the details then block him
+        if (req.user._id != req.params.id)
+            return res.status(403).send("ACESS DENIED!!");
+
         //update the doctor's name
         const doctor = await User.findByIdAndUpdate(
             req.params.id,
@@ -92,6 +96,10 @@ const addReview = async (req, res) => {
 
 const addConsultation = async (req, res) => {
     try {
+        //If anyone else try to update the details then block him
+        if (req.user._id != req.params.doctorId)
+            return res.status(403).send("ACESS DENIED!!");
+
         let patient = await User.findById(req.params.patientId);
         if (!patient) return res.send(404).send("Patient not found");
 
