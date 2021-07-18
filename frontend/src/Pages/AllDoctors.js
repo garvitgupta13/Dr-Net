@@ -74,7 +74,7 @@ const useStyle = makeStyles(
       marginTop:"80px",
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
-      ['@media (max-width:660px)']: { // eslint-disable-line no-useless-computed-key
+      ['@media (max-width:660px)']: {
        width:"100%",
        height:"100%",
        marginLeft:"0px",
@@ -88,11 +88,16 @@ const AllDoctors = (props) => {
    const classes = useStyle();
    const [allDoctors,setAllDoctors] = useState(null);
    const [error,setError] = useState(null);
+   const [isLoading,setIsLoading] = useState(true);
 
    useEffect(()=>{
-     axios.get(`${NODE_DOMAIN}/doctor`).then((response)=>{
-       setAllDoctors(response.data.data);
-     }).catch(error=>{
+    async function fetchData(){
+     setIsLoading(true);
+     const  request = await axios.get(`${NODE_DOMAIN}/doctor`);
+     setAllDoctors(request.data.data);
+       setIsLoading(false);
+   }
+     fetchData().catch(error=>{
        setError(error);
      });
    },[]);
@@ -100,6 +105,19 @@ const AllDoctors = (props) => {
     if(!allDoctors)
      return null;
 
+     if(error)
+     {
+       return <p className='centered focus'>No Such Doctor Exist</p>;
+     }
+
+    if(isLoading)
+    {
+      return(
+        <div className='centered'>
+          <LoadingSpinner/>
+        </div>
+      );
+    }
 
 
     let doctorArray  = [];

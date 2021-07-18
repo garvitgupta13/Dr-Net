@@ -14,6 +14,7 @@ import {useState,useEffect} from 'react';
 import Review from '../components/Review';
 import Button from '@material-ui/core/Button';
 import { createTheme,ThemeProvider } from '@material-ui/core/styles';
+import LoadingSpinner from '../components/UI/LoadingSpinner';
 import axios from 'axios';
 
 const NODE_DOMAIN = 'http://localhost:5000/api';
@@ -173,6 +174,7 @@ const DoctorsInfo = (props) => {
   const [doctor,setDoctor] = useState(null);
   const [error,setError] = useState(null);
   const params = useParams();
+  const [isLoading,setIsLoading] = useState(true);
 
   //console.log(params);
   const classes = useStyle();
@@ -181,12 +183,30 @@ const DoctorsInfo = (props) => {
 
 
   useEffect(()=>{
-    axios.get(`${NODE_DOMAIN}/doctor/${doctorId}`).then((response)=>{
-      setDoctor(response.data.data);
-    }).catch(error=>{
+
+    async function fetchData(){
+      setIsLoading(true);
+       const  request = await axios.get(`${NODE_DOMAIN}/doctor/${doctorId}`);
+        setDoctor(request.data.data);
+      setIsLoading(false);
+    }
+    fetchData().catch(error=>{
       setError(error);
     });
   },[]);
+
+  if(error)
+  {
+    return <p className='centered focus'>No Such Doctor Exist</p>;
+  }
+  if(isLoading)
+  {
+    return(
+      <div className='centered'>
+        <LoadingSpinner/>
+      </div>
+    );
+  }
 
    if(!doctor)
    {

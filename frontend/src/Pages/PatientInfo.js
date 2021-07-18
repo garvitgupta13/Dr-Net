@@ -12,7 +12,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
 import MedicalHistory from '../components/MedicalHistory';
-
+import LoadingSpinner from '../components/UI/LoadingSpinner';
 
 const NODE_DOMAIN = 'http://localhost:5000/api';
 const drawerWidth = 220;
@@ -59,18 +59,39 @@ const PatientInfo = () => {
   const [canChange,setCanChange] = useState(false);
   const [patient,setPatient] = useState(null);
   const [error,setError] = useState(null);
+  const [isLoading,setIsLoading] = useState(true);
 
   const params = useParams();
   const classes = useStyle();
   const {patientId} = params;
 
   useEffect(()=>{
-    axios.get(`${NODE_DOMAIN}/patient/${patientId}`).then((response)=>{
-      setPatient(response.data.data);
-    }).catch(error=>{
+
+    async function fetchData(){
+      setIsLoading(true);
+      const request = await axios.get(`${NODE_DOMAIN}/patient/${patientId}`);
+        setPatient(request.data.data);
+      setIsLoading(false);
+    }
+
+    fetchData().catch(error=>{
       setError(error);
     });
+
   },[]);
+
+  if(error)
+  {
+    return <p className='centered focus'>No Such Doctor Exist</p>;
+  }
+  if(isLoading)
+  {
+    return(
+      <div className='centered'>
+        <LoadingSpinner/>
+      </div>
+    );
+  }
 
   if(!patient)
   {
