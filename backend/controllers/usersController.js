@@ -149,8 +149,8 @@ const userSignIn = async (userDetails, role, res) => {
 
     const isMatchPassword = await bcrypt.compare(password, user.password);
 
-    if (!isMatchPassword)
-      return res.status(400).send("password is incorrect");
+    if (!isMatchPassword) return new Error("password is incorrect");
+      // return res.status(400).send("password is incorrect");
 
     const token = jwtGenerator(user)
 

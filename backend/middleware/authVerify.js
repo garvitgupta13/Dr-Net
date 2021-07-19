@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
         
 
         const user = await User.findOne({
-            _id : checkVerification._id
+            _id : checkVerification._id || checkVerification.id
         });
 
         // console.log(checkVerification._id);
