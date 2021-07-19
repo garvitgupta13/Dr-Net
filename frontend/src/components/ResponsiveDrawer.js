@@ -76,7 +76,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ResponsiveDrawer = (props) => {
 
-  console.log("drawer width is", drawerWidth);
   const history = useHistory();
   //const location = useLocation();
   const classes = useStyles();
@@ -111,7 +110,6 @@ const ResponsiveDrawer = (props) => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-    console.log("changed");
   };
 
 
@@ -141,7 +139,7 @@ const ResponsiveDrawer = (props) => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar style={{zIndex:'1'}} position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -159,6 +157,7 @@ const ResponsiveDrawer = (props) => {
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
+            style={{zIndex:'1'}}
             container={container}
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}

@@ -6,7 +6,8 @@ import {makeStyles} from '@material-ui/core';
 import {useEffect} from 'react';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import axios from 'axios';
-import {useState} from 'react';
+import {useState,useRef} from 'react';
+import SearchIcon from '@material-ui/icons/Search';
 
 const NODE_DOMAIN = 'http://localhost:5000/api';
 
@@ -79,31 +80,25 @@ const useStyle = makeStyles(
        height:"100%",
        marginLeft:"0px",
      },
-    }
+   },
+   'input':{
+     position:'fixed',
+     zIndex:'5',
+     top:'10px',
+     right:'10px',
+   },
+   'search':{
+     position:'fixed',
+     right:'20px',
+     top:'15px'
+   }
   }
 )
 
-const AllDoctors = (props) => {
+const AllDoctors = ({error,isLoading,allDoctors,term,searchKeyword}) => {
 
    const classes = useStyle();
-   const [allDoctors,setAllDoctors] = useState(null);
-   const [error,setError] = useState(null);
-   const [isLoading,setIsLoading] = useState(true);
-
-   useEffect(()=>{
-    async function fetchData(){
-     setIsLoading(true);
-     const  request = await axios.get(`${NODE_DOMAIN}/doctor`);
-     setAllDoctors(request.data.data);
-       setIsLoading(false);
-   }
-     fetchData().catch(error=>{
-       setError(error);
-     });
-   },[]);
-
-    if(!allDoctors)
-     return null;
+   const inputEl = useRef("");
 
      if(error)
      {
@@ -119,7 +114,14 @@ const AllDoctors = (props) => {
       );
     }
 
+    if(!allDoctors)
+    {
+      return <p className='centered focus'>No doctors currently on List</p>;
+    }
 
+    const getSearchTerm = () =>{
+       searchKeyword(inputEl.current.value);
+    }
     let doctorArray  = [];
 
    for( let i =0 ;i < allDoctors.length ;i++)
@@ -146,17 +148,27 @@ const AllDoctors = (props) => {
    }
 
    return (
-   <Container className={classes.container}>
-     <Grid container spacing={3}>
-       {doctorArray.map( doctor => (
-         <Grid item xs={12} md={6} lg={4} key={doctor.id}>
-           <Card id ={doctor.id} name = {doctor.name} years = {doctor.years}
-            speciality = {doctor.speciality} status = {doctor.status} timing = {doctor.timing}
-            pay = {doctor.pay} education = {doctor.education}/>
+   <React.Fragment>
+     <div className={classes.main}>
+        <div className={classes.input}>
+           <input size="25" type="text" style={{height:'35px',fontSize:'14px'}}
+            placeholder="Search Doctors" value={term} onChange={getSearchTerm}
+            ref={inputEl}/>
+           <SearchIcon className={classes.search}/>
+        </div>
+     </div>
+     <Container className={classes.container}>
+         <Grid container spacing={3}>
+             {doctorArray.map( doctor => (
+               <Grid item xs={12} md={6} lg={4} key={doctor.id}>
+                 <Card id ={doctor.id} name = {doctor.name} years = {doctor.years}
+                  speciality = {doctor.speciality} status = {doctor.status} timing = {doctor.timing}
+                  pay = {doctor.pay} education = {doctor.education}/>
+               </Grid>
+             ))}
          </Grid>
-       ))}
-     </Grid>
-   </Container>
+     </Container>
+   </React.Fragment>
  )
 };
 

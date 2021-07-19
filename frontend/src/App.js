@@ -7,6 +7,10 @@ import { BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 import AllDoctors from './Pages/AllDoctors';
 import DoctorsInfo from './Pages/DoctorsInfo';
 import PatientInfo from './Pages/PatientInfo';
+import axios from 'axios';
+import {useState,useEffect} from 'react';
+
+const NODE_DOMAIN = 'http://localhost:5000/api';
 
 const breakpointValues = {
   xs: 0,
@@ -43,15 +47,54 @@ const theme = createTheme({
 });
 
 function App() {
-  return (
 
+  const [allDoctors,setAllDoctors] = useState(null);
+  const [isLoading,setIsLoading] = useState(true);
+  const [error,setError] = useState(null);
+  const [searchTerm,setSearchTerm] = useState("");
+  const [searchResult,setSearchResult] = useState("");
+
+  const searchHandler = (searchTerm) =>{
+    setSearchTerm(searchTerm);
+
+    if(searchTerm !== "")
+    {
+      const newDoctorList = allDoctors.filter((doctor) => {
+        const val = doctor.name.toLowerCase()+" "+doctor.doctorInfo.domain.toLowerCase();
+        return val.includes(searchTerm.toLowerCase());
+      })
+
+      setSearchResult(newDoctorList);
+    }
+    else
+    {
+      setSearchResult(allDoctors);
+    }
+  }
+
+
+  useEffect(()=>{
+   async function fetchData(){
+    setIsLoading(true);
+    const  request = await axios.get(`${NODE_DOMAIN}/doctor`);
+    setAllDoctors(request.data.data);
+      setIsLoading(false);
+  }
+    fetchData().catch(error=>{
+      setError(error);
+    });
+  },[]);
+
+  return (
 <div style={{backgroundColor: '#F4E5D3',height:'100%'}}>
  <Router>
    <ThemeProvider theme = {theme}>
      <Layout/>
      <Switch>
        <Route exact path="/Alldoctors">
-            <AllDoctors/>
+            <AllDoctors term={searchTerm}  error={error}
+            isLoading={isLoading} allDoctors = {searchResult}
+            searchKeyword={searchHandler}/>
        </Route>
        <Route exact path="/AllDoctors/:doctorId">
             <DoctorsInfo/>
