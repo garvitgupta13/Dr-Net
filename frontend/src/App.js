@@ -47,7 +47,7 @@ const theme = createTheme({
 });
 
 function App() {
-
+  document.body.style = 'background: #F4E5D3;';
   const [allDoctors,setAllDoctors] = useState(null);
   const [isLoading,setIsLoading] = useState(true);
   const [error,setError] = useState(null);
@@ -84,10 +84,6 @@ function App() {
     }
   }
 
-
-   console.log("term is",searchTerm)
-   console.log("result it",searchResult);
-   console.log("allDoctor ",allDoctors);
 
   return (
 <div style={{backgroundColor: '#F4E5D3',height:'100%'}}>

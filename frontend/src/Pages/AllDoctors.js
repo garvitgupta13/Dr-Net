@@ -44,9 +44,6 @@ const AllDoctors = ({error,isLoading,allDoctors,term,searchKeyword}) => {
    const classes = useStyle();
    const inputEl = useRef("");
 
-
-    console.log(error," ",isLoading);
-
      if(error)
      {
        return <p className='centered focus'>No Such Doctor Exist</p>;
