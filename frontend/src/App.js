@@ -54,6 +54,18 @@ function App() {
   const [searchTerm,setSearchTerm] = useState("");
   const [searchResult,setSearchResult] = useState("");
 
+  useEffect(()=>{
+   async function fetchData(){
+    setIsLoading(true);
+    const  request = await axios.get(`${NODE_DOMAIN}/doctor`);
+    setAllDoctors(request.data.data);
+      setIsLoading(false);
+  }
+    fetchData().catch(error=>{
+      setError(error);
+    });
+  },[]);
+
   const searchHandler = (searchTerm) =>{
     setSearchTerm(searchTerm);
 
@@ -73,17 +85,9 @@ function App() {
   }
 
 
-  useEffect(()=>{
-   async function fetchData(){
-    setIsLoading(true);
-    const  request = await axios.get(`${NODE_DOMAIN}/doctor`);
-    setAllDoctors(request.data.data);
-      setIsLoading(false);
-  }
-    fetchData().catch(error=>{
-      setError(error);
-    });
-  },[]);
+   console.log("term is",searchTerm)
+   console.log("result it",searchResult);
+   console.log("allDoctor ",allDoctors);
 
   return (
 <div style={{backgroundColor: '#F4E5D3',height:'100%'}}>
@@ -93,7 +97,7 @@ function App() {
      <Switch>
        <Route exact path="/Alldoctors">
             <AllDoctors term={searchTerm}  error={error}
-            isLoading={isLoading} allDoctors = {searchResult}
+            isLoading={isLoading} allDoctors = { searchTerm.length < 1 ? allDoctors : searchResult}
             searchKeyword={searchHandler}/>
        </Route>
        <Route exact path="/AllDoctors/:doctorId">

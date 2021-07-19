@@ -12,63 +12,6 @@ import SearchIcon from '@material-ui/icons/Search';
 const NODE_DOMAIN = 'http://localhost:5000/api';
 
 const drawerWidth = 220;
-// const DummyDoctors = [
-//   {
-//     id:"01",
-//     name:"Dr. Json",
-//     years:"10",
-//     speciality:"Dentist",
-//     status:"Available",
-//     timing:"10am - 5pm",
-//     pay:"500",
-//   },
-//   {
-//     id:"02",
-//     name:"Dr. Ben",
-//     years:"10",
-//     speciality:"Cardiologists",
-//     status:"Available",
-//     timing:"10am - 5pm",
-//     pay:"500",
-//   },
-//   {
-//     id:"03",
-//     name:"Dr. Michael",
-//     years:"10",
-//     speciality:"Dermatologists",
-//     status:"Not Available",
-//     timing:"10am - 5pm",
-//     pay:"500",
-//   },
-//   {
-//     id:"04",
-//     name:"Dr. Peterson",
-//     years:"10",
-//     speciality:"Endocrinologists",
-//     status:"Available",
-//     timing:"10am - 5pm",
-//     pay:"500",
-//   },
-//   {
-//     id:"05",
-//     name:"Dr. Gulati",
-//     years:"10",
-//     speciality:"Physicians",
-//     status:"Not Available",
-//     timing:"10am - 5pm",
-//     pay:"500",
-//   },
-//   {
-//     id:"06",
-//     name:"Dr. Ojha",
-//     years:"10",
-//     speciality:"Gastroenterologists",
-//     status:"Available",
-//     timing:"10am - 5pm",
-//     pay:"500",
-//   },
-// ]
-
 const useStyle = makeStyles(
   {
     'container':{
@@ -86,6 +29,7 @@ const useStyle = makeStyles(
      zIndex:'5',
      top:'10px',
      right:'10px',
+     zIndex:"10"
    },
    'search':{
      position:'fixed',
@@ -99,6 +43,9 @@ const AllDoctors = ({error,isLoading,allDoctors,term,searchKeyword}) => {
 
    const classes = useStyle();
    const inputEl = useRef("");
+
+
+    console.log(error," ",isLoading);
 
      if(error)
      {
