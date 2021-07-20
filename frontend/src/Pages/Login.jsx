@@ -103,7 +103,7 @@ export function Login(props) {
           window.location = "/AllDoctors";
         }
         //In case of any error throw error toast
-        else if (response.status === 400) {
+        else {
           setToastMessage(response.message);
           setOpenErrorToast(true);
         }
