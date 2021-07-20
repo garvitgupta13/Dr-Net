@@ -80,9 +80,10 @@ const PatientInfo = () => {
 
   },[]);
 
+ console.log(error);
   if(error)
   {
-    return <p className='centered focus'>No Such Doctor Exist</p>;
+    return <p className='centered focus'>No Such Patient Exist</p>;
   }
   if(isLoading)
   {

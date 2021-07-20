@@ -54,8 +54,6 @@ const MedicalHistory = ({id,createdAt,disease,doctorId,additionalMeasures,prescr
   const year = date.getFullYear();
 
   const fullDate = day+'-'+month+'-'+year;
-  console.log(fullDate);
-
 
   useEffect(()=>{
     axios.get(`${NODE_DOMAIN}/doctor/${doctorId}`).then((response)=>{
@@ -69,9 +67,6 @@ const MedicalHistory = ({id,createdAt,disease,doctorId,additionalMeasures,prescr
    return null;
 
    const doctorName = name.name;
-
-   console.log(doctorName);
-
 
     return(
       <Card className = {classes.main} elevation ={0} key={id}>

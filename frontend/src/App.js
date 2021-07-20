@@ -8,6 +8,11 @@ import AllDoctors from './Pages/AllDoctors';
 import DoctorsInfo from './Pages/DoctorsInfo';
 import PatientInfo from './Pages/PatientInfo';
 import { Login } from './Pages/Login';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import LandingPage from './Pages/LandingPage';
+
+const NODE_DOMAIN = 'http://localhost:5000/api';
 
 const breakpointValues = {
   xs: 0,
@@ -32,9 +37,9 @@ const theme = createTheme({
       contrastText: '#fff',
     },
     secondary: {
-      light: '#ff7961',
+      light: '#EA7D19',
       main: '#EA5719',
-      dark: '#ba000d',
+      dark: '#EA5719',
       contrastText: '#000',
     },
   },
@@ -44,13 +49,52 @@ const theme = createTheme({
 });
 
 function App() {
-  return (
+  document.body.style = 'background: #F4E5D3;';
+  const [allDoctors, setAllDoctors] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const request = await axios.get(`${NODE_DOMAIN}/doctor`);
+      setAllDoctors(request.data.data);
+      setIsLoading(false);
+    }
+    fetchData().catch(error => {
+      setError(error);
+    });
+  }, []);
+
+  const searchHandler = (searchTerm) => {
+    setSearchTerm(searchTerm);
+
+    if (searchTerm !== "") {
+      const newDoctorList = allDoctors.filter((doctor) => {
+        const val = doctor.name.toLowerCase() + " " + doctor.doctorInfo.domain.toLowerCase();
+        return val.includes(searchTerm.toLowerCase());
+      })
+
+      setSearchResult(newDoctorList);
+    }
+    else {
+      setSearchResult(allDoctors);
+    }
+  }
+
+
+  return (
     <div style={{ backgroundColor: '#F4E5D3', height: '100%' }}>
       <Router>
         <ThemeProvider theme={theme}>
-          <Layout />
           <Switch>
+            {isLoggedIn && <Layout />}
+            <Route exact path="/">
+              <LandingPage />
+            </Route>
             <Route exact path="/patient/login">
               < Login role="patient" />
             </Route>
@@ -58,7 +102,9 @@ function App() {
               < Login role="doctor" />
             </Route>
             <Route exact path="/Alldoctors">
-              <AllDoctors />
+              <AllDoctors term={searchTerm} error={error}
+                isLoading={isLoading} allDoctors={searchTerm.length < 1 ? allDoctors : searchResult}
+                searchKeyword={searchHandler} />
             </Route>
             <Route exact path="/AllDoctors/:doctorId">
               <DoctorsInfo />
@@ -66,7 +112,6 @@ function App() {
             <Route exact path="/:patientId">
               <PatientInfo />
             </Route>
-
           </Switch>
         </ThemeProvider>
       </Router>

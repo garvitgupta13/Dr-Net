@@ -94,5 +94,97 @@ const getAllAppointments = async (req, res) => {
 
 }
 
+const acceptAppointment = async (req, res) => {
+    try {
+        // Check the role of the user
+        const role = req.user.role
+        if (role === "patient") {
+            res.status(400).json({
+                status: "failed",
+                message: "Invalid Action"
+            })
+        }
 
-module.exports = { bookAnAppointment, getAllAppointments }
+        // Check if the appointment is present or not
+        const { id } = req.params // get appointment id
+
+        const appointment = await Appointment.findById(id)
+        if (appointment === null) {
+            res.status(404).json({
+                status: "failed",
+                message: "Appointment not found"
+            })
+        }
+
+        // Check if the appointment is already accepted
+        if (appointment.status === 'declined') {
+            res.status(400).json({
+                status: "failed",
+                message: "Appointment booking no longer available"
+            })
+        }
+
+        appointment.status = 'accepted'
+
+        await appointment.save()
+
+        res.status(200).json({
+            status: "success",
+            data: appointment
+        })
+
+
+    } catch (err) {
+        console.log(err.message)
+        res.status(400).send(err)
+    }
+}
+
+
+const declineAppointment = async (req, res) => {
+    try {
+        // Check the role of the user
+        const role = req.user.role
+        if (role === "patient") {
+            res.status(400).json({
+                status: "failed",
+                message: "Invalid Action"
+            })
+        }
+
+        // Check if the appointment is present or not
+        const { id } = req.params // get appointment id
+        const appointment = await Appointment.findById(id)
+        if (appointment === null) {
+            res.status(404).json({
+                status: "failed",
+                message: "Appointment not found"
+            })
+        }
+        // Check if the appointment is already accepted
+        if (appointment.status === 'accepted') {
+            res.status(400).json({
+                status: "failed",
+                message: "Appointment booking no longer available"
+            })
+        }
+        appointment.status = 'declined'
+        await appointment.save()
+        res.status(200).json({
+            status: "success",
+            data: appointment
+        })
+        
+
+    } catch (err) {
+        console.log(err.message)
+        res.status(400).send(err.message)
+    }
+}
+
+module.exports = {
+    bookAnAppointment, 
+    getAllAppointments, 
+    acceptAppointment, 
+    declineAppointment 
+}
