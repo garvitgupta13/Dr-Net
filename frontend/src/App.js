@@ -10,6 +10,8 @@ import PatientInfo from './Pages/PatientInfo';
 import axios from 'axios';
 import {useState,useEffect} from 'react';
 import LandingPage from './Pages/LandingPage';
+import DoctorSignUp from './Pages/DoctorSignup';
+import PatientSignUp from './Pages/PatientSignUp';
 
 const NODE_DOMAIN = 'http://localhost:5000/api';
 
@@ -95,6 +97,12 @@ function App() {
        {isLoggedIn && <Layout/>}
        <Route exact path="/">
             <LandingPage/>
+       </Route>
+       <Route exact path="/doctorSignUp">
+            <DoctorSignUp/>
+       </Route>
+       <Route exact path="/patientSignUp">
+            <PatientSignUp/>
        </Route>
        <Route exact path="/Alldoctors">
             <AllDoctors term={searchTerm}  error={error}

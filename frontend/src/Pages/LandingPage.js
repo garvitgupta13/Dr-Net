@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import doctorImage from '../Images/doctor.png';
 import patientImage from '../Images/patient.png';
+import {useHistory} from 'react-router-dom';
 
 const useStyle = makeStyles({
    'underGrid':{
@@ -58,6 +59,7 @@ const useStyle = makeStyles({
 const LandingPage = () => {
 
      const classes = useStyle();
+     const history = useHistory();
 
   return (
        <Container className = {classes.container}>
@@ -70,24 +72,24 @@ const LandingPage = () => {
                     <div className={classes.image}>
                        <img src={doctorImage}/>
                        <span className={classes.span}>Doctor</span>
-                       <Button color="secondary" variant="contained" className={classes.left}>
+                       <Button onClick={() => history.push('/doctorLogIn')} color="secondary" variant="contained" className={classes.left}>
                           Log In
                        </Button>
-                       <Button color="secondary" variant="contained" className={classes.right}>
+                       <Button onClick={() => history.push('/doctorSignUp')} color="secondary" variant="contained" className={classes.right}>
                          Sign Up
                        </Button>
                     </div>
                 </Card>
              </Grid>
-             <Grid item xs = {12} md = {6} lg = {6} key = "01" className={classes.underGrid}>
+             <Grid item xs = {12} md = {6} lg = {6} key = "02" className={classes.underGrid}>
                 <Card className = {classes.main} elevation={5}>
                     <div className={classes.image}>
                         <img src = {patientImage}/>
                         <span className={classes.span}>Patient</span>
-                        <Button color="secondary" variant="contained" className={classes.left}>
+                        <Button onClick={() => history.push('/patientLogIn')} color="secondary" variant="contained" className={classes.left}>
                          Log In
                         </Button>
-                        <Button color="secondary" variant="contained" className={classes.right}>
+                        <Button onClick={() => history.push('/patientSignUp')} color="secondary" variant="contained" className={classes.right}>
                          Sign Up
                         </Button>
                     </div>
