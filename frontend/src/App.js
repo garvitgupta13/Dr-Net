@@ -2,11 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import Layout from './components/Layout';
-import { createTheme,ThemeProvider } from '@material-ui/core/styles';
-import { BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AllDoctors from './Pages/AllDoctors';
 import DoctorsInfo from './Pages/DoctorsInfo';
 import PatientInfo from './Pages/PatientInfo';
+import { Login } from './Pages/Login';
 
 const breakpointValues = {
   xs: 0,
@@ -17,8 +18,8 @@ const breakpointValues = {
 };
 
 const theme = createTheme({
-  typograhy:{
-    fontFamily:[
+  typograhy: {
+    fontFamily: [
       'Montserrat',
       'sans-serif'
     ].join(','),
@@ -38,31 +39,38 @@ const theme = createTheme({
     },
   },
   breakpoints: {
-     values: breakpointValues,
+    values: breakpointValues,
   },
 });
 
 function App() {
   return (
 
-<div style={{backgroundColor: '#F4E5D3',height:'100%'}}>
- <Router>
-   <ThemeProvider theme = {theme}>
-     <Layout/>
-     <Switch>
-       <Route exact path="/Alldoctors">
-            <AllDoctors/>
-       </Route>
-       <Route exact path="/AllDoctors/:doctorId">
-            <DoctorsInfo/>
-       </Route>
-       <Route exact path="/:patientId">
-            <PatientInfo/>
-       </Route>
-     </Switch>
-   </ThemeProvider>
- </Router>
-</div>
+    <div style={{ backgroundColor: '#F4E5D3', height: '100%' }}>
+      <Router>
+        <ThemeProvider theme={theme}>
+          <Layout />
+          <Switch>
+            <Route exact path="/patient/login">
+              < Login role="patient" />
+            </Route>
+            <Route exact path="/doctor/login">
+              < Login role="doctor" />
+            </Route>
+            <Route exact path="/Alldoctors">
+              <AllDoctors />
+            </Route>
+            <Route exact path="/AllDoctors/:doctorId">
+              <DoctorsInfo />
+            </Route>
+            <Route exact path="/:patientId">
+              <PatientInfo />
+            </Route>
+
+          </Switch>
+        </ThemeProvider>
+      </Router>
+    </div>
   );
 }
 
