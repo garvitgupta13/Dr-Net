@@ -117,14 +117,14 @@ const acceptAppointment = async (req, res) => {
         }
 
         // Check if the appointment is already accepted
-        if (appointment.status === 'declined') {
+        if (appointment.status === 'decline') {
             res.status(400).json({
                 status: "failed",
                 message: "Appointment booking no longer available"
             })
         }
 
-        appointment.status = 'accepted'
+        appointment.status = 'accept'
 
         await appointment.save()
 
@@ -162,13 +162,13 @@ const declineAppointment = async (req, res) => {
             })
         }
         // Check if the appointment is already accepted
-        if (appointment.status === 'accepted') {
+        if (appointment.status === 'accept') {
             res.status(400).json({
                 status: "failed",
                 message: "Appointment booking no longer available"
             })
         }
-        appointment.status = 'declined'
+        appointment.status = 'decline'
         await appointment.save()
         res.status(200).json({
             status: "success",
