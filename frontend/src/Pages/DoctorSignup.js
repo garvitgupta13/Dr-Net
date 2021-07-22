@@ -90,8 +90,6 @@ const DoctorSignUp = () => {
   const classes = useStyle();
   const [count,setCount] = useState(1);
 
-  console.log("count is ",count);
-
   const formSubmitHandler = () => {
     console.log("Submit form here");
   }
@@ -180,7 +178,7 @@ const DoctorSignUp = () => {
                       </div>
                       <br/>
                       <div className={classes.label}>
-                          <Button  color="secondary" style={{marginLeft:'30%',marginTop:'20px',color:'#FFF3E5',width:'40%'}} variant="contained" component="label">
+                          <Button  color="secondary" style={{marginLeft:'27%',marginTop:'20px',color:'#FFF3E5',width:'40%'}} variant="contained" component="label">
                             Upload Certificate
                             <input hidden className={classes.input} type = "file" name="Certificate"/>
                           </Button>
