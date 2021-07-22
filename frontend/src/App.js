@@ -98,6 +98,12 @@ function App() {
        <Route exact path="/">
             <LandingPage/>
        </Route>
+       <Route exact path="/patient/login">
+           < Login role="patient" />
+       </Route>
+       <Route exact path="/doctor/login">
+           < Login role="doctor" />
+      </Route>
        <Route exact path="/doctorSignUp">
             <DoctorSignUp/>
        </Route>
