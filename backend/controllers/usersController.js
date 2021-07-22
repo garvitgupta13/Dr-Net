@@ -2,6 +2,7 @@ const User = require("../models/Users");
 const Patient = require("../models/Patients");
 const Doctor = require("../models/Doctors");
 const jwt = require("jsonwebtoken");
+const _ = require("lodash")
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
 require("dotenv").config();
@@ -23,7 +24,8 @@ const userSignUp = async (userDetails, role, res) => {
     const emailNotTaken = checkEmail(userDetails.email);
 
     if (!emailNotTaken) {
-      return res.status(401).json({
+      return res.json({
+        status: 401,
         success: "false",
         message: `Email is already Registered. Try to Login`
       });
@@ -82,10 +84,10 @@ const userSignUp = async (userDetails, role, res) => {
         bio: userDetails.bio,
         fees: userDetails.fees,
         status: userDetails.status,
-        startTime : userDetails.startTime,
-        endTime : userDetails.endTime,
-        bio : userDetails.bio,
-        documentImage : userDetails.documentImage,
+        startTime: userDetails.startTime,
+        endTime: userDetails.endTime,
+        bio: userDetails.bio,
+        documentImage: userDetails.documentImage,
         //! remember to add here after doctor model is created
       });
 
@@ -133,31 +135,36 @@ const userSignIn = async (userDetails, role, res) => {
         .populate("doctorInfo");
     }
 
-    // const user = await User.findOne({ email })
-
     if (!user) {
-      return res.status(400).send("email is incorrect");
+      return res.json({
+        status: 400,
+        message: 'Incorrect email',
+      });
       // throw new Error('email or password is incorrect')
     }
 
     if (user.role !== role) {
-      return res.status(403).json({
+      return res.json({
         message: "Please make sure you are logging in from the right portal.",
-        status: "failed"
+        status: 403
       });
     }
 
     const isMatchPassword = await bcrypt.compare(password, user.password);
 
     if (!isMatchPassword)
-      return res.status(400).send("password is incorrect");
+      return res.json({ status: 400, message: "Password is incorrect" });
 
     const token = jwtGenerator(user)
 
-    return res.status(201).json({
-      status: "success",
+    //TODO: Remove password from return object
+    // delete user["password"];//not working
+
+    return res.json({
+      status: 200,
       data: user,
-      token: token
+      token: token,
+      message: "Login Successful"
     });
   } catch (err) {
     console.log(err.message);

@@ -6,7 +6,7 @@ const usersRoute = require("./routes/usersRoute");
 const patientRoute = require("./routes/patientRoute");
 const doctorRoute = require("./routes/doctorRoutes");
 const appointmentRoute = require("./routes/appointmentRoutes")
-
+const chatRoute = require("./routes/chatRoutes");
 const bodyParser = require("body-parser");
 
 //Connecting to DB
@@ -38,6 +38,7 @@ app.use("/api/users", usersRoute);
 app.use("/api/patient", patientRoute);
 app.use("/api/doctor", doctorRoute);
 app.use("/api/appointment", appointmentRoute)
+app.use("/api/chat", chatRoute);
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {

@@ -38,9 +38,7 @@ const validateAppointment = async (req, appointment, res) => {
     const doctorEndTime = moment(doctorDetail.endTime)
 
     if(startTime.isBefore(doctorStartTime) || endTime.isAfter(doctorEndTime)) {
-        return res.status(400).json({
-            message: 'doctor not available at this time'
-        })
+        throw new Error('doctor is not available');
     }
 
     const allAppointments = await Appointment.find({ doctorId: req.params.id })
@@ -54,9 +52,7 @@ const validateAppointment = async (req, appointment, res) => {
             startTime.isSame(appointment.endTime) ||
             endTime.isSame(appointment.startTime)
         ){
-            return res.status(400).json({
-                message: 'this time is not available'
-            })
+            throw new Error('another appointment already exists at this time');
         }
     })
 

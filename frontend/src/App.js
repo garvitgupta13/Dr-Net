@@ -2,13 +2,14 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import Layout from './components/Layout';
-import { createTheme,ThemeProvider } from '@material-ui/core/styles';
-import { BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AllDoctors from './Pages/AllDoctors';
 import DoctorsInfo from './Pages/DoctorsInfo';
 import PatientInfo from './Pages/PatientInfo';
+import { Login } from './Pages/Login';
 import axios from 'axios';
-import {useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import LandingPage from './Pages/LandingPage';
 import DoctorSignUp from './Pages/DoctorSignup';
 import PatientSignUp from './Pages/PatientSignUp';
@@ -24,8 +25,8 @@ const breakpointValues = {
 };
 
 const theme = createTheme({
-  typograhy:{
-    fontFamily:[
+  typograhy: {
+    fontFamily: [
       'Montserrat',
       'sans-serif'
     ].join(','),
@@ -45,45 +46,43 @@ const theme = createTheme({
     },
   },
   breakpoints: {
-     values: breakpointValues,
+    values: breakpointValues,
   },
 });
 
 function App() {
   document.body.style = 'background: #F4E5D3;';
-  const [allDoctors,setAllDoctors] = useState(null);
-  const [isLoading,setIsLoading] = useState(true);
-  const [error,setError] = useState(null);
-  const [searchTerm,setSearchTerm] = useState("");
-  const [searchResult,setSearchResult] = useState("");
-  const [isLoggedIn,setIsLoggedIn] = useState(false);
+  const [allDoctors, setAllDoctors] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(()=>{
-   async function fetchData(){
-    setIsLoading(true);
-    const  request = await axios.get(`${NODE_DOMAIN}/doctor`);
-    setAllDoctors(request.data.data);
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const request = await axios.get(`${NODE_DOMAIN}/doctor`);
+      setAllDoctors(request.data.data);
       setIsLoading(false);
-  }
-    fetchData().catch(error=>{
+    }
+    fetchData().catch(error => {
       setError(error);
     });
-  },[]);
+  }, []);
 
-  const searchHandler = (searchTerm) =>{
+  const searchHandler = (searchTerm) => {
     setSearchTerm(searchTerm);
 
-    if(searchTerm !== "")
-    {
+    if (searchTerm !== "") {
       const newDoctorList = allDoctors.filter((doctor) => {
-        const val = doctor.name.toLowerCase()+" "+doctor.doctorInfo.domain.toLowerCase();
+        const val = doctor.name.toLowerCase() + " " + doctor.doctorInfo.domain.toLowerCase();
         return val.includes(searchTerm.toLowerCase());
       })
 
       setSearchResult(newDoctorList);
     }
-    else
-    {
+    else {
       setSearchResult(allDoctors);
     }
   }
