@@ -1,26 +1,80 @@
 import React, { useState } from "react";
 import { SimpleToast } from "../components/UI/Toast";
 import Container from "@material-ui/core/Container";
+import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import Joi from "joi-browser";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
+import doctorImage from '../Images/Group7.png';
+import patientImage from '../Images/rafiki.png';
 
 const drawerWidth = 220;
 
 const useStyle = makeStyles({
-  container: {
-    marginTop: "80px",
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    ["@media (max-width:660px)"]: {
-      width: "100%",
-      height: "100%",
-      marginLeft: "0px"
+  'main':{
+     backgroundColor:'#FFF3E5',
+     borderRadius:'30px',
+     position:'relative',
+     marginTop:'55px'
+  },
+  'content':{
+    marginLeft:'20px',
+    marginLeft:'20px'
+  },
+  'span1':{
+    color:'#936B3D',
+    position:'absolute',
+    top:'85px',
+    left:'110px',
+  },
+  'label':{
+    color:'#936B3D',
+    fontSize:'20px',
+    position:'relative',
+    marginTop:'30px',
+
+    '& label':{
+      marginLeft:'70px'
     }
-  }
+  },
+  'file':{
+    marginLeft:'220px',
+    marginTop:'20px'
+  },
+  'input':{
+     position:'absolute',
+     borderRadius:'20px',
+     borderColor:'#DDD9D5',
+     outline:'none',
+     height:'30px',
+     fontSize:'20px',
+     marginTop:'20px',
+     width:'70%',
+     left:'0px',
+     top:'15px',
+     marginLeft:'10%',
+  },
+  'innerForm':{
+    marginLeft:'20px'
+  },
+  'Button1':{
+    marginLeft:'40%',
+    marginBottom:'20px',
+    marginTop:'50px'
+  },
+  'error':{
+    color:'red',
+    position:'relative',
+    top:'40px',
+    left:'70px'
+  },
+
 });
 
-export function Login(props) {
+export function Login({role}) {
   const classes = useStyle();
   const schema = { email: "", password: "" };
   const [credential, setCredential] = useState(schema);
@@ -91,7 +145,7 @@ export function Login(props) {
         };
 
         const { data: response } = await axios.post(
-          `${process.env.REACT_APP_API_ENDPOINT}/users/${props.role}/signin`,
+          `${process.env.REACT_APP_API_ENDPOINT}/users/${role}/signin`,
           credential,
           header
         );
@@ -117,51 +171,83 @@ export function Login(props) {
 
   return (
     <Container className={classes.container}>
-      <form onSubmit={loginUser}>
-        <div>
-          <input
-            type="text"
-            name="email"
-            placeholder="email"
-            onChange={handleChange}
-          />
-          <div>
-            {errorObj["email"] ? (
-              <div>* {errorObj["email"]}</div>
-            ) : (
-              <div>&nbsp; &nbsp;</div>
-            )}
-          </div>
-        </div>
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-            onChange={handleChange}
-          />
-          <div>
-            {errorObj["password"] ? (
-              <div>* {errorObj["password"]}</div>
-            ) : (
-              <div>&nbsp; &nbsp;</div>
-            )}
-          </div>
-        </div>
-        <button type="submit">Signin</button>
-      </form>
-      <SimpleToast
-        open={openSuccess}
-        message="Password Changed Successfully"
-        handleCloseToast={handleCloseToast}
-        severity="success"
-      />
-      <SimpleToast
-        open={openError}
-        message={toastMessage}
-        handleCloseToast={handleCloseToast}
-        severity="error"
-      />
+      <Typography variant = "h2" component="h2" style={{color:'#936B3D',textAlign:'center',marginTop:"50px"}}>
+           Dr. Net
+      </Typography>
+        <Grid container spacing ={3} style = {{marginTop:'20px'}}>
+            <Grid item xs = {12} md = {6} lg = {6} key = "01" className={classes.underGrid}>
+              <Card elevation={0}>
+                  <div className={classes.image}>
+                    { role === 'doctor' && <img src={doctorImage}/>}
+                    { role === 'patient' && <img src={patientImage}/>}
+                  </div>
+              </Card>
+            </Grid>
+            <Grid item xs = {12} md = {6} lg = {6} key = "02" className={classes.underGrid}>
+              <Card className = {classes.main} elevation={5}>
+                <div className={classes.content}>
+                  <Typography variant = "h5" component="h2" style={{color:'#936B3D',marginTop:"50px",marginLeft:"88px",marginBottom:"40px"}}>
+                       LogIn
+                  </Typography>
+                  {role === 'doctor' && <span className={classes.span1}>And give health consultation</span>}
+                  {role ==='patient' &&  <span className={classes.span1}>And get health consultation</span>}
+                    <form onSubmit={loginUser}>
+                      <div className={classes.label}>
+                        <label>
+                          Email
+                          <input
+                            className={classes.input}
+                            type="text"
+                            name="email"
+                            onChange={handleChange}
+                          />
+                          <div>
+                            {errorObj["email"] ? (
+                              <div className={classes.error}>* {errorObj["email"]}</div>
+                            ) : (
+                              <div>&nbsp; &nbsp;</div>
+                            )}
+                          </div>
+                        </label>
+                      </div>
+                      <div style={{marginTop:'40px'}} className={classes.label}>
+                        <label>
+                          Password
+                          <input
+                            className={classes.input}
+                            type="password"
+                            name="password"
+                            onChange={handleChange}
+                          />
+                          <div>
+                            {errorObj["password"] ? (
+                              <div className={classes.error}>* {errorObj["password"]}</div>
+                            ) : (
+                              <div>&nbsp; &nbsp;</div>
+                            )}
+                          </div>
+                        </label>
+                      </div>
+                      <Button type="submit" className={classes.Button1} color="secondary" variant="contained" style={{color:'#FFF3E5'}}>
+                          Submit
+                      </Button>
+                    </form>
+                    <SimpleToast
+                      open={openSuccess}
+                      message="Password Changed Successfully"
+                      handleCloseToast={handleCloseToast}
+                      severity="success"
+                    />
+                    <SimpleToast
+                      open={openError}
+                      message={toastMessage}
+                      handleCloseToast={handleCloseToast}
+                      severity="error"
+                    />
+                  </div>
+                </Card>
+             </Grid>
+      </Grid>
     </Container>
   );
 }
