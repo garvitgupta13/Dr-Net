@@ -92,31 +92,37 @@ function App() {
 <div style={{backgroundColor: '#F4E5D3',height:'100%'}}>
  <Router>
    <ThemeProvider theme = {theme}>
+     <Layout/>
      <Switch>
-       {isLoggedIn && <Layout/>}
-       <Route exact path="/">
-            <LandingPage/>
+      <Route exact path="/">
+          <LandingPage/>
+      </Route>
+      <Route exact path="/patient/login">
+           <Login role="patient" />
        </Route>
-       <Route exact path="/patient/login">
-           < Login role="patient" />
-       </Route>
+
        <Route exact path="/doctor/login">
            < Login role="doctor" />
-      </Route>
+       </Route>
+
        <Route exact path="/doctorSignUp">
             <DoctorSignUp/>
        </Route>
+
        <Route exact path="/patientSignUp">
             <PatientSignUp/>
        </Route>
+
        <Route exact path="/Alldoctors">
             <AllDoctors term={searchTerm}  error={error}
             isLoading={isLoading} allDoctors = { searchTerm.length < 1 ? allDoctors : searchResult}
             searchKeyword={searchHandler}/>
        </Route>
+
        <Route exact path="/AllDoctors/:doctorId">
             <DoctorsInfo/>
        </Route>
+
        <Route exact path="/:patientId">
             <PatientInfo/>
        </Route>

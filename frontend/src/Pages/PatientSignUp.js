@@ -10,7 +10,24 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {useState} from "react";
 
+const drawerWidth = 220;
+
 const useStyle = makeStyles({
+      'container':{
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        ['@media (max-width:659px)']: { // eslint-disable-line no-useless-computed-key
+         width:"100%",
+         marginLeft:"0px",
+         backgroundColor:"#F4E5D3",
+       },
+     },
+     'topGrid':{
+       marginTop:'60px',
+       ['@media (min-width:959px)']: { // eslint-disable-line no-useless-computed-key
+         marginTop:'150px',
+      },
+     },
      'main':{
         backgroundColor:'#FFF3E5',
         borderRadius:'30px',
@@ -136,11 +153,8 @@ const PatientSignUp = () => {
     console.log("Submit form here");
   }
     return (
-      <Container>
-        <Typography variant = "h2" component="h2" style={{color:'#936B3D',textAlign:'center',marginTop:"50px"}}>
-             Dr. Net
-        </Typography>
-        <Grid container spacing={3} style={{marginTop:'20px'}}>
+      <Container className={classes.container}>
+        <Grid className={classes.topGrid} container spacing={3}>
            <Grid item xs = {12} md = {6} lg = {6} key = "01" className={classes.underGrid}>
              <Card elevation={0}>
                  <div className={classes.image}>

@@ -9,7 +9,23 @@ import doctorImage from '../Images/doctor.png';
 import patientImage from '../Images/patient.png';
 import { useHistory } from 'react-router-dom';
 
+const drawerWidth = 220;
 const useStyle = makeStyles({
+  'container':{
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    ['@media (max-width:659px)']: { // eslint-disable-line no-useless-computed-key
+     width:"100%",
+     marginLeft:"0px",
+     backgroundColor:"#F4E5D3",
+   },
+ },
+ 'topGrid':{
+   marginTop:'60px',
+   ['@media (min-width:959px)']: { // eslint-disable-line no-useless-computed-key
+     marginTop:'200px',
+  },
+ },
    'underGrid': {
       marginTop: '10px',
    },
@@ -63,10 +79,7 @@ const LandingPage = () => {
 
    return (
       <Container className={classes.container}>
-         <Typography variant="h2" component="h2" style={{ color: '#936B3D', textAlign: 'center', marginTop: "50px" }}>
-            Dr. Net
-         </Typography>
-         <Grid container spacing={3} style={{ marginTop: '20px' }}>
+         <Grid className={classes.topGrid} container spacing={3}>
             <Grid item xs={12} md={6} lg={6} key="01" className={classes.underGrid}>
                <Card className={classes.main} elevation={5}>
                   <div className={classes.image}>
