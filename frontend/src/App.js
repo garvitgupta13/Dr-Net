@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import Layout from './components/Layout';
+import ResponsiveDrawer from './components/ResponsiveDrawer';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AllDoctors from './Pages/AllDoctors';
@@ -92,7 +92,7 @@ function App() {
 <div style={{backgroundColor: '#F4E5D3',height:'100%'}}>
  <Router>
    <ThemeProvider theme = {theme}>
-     <Layout/>
+     <ResponsiveDrawer isLoggedIn = {isLoggedIn}/>
      <Switch>
       <Route exact path="/">
           <LandingPage/>

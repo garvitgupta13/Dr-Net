@@ -1,4 +1,5 @@
 import React from 'react';
+import { SimpleToast } from "../components/UI/Toast";
 import {makeStyles} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
@@ -8,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import displayImage from '../Images/rafiki.png';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Joi from "joi-browser";
 import {useState} from "react";
 
 const drawerWidth = 220;
@@ -146,8 +148,53 @@ const useStyle = makeStyles({
 const PatientSignUp = () => {
   const classes = useStyle();
   const [count,setCount] = useState(1);
+  const schema = {
+    email:"",
+    height:"",
+    weight:"",
+    age:"",
+    password:"",
+    confirmPassword:""};
+  const [credential,setCredential] = useState(schema);
+  const [errorObj,setErrorObj] = useState({});
+  const [openSuccess,setOpenSuccessToast] = useState(false);
+  const [openError,setOpenErrorToast] = useState(false);
+  const [toastMessage,setToastMessage] = useState(false);
 
+  const validationSchema = {
+    email: Joi.string().email().required(),
+    height: Joi.number().height().required(),
+    weight: Joi.number().weight().required(),
+    age: Joi.number().weight().required(),
+    password: Joi.string().min(6).required(),
+    confirmPassword: Joi.string().required().valid(Joi.ref('password'))
+  }
 
+  // const isFormValid = () => {
+  //
+  //    const check = Joi.validate(credential,validationSchema,{
+  //      abortEarly:false
+  //    });
+  //    if(!check.error)
+  //     return true;
+  //    const errors = {};
+  //    check.error.details.map((item)=>{
+  //      if(!errors[item.path[0]])
+  //        error[item.path[0]] = item.message;
+  //      return 0;
+  //    });
+  //    setErrorObj(errors);
+  //    return false;
+  // };
+
+   const validateField = (input) =>{
+     const {name,value} = input;
+     const obj = {[name]:value};
+     const obj_schema = {[name]: validationSchema[name]};
+     const result = Joi.validate(obj,obj_schema);
+
+     return result.error ? result.error.details[0].message : null;
+   };
 
   const formSubmitHandler = () => {
     console.log("Submit form here");

@@ -84,7 +84,7 @@ const useStyle = makeStyles({
     color:'red',
     position:'relative',
     top:'40px',
-    left:'70px'
+    left:'5%'
   },
 
 });
