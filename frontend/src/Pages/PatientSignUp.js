@@ -228,7 +228,7 @@ const PatientSignUp = () => {
                       </div>
                       <br/>
                       <div className={classes.singleBox}>
-                        <div style={{left:'10px'}}  className={classes.label2}>
+                        <div style={{left:'15px'}}  className={classes.label2}>
                           <label>
                             Age
                             <input className={classes.input2} type = "number" name="age"/>
