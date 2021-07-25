@@ -30,6 +30,11 @@ const useStyle = makeStyles({
          marginTop:'150px',
       },
      },
+     'underGrid2':{
+       ['@media (min-width:959px)']: { // eslint-disable-line no-useless-computed-key
+         marginTop:'-30px',
+       },
+     },
      'main':{
         backgroundColor:'#FFF3E5',
         borderRadius:'30px',
@@ -241,7 +246,7 @@ const DoctorSignUp = () => {
                  </div>
              </Card>
            </Grid>
-           <Grid item xs = {12} md = {6} lg = {6} key = "02" className={classes.underGrid}>
+           <Grid item xs = {12} md = {6} lg = {6} key = "02" className={classes.underGrid2}>
              <Card className = {classes.main} elevation={5}>
                <div className={classes.content}>
                  <Typography variant = "h5" component="h2" style={{color:'#936B3D',marginTop:"50px",marginLeft:"88px",marginBottom:"40px"}}>
