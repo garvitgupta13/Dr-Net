@@ -8,3 +8,5 @@ BRAINTREE_MERCHANT_ID=
 BRAINTREE_PUBLIC_KEY=
 BRAINTREE_PRIVATE_KEY=
 ```
+
+For testing payment related info please refer [this](https://developer.paypal.com/braintree/docs/reference/general/testing#test-value-4500600000000061): 
