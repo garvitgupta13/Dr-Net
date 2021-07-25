@@ -38,6 +38,7 @@ const updatePatient = async (req, res) => {
 };
 
 const getPatient = async (req, res) => {
+  //TODO: Only logged in uses can see his profile only
   try {
     const patient = await User.findById(req.params.id)
       .select("-doctorInfo -password -_v")
