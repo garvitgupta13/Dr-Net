@@ -94,7 +94,7 @@ const useStyle = makeStyles({
        marginTop:'10px'
      },
      'Button2':{
-       marginLeft:'35%',
+       marginLeft:'32%',
        marginBottom:'20px',
        marginTop:'10px'
      },
@@ -333,15 +333,15 @@ const DoctorSignUp = () => {
                       <span className={classes.span3}>2/2</span>
                       <div className={classes.label}>
                         <label>
-                           Specialization
+                          Specialization
                           <input
                           className={classes.input}
                            type = "text"
-                           name = "Specialization"
+                           name = "specialization"
                            onChange={handleChange}/>
                            <div>
-                             {errorObj["Specialization"] ? (
-                               <div className={classes.error}>* {errorObj["Specialization"]}</div>
+                             {errorObj["specialization"] ? (
+                               <div className={classes.error}>* {errorObj["specialization"]}</div>
                              ) : (
                                <div>&nbsp; &nbsp;</div>
                              )}
@@ -406,7 +406,7 @@ const DoctorSignUp = () => {
                         <Button className={classes.Button2} color="secondary" variant="contained" onClick={() => setCount(prevCount => prevCount-1)}>
                             <ArrowBackIcon style={{color:'#FFF3E5'}}/>
                         </Button>
-                        <Button className={classes.Button3} color="secondary" variant="contained" style={{color:'#FFF3E5'}}>
+                        <Button type="submit" className={classes.Button3} color="secondary" variant="contained" style={{color:'#FFF3E5'}}>
                             Submit
                         </Button>
                       </div>
