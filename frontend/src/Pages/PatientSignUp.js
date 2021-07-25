@@ -10,6 +10,7 @@ import displayImage from '../Images/rafiki.png';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Joi from "joi-browser";
+import axios from "axios";
 import {useState} from "react";
 
 const drawerWidth = 220;
@@ -62,7 +63,7 @@ const useStyle = makeStyles({
        color:'#936B3D',
        fontSize:'20px',
        position:'relative',
-       marginTop:'30px',
+       marginTop:'5px',
 
        '& label':{
          marginLeft:'70px'
@@ -82,47 +83,25 @@ const useStyle = makeStyles({
         top:'10px',
         marginLeft:'10%',
      },
-     'singleBox':{
-      display:'flex',
-      justifyContent:'center',
-      marginLeft:'10%',
-     },
-     'label2':{
-       color:'#936B3D',
-       fontSize:'20px',
-       position:'relative',
-       marginLeft:'-100px',
-     },
-     'label22':{
-       color:'#936B3D',
-       fontSize:'20px',
-       marginLeft:'120px',
-       position:'relative',
-
-     },
-     'input2':{
+     'heightSpan':{
        position:'absolute',
-       borderRadius:'20px',
-       borderColor:'#DDD9D5',
-       outline:'none',
-       height:'20px',
-       fontSize:'20px',
-       width:'80px',
-       top:'25px',
-       left:'0px'
+       left:'130px',
+       top:'3px',
+       fontSize:'15px'
      },
      'select':{
-       position:'absolute',
-       borderRadius:'20px',
-       borderColor:'#DDD9D5',
-       color:'#936B3D',
-       outline:'none',
-       height:'25px',
-       fontSize:'20px',
-       width:'80px',
-       left:'0px',
-       top:'25px',
-       left:'0px'
+        color:'#936B3D',
+        position:'absolute',
+        borderRadius:'20px',
+        borderColor:'#DDD9D5',
+        outline:'none',
+        height:'30px',
+        fontSize:'20px',
+        marginTop:'20px',
+        width:'70%',
+        left:'-35px',
+        top:'10px',
+        marginLeft:'10%',
      },
      'innerForm':{
        marginLeft:'20px',
@@ -143,18 +122,26 @@ const useStyle = makeStyles({
        marginBottom:'20px',
        marginTop:'40px'
      },
+     'error':{
+       color:'red',
+       marginTop:'40px',
+       textAlign:'center',
+     },
 });
 
 const PatientSignUp = () => {
   const classes = useStyle();
   const [count,setCount] = useState(1);
+
   const schema = {
+    name:"",
     email:"",
-    height:"",
     weight:"",
+    height:"",
     age:"",
     password:"",
     confirmPassword:""};
+
   const [credential,setCredential] = useState(schema);
   const [errorObj,setErrorObj] = useState({});
   const [openSuccess,setOpenSuccessToast] = useState(false);
@@ -162,32 +149,36 @@ const PatientSignUp = () => {
   const [toastMessage,setToastMessage] = useState(false);
 
   const validationSchema = {
-    email: Joi.string().email().required(),
-    height: Joi.number().height().required(),
-    weight: Joi.number().weight().required(),
-    age: Joi.number().weight().required(),
-    password: Joi.string().min(6).required(),
-    confirmPassword: Joi.string().required().valid(Joi.ref('password'))
+    name: Joi.string().min(4).required().label("Name"),
+    email: Joi.string().email().required().label("Email"),
+    age:Joi.number().min(1).max(200).required().label("Age"),
+    height: Joi.number().min(1).max(500).required().label("Height"),
+    weight: Joi.number().min(1).max(1000).required().label("Weight"),
+    password: Joi.string().min(6).required().label("Password"),
+    confirmPassword: Joi.any().valid(Joi.ref('password')).
+    required().
+    options({ language: { any: { allowOnly: 'must match password' } } }).
+    label("Confirm Password"),
   }
 
-  // const isFormValid = () => {
-  //
-  //    const check = Joi.validate(credential,validationSchema,{
-  //      abortEarly:false
-  //    });
-  //    if(!check.error)
-  //     return true;
-  //    const errors = {};
-  //    check.error.details.map((item)=>{
-  //      if(!errors[item.path[0]])
-  //        error[item.path[0]] = item.message;
-  //      return 0;
-  //    });
-  //    setErrorObj(errors);
-  //    return false;
-  // };
+  const isFormValid = () => {
 
-   const validateField = (input) =>{
+     const check = Joi.validate(credential,validationSchema,{
+       abortEarly:false
+     });
+     if(!check.error)
+      return true;
+     const errors = {};
+     check.error.details.map((item)=>{
+       if(!errors[item.path[0]])
+         errors[item.path[0]] = item.message;
+       return 0;
+     });
+     setErrorObj(errors);
+     return false;
+  };
+
+   const validateField = (input) => {
      const {name,value} = input;
      const obj = {[name]:value};
      const obj_schema = {[name]: validationSchema[name]};
@@ -196,9 +187,63 @@ const PatientSignUp = () => {
      return result.error ? result.error.details[0].message : null;
    };
 
-  const formSubmitHandler = () => {
-    console.log("Submit form here");
-  }
+   const handleChange = (e) => {
+
+     const {currentTarget:input} = e;
+     const errors = { ...errorObj };
+     const errorMessage = validateField(input);
+     if(errorMessage)
+       errors[input.name] = errorMessage;
+    else
+       delete errors[input.name];
+
+    setCredential({...credential,[e.target.name]:e.target.value});
+    setErrorObj(errors);
+   }
+
+   const handleCloseToast = (event,reason) => {
+     if(reason === "clickaway")
+      return ;
+     setToastMessage("");
+     setOpenErrorToast(false);
+     setOpenSuccessToast(false);
+
+   }
+
+   async function signUpPatient(e) {
+     e.preventDefault();
+     if(isFormValid()){
+       try{
+         const header = {
+           "Content-Type": "application/json",
+           Accept: "application/json",
+           "X-Requested-With": "XMLHttpRequest"
+         };
+
+         const { data: response } = await axios.put(
+           `${process.env.REACT_APP_API_ENDPOINT}/users/patient/signup`,  // FILL THIS
+           credential,
+           header
+         );
+
+         if(response.status === 200)
+         {
+           setToastMessage(response.message);
+           setOpenSuccessToast(true);
+           window.location = "/patient/login";
+         }
+         else {
+           setToastMessage(response.message);
+           setOpenErrorToast(true);
+         }
+       }
+       catch (err) {
+         //Handling rejected promise for backend error
+         setToastMessage("SERVER ERROR: Please try again after some time");
+         setOpenErrorToast(true);
+       }
+     }
+   }
     return (
       <Container className={classes.container}>
         <Grid className={classes.topGrid} container spacing={3}>
@@ -216,7 +261,7 @@ const PatientSignUp = () => {
                       SignUp
                  </Typography>
                  <span className={classes.span1}>And get health consultation</span>
-                 <form onSubmit={formSubmitHandler}>
+                 <form onSubmit={signUpPatient}>
 
                     { (count === 1) &&
                       <div className={classes.innerForm}>
@@ -224,28 +269,72 @@ const PatientSignUp = () => {
                         <div className={classes.label}>
                           <label>
                              Name
-                          <input className={classes.input} type = "text" name = "name"/>
+                          <input
+                            className={classes.input}
+                            onChange={handleChange}
+                            type = "text"
+                            name = "name"/>
+                          <div>
+                            {errorObj["name"] ? (
+                              <div className={classes.error}>* {errorObj["name"]}</div>
+                            ) : (
+                              <div>&nbsp; &nbsp;</div>
+                            )}
+                          </div>
                           </label>
                         </div>
                         <br/>
                         <div className={classes.label}>
                           <label>
                              Email
-                          <input className={classes.input} type = "text" name = "email"/>
+                          <input
+                          className={classes.input}
+                          type = "text"
+                          name = "email"
+                          onChange={handleChange}/>
+                          <div>
+                            {errorObj["email"] ? (
+                              <div className={classes.error}>* {errorObj["email"]}</div>
+                            ) : (
+                              <div>&nbsp; &nbsp;</div>
+                            )}
+                          </div>
                           </label>
                         </div>
                         <br/>
                         <div className={classes.label}>
                           <label>
                              Password
-                             <input className={classes.input} type = "password" name = "password"/>
+                             <input
+                             className={classes.input}
+                             type = "password"
+                             name = "password"
+                             onChange={handleChange}/>
+                             <div>
+                               {errorObj["password"] ? (
+                                 <div className={classes.error}>* {errorObj["password"]}</div>
+                               ) : (
+                                 <div>&nbsp; &nbsp;</div>
+                               )}
+                             </div>
                           </label>
                         </div>
                         <br/>
                         <div className={classes.label}>
                           <label>
                              Confirm Password
-                             <input className={classes.input} type = "password" name = "confirmPassword"/>
+                             <input
+                             className={classes.input}
+                             type = "password"
+                             name = "confirmPassword"
+                             onChange={handleChange}/>
+                             <div>
+                               {errorObj["confirmPassword"] ? (
+                                 <div className={classes.error}>* {errorObj["confirmPassword"]}</div>
+                               ) : (
+                                 <div>&nbsp; &nbsp;</div>
+                               )}
+                             </div>
                           </label>
                         </div>
                         <br/>
@@ -256,32 +345,75 @@ const PatientSignUp = () => {
                         </div>
                       </div>
                     }
-                    {count === 2 &&
+                    { count === 2 &&
                     <div className={classes.innerForm}>
                       <span className={classes.span3}>2/2</span>
-                      <div className={classes.singleBox}>
-                        <div className={classes.label2}>
+
+                        <div className={classes.label}>
                           <label>
                              Height
-                             <input className={classes.input2} type = "number" name="height"/>
+                             <span className={classes.heightSpan}>(cm)</span>
+                             <input
+                             className={classes.input}
+                             type = "number"
+                             name="height"
+                             onChange={handleChange}
+                             required
+                             min="20"
+                             max="500"/>
+                             <div>
+                               {errorObj["height"] ? (
+                                 <div className={classes.error}>* {errorObj["height"]}</div>
+                               ) : (
+                                 <div>&nbsp; &nbsp;</div>
+                               )}
+                             </div>
                           </label>
                         </div>
-                        <div className={classes.label22}>
+                        <br/>
+                        <div className={classes.label}>
                           <label>
                             Weight
-                            <input className={classes.input2} type = "number" name="weight"/>
+                             <span style={{left:'135px'}} className={classes.heightSpan}>(kg)</span>
+                            <input
+                             className={classes.input}
+                             type = "number"
+                             name="weight"
+                             onChange={handleChange}
+                             required
+                             />
+                             <div>
+                               {errorObj["weight"] ? (
+                                 <div className={classes.error}>* {errorObj["weight"]}</div>
+                               ) : (
+                                 <div>&nbsp; &nbsp;</div>
+                               )}
+                             </div>
                           </label>
                         </div>
-                      </div>
                       <br/>
-                      <div className={classes.singleBox}>
-                        <div style={{left:'15px'}}  className={classes.label2}>
+                        <div className={classes.label}>
                           <label>
                             Age
-                            <input className={classes.input2} type = "number" name="age"/>
+                            <input
+                            className={classes.input}
+                             type = "number"
+                              name="age"
+                              onChange={handleChange}
+                              required
+                              min="1"
+                              max="200"/>
+                              <div>
+                                {errorObj["age"] ? (
+                                  <div className={classes.error}>* {errorObj["age"]}</div>
+                                ) : (
+                                  <div>&nbsp; &nbsp;</div>
+                                )}
+                              </div>
                           </label>
                         </div>
-                        <div style={{left:'35px'}} className={classes.label22}>
+                        <br/>
+                        <div style={{left:'35px',marginBottom:'20px'}} className={classes.label}>
                           <label for = "blood" >Blood Group</label>
                           <select className={classes.select} name = "blood" id="blood" from="bloodform">
                             <option value="A+">A+</option>
@@ -294,7 +426,6 @@ const PatientSignUp = () => {
                             <option value="0-">0-</option>
                           </select>
                         </div>
-                      </div>
                       <br/>
                       <div className={classes.label}>
                         <label>
@@ -303,7 +434,7 @@ const PatientSignUp = () => {
                         </label>
                       </div>
                       <br/>
-                      <div className={classes.label}>
+                      <div style={{marginTop:'20px'}} className={classes.label}>
                         <label>
                           Allergies
                           <input className={classes.input} type = "text" name="allergies"/>
@@ -321,6 +452,18 @@ const PatientSignUp = () => {
                     </div>
                     }
                   </form>
+                  <SimpleToast
+                    open={openSuccess}
+                    message="Password Changed Successfully"
+                    handleCloseToast={handleCloseToast}
+                    severity="success"
+                  />
+                  <SimpleToast
+                    open={openError}
+                    message={toastMessage}
+                    handleCloseToast={handleCloseToast}
+                    severity="error"
+                  />
                 </div>
              </Card>
            </Grid>
