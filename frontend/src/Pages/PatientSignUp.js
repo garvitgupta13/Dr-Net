@@ -88,7 +88,7 @@ const useStyle = makeStyles({
         top:'10px',
         marginLeft:'10%',
      },
-     'heightSpan':{
+     'underSpan':{
        position:'absolute',
        left:'130px',
        top:'3px',
@@ -354,6 +354,7 @@ const PatientSignUp = () => {
                     <div className={classes.label}>
                       <label>
                         Height
+                        <span className={classes.underSpan}>(cm)</span>
                         <input
                         className={classes.input}
                          type="number"
@@ -371,6 +372,7 @@ const PatientSignUp = () => {
                     <div className={classes.label}>
                       <label>
                         Weight
+                        <span style={{left:"135px"}} className={classes.underSpan}>(kg)</span>
                         <input
                         className={classes.input}
                          type="number"
