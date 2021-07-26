@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import { getmeToken, processPayment } from "./../Services/paymentServices";
+import { SimpleToast } from "../components/UI/Toast";
 
 const drawerWidth = 220;
 
@@ -28,6 +29,9 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
   const params = useParams();
   let userid;
   const { doctorId } = params;
+  const [openSuccess, setOpenSuccessToast] = useState(false);
+  const [openError, setOpenErrorToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [doctor, setDoctor] = useState(null);
   const [error, setError] = useState(null);
@@ -45,7 +49,6 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
     userid = getCurrentUser()._id;
   } else {
     //TODO: Redirect to login page
-    console.log("Redirect to login page");
     /*NOT WORKING
     <Redirect
       to={{
@@ -54,9 +57,19 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
     />;*/
   }
 
+  //Close the toast
+  const handleCloseToast = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setToastMessage("");
+    setOpenErrorToast(false);
+    setOpenSuccessToast(false);
+  };
+
+  //Function to get the clientToken from backend
   const getToken = (token) => {
     getmeToken(token).then(({ data }) => {
-      console.log("INFORMATION ", data);
       if (data.error) {
         setInfo({ ...data, error: data.error });
       } else {
@@ -73,7 +86,7 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
           <div>
             <DropIn
               options={{ authorization: info.clientToken }}
-              onInstance={(instance) => (info.instance = instance)}
+              onInstance={(instance) => (info.instance = instance)} //set the instance of info object
             />
             <button className="btn btn-block btn-success" onClick={onPurchase}>
               Buy Now
@@ -88,35 +101,59 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
 
   const onPurchase = () => {
     setInfo({ loading: true });
-    let nonce;
-    console.log(info);
-    let getNonce = info.instance.requestPaymentMethod().then((data) => {
-      nonce = data.nonce;
-      const paymentData = {
-        paymentMethodNonce: nonce,
-        fee: doctor.doctorInfo.fees
-      };
-      processPayment(token, paymentData)
-        .then((response) => {
-          console.log("RESPONSE: ", response);
-          setInfo({ ...info, success: response.success, loading: false });
+    try {
+      let nonce;
+      //get the nonce from instance object of info
+      let getNonce = info.instance.requestPaymentMethod().then((data) => {
+        nonce = data.nonce;
+        const paymentData = {
+          paymentMethodNonce: nonce,
+          fee: doctor.doctorInfo.fees
+        };
+        //send the nonce to call the backend api
+        processPayment(paymentData, token)
+          .then(({ status, data }) => {
+            setInfo({ ...info, success: data.success, loading: false });
+            if (status !== 200) {
+              //TODO: Force Reload the page 2sec after
+              setOpenErrorToast(true);
+              setToastMessage("PAYMENT FAILED");
+              setTimeout(function () {
+                setReload(!reload);
+              }, 2000); //force reload after 2 sec
+              return;
+            }
+            if (data.errors) {
+              setOpenErrorToast(true);
+              setToastMessage(`PAYMENT FAILED: ${data.message}`);
+              setReload(!reload); //force reload
+              return;
+            }
+            const orderData = {
+              doctor: doctor,
+              transaction_id: data.transaction.id,
+              amount: data.transaction.amount
+            };
 
-          console.log("PAYMENT SUCCESSFULL");
-          const orderData = {
-            doctor: doctor,
-            transaction_id: response.transaction.id,
-            amount: response.transaction.amount
-          };
-
-          console.log(orderData);
-          setReload(!reload);
-        })
-        .catch((error) => {
-          console.log(error);
-          setInfo({ success: false, loading: false });
-          console.log("PAYMENT FAILED");
-        });
-    });
+            console.log("ORDER: ", orderData);
+            setOpenSuccessToast(true);
+            setReload(!reload); //force reload
+            //TODO: Redirect to chat page and add the user to doctor's list
+          })
+          .catch((error) => {
+            console.log("Error1: ", error);
+            setInfo({ success: false, loading: false });
+            setOpenErrorToast(true);
+            setToastMessage("PAYMENT FAILED");
+            setReload(!reload); //force reload
+          });
+      });
+    } catch (err) {
+      console.log("Error2: ", err);
+      setOpenErrorToast(true);
+      setToastMessage("PAYMENT FAILED");
+      setReload(!reload); //force reload
+    }
   };
 
   useEffect(() => {
@@ -154,8 +191,20 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
 
   return (
     <Container className={classes.container}>
-      <h3>Fees: {doctor.doctorInfo.fees}</h3>
+      <h3>Fees: ₹{doctor.doctorInfo.fees}</h3>
       {showbtdropIn()}
+      <SimpleToast
+        open={openSuccess}
+        message="Transaction successfull"
+        handleCloseToast={handleCloseToast}
+        severity="success"
+      />
+      <SimpleToast
+        open={openError}
+        message={toastMessage}
+        handleCloseToast={handleCloseToast}
+        severity="error"
+      />
     </Container>
   );
 }

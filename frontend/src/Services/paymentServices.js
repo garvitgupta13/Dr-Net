@@ -12,20 +12,14 @@ export const getmeToken = async (token) => {
 }
 
 export const processPayment = async (paymentData, token) => {
-    //FIX: Not working (Unable to fetch data from api)
-    /*try {
-        const header = {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "X-Requested-With": "XMLHttpRequest"
-        };
-
+    try {
         axios.defaults.headers.common["Authorization"] = token;
-        const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/payment/`, paymentData, header);
+        const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/payment/`, paymentData);
         console.log("response: ", response);
         return response;
     } catch (error) {
         console.log("error: ", error);
+<<<<<<< HEAD
     }*/
     
     return fetch(`${process.env.REACT_APP_API_ENDPOINT}/payment/`, {
@@ -42,4 +36,7 @@ export const processPayment = async (paymentData, token) => {
             return response;
         })
         .catch((err) => console.log(err));
+=======
+    }
+>>>>>>> 62343ff17429a6b6a3a3a9df91a88b139cd1b943
 }
