@@ -15,7 +15,6 @@ export const processPayment = async (paymentData, token) => {
     try {
         axios.defaults.headers.common["Authorization"] = token;
         const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/payment/`, paymentData);
-        console.log("response: ", response);
         return response;
     } catch (error) {
         console.log("error: ", error);
