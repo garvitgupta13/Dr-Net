@@ -1,6 +1,6 @@
 import React from 'react';
-import { SimpleToast } from "../components/UI/Toast";
 import { makeStyles } from '@material-ui/core';
+import { SimpleToast } from "../components/UI/Toast";
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
@@ -138,25 +138,32 @@ const PatientSignUp = () => {
   const classes = useStyle();
   const [count, setCount] = useState(1);
   const schema = {
+    name:"",
     email: "",
     height: "",
     weight: "",
     age: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    bloodType:"A+",
+    education:"",
+    diseaseDescription:"",
   };
   const [credential, setCredential] = useState(schema);
   const [errorObj, setErrorObj] = useState({});
   const [openSuccess, setOpenSuccessToast] = useState(false);
   const [openError, setOpenErrorToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const validationSchema = {
-    name: Joi.string().required().label("Name"),
+    name: Joi.string().required().min(6).label("Name"),
     email: Joi.string().email().required().label("Email"),
     height: Joi.number().min(1).max(500).required().label("Height"),
     weight: Joi.number().min(1).max(1000).required().label("Weight"),
     age:  Joi.number().min(1).max(200).required().label("Age"),
+    bloodType: Joi.string().required(),
+    education:Joi.any(),
+    diseaseDescription:Joi.any(),
     password: Joi.string().min(6).required().label("Password"),
     confirmPassword: Joi.any().valid(Joi.ref('password')).
     required().
@@ -170,7 +177,10 @@ const PatientSignUp = () => {
        abortEarly:false
      });
      if(!check.error)
+     {
+       console.log("left form validation");
       return true;
+    }
      const errors = {};
      check.error.details.map((item)=>{
        if(!errors[item.path[0]])
@@ -179,6 +189,7 @@ const PatientSignUp = () => {
      });
      setErrorObj(errors);
      return false;
+
   };
 
    const validateField = (input) => {
@@ -213,6 +224,8 @@ const PatientSignUp = () => {
   }
 
   async function signUpPatient(e) {
+    console.log("signUpPatient");
+    console.log(credential);
     e.preventDefault();
     if(isFormValid()){
       try{
@@ -222,7 +235,7 @@ const PatientSignUp = () => {
           "X-Requested-With": "XMLHttpRequest"
         };
 
-        const { data: response } = await axios.put(
+        const { data: response } = await axios.post(
           `${process.env.REACT_APP_API_ENDPOINT}/users/patient/signup`,  // FILL THIS
           credential,
           header
@@ -235,6 +248,7 @@ const PatientSignUp = () => {
           window.location = "/patient/login";//to be changed
         }
         else {
+          console.log("Holla might find me");
           setToastMessage(response.message);
           setOpenErrorToast(true);
         }
@@ -245,6 +259,8 @@ const PatientSignUp = () => {
         setOpenErrorToast(true);
       }
     }
+
+    console.log("left sigup patient");
   }
 
 
@@ -277,6 +293,7 @@ const PatientSignUp = () => {
                         className={classes.input}
                          type="text"
                         name="name"
+                        value={credential['name']}
                         onChange={handleChange}/>
                         <div>
                           {errorObj["name"] ? (
@@ -295,6 +312,7 @@ const PatientSignUp = () => {
                         className={classes.input}
                         type="text"
                         name="email"
+                        value={credential['email']}
                         onChange={handleChange}/>
                         <div>
                           {errorObj["email"] ? (
@@ -312,6 +330,7 @@ const PatientSignUp = () => {
                         <input className={classes.input}
                         type="password"
                         name="password"
+                        value={credential['password']}
                         onChange={handleChange} />
                         <div>
                           {errorObj["password"] ? (
@@ -330,6 +349,7 @@ const PatientSignUp = () => {
                         className={classes.input}
                          type="password"
                          name="confirmPassword"
+                         value={credential['confirmPassword']}
                          onChange={handleChange} />
                          <div>
                            {errorObj["confirmPassword"] ? (
@@ -359,6 +379,7 @@ const PatientSignUp = () => {
                         className={classes.input}
                          type="number"
                          name="height"
+                         value={credential['height']}
                          onChange={handleChange} />
                          <div>
                            {errorObj["height"] ? (
@@ -377,6 +398,7 @@ const PatientSignUp = () => {
                         className={classes.input}
                          type="number"
                          name="weight"
+                         value={credential['weight']}
                          onChange={handleChange} />
                          <div>
                            {errorObj["weight"] ? (
@@ -396,6 +418,7 @@ const PatientSignUp = () => {
                         className={classes.input}
                          type="number"
                          name="age"
+                         value={credential['age']}
                          onChange={handleChange} />
                          <div>
                            {errorObj["age"] ? (
@@ -407,8 +430,8 @@ const PatientSignUp = () => {
                       </label>
                     </div>
                       <div className={classes.label}>
-                        <label for="blood"  >Blood Group</label>
-                        <select className={classes.select} name="blood" id="blood" from="bloodform">
+                        <label htmlFor="bloodType"  >Blood </label>
+                        <select onChange={handleChange} value={credential['bloodType']} className={classes.select} name="bloodType" id="bloodType" from="bloodform">
                           <option value="A+">A+</option>
                           <option value="A-">A-</option>
                           <option value="B+">B+</option>
@@ -424,14 +447,14 @@ const PatientSignUp = () => {
                     <div className={classes.label}>
                       <label>
                         Education
-                        <input className={classes.input} type="text" name="education" />
+                        <input value={credential['education']} className={classes.input} type="text" name="education" onChange={handleChange} />
                       </label>
                     </div>
                     <br />
                     <div className={classes.label}>
                       <label>
-                        Allergies
-                        <input className={classes.input} type="text" name="allergies" />
+                        Disease Description
+                        <input value={credential['diseaseDescription']} className={classes.input} type="text" name="diseaseDescription" onChange={handleChange} />
                       </label>
                     </div>
                     <br />
@@ -446,6 +469,18 @@ const PatientSignUp = () => {
                   </div>
                 }
               </form>
+              <SimpleToast
+                open={openSuccess}
+                message="Password Changed Successfully"
+                handleCloseToast={handleCloseToast}
+                severity="success"
+              />
+              <SimpleToast
+                open={openError}
+                message={toastMessage}
+                handleCloseToast={handleCloseToast}
+                severity="error"
+              />
             </div>
           </Card>
         </Grid>

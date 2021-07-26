@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { SimpleToast } from "../components/UI/Toast";
 import displayImage from '../Images/Group7.png';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -99,14 +100,14 @@ const useStyle = makeStyles({
        marginTop:'10px'
      },
      'Button2':{
-       marginLeft:'32%',
+       marginLeft:'30%',
        marginBottom:'20px',
-       marginTop:'10px'
+       marginTop:'120px'
      },
      'Button3':{
        marginLeft:'20px',
        marginBottom:'20px',
-       marginTop:'10px'
+       marginTop:'120px'
      },
      'error':{
        color:'red',
@@ -124,10 +125,11 @@ const DoctorSignUp = () => {
     email:"",
     password:"",
     confirmPassword:"",
-    specialization:"",
-    subSpecialization:"",
-    degree:"",
-    certificate:"",
+    domain:"",
+    education:"",
+    fees:"",
+    yearsOfExperience:"",
+    bio:"",
   };
 
   const [credential,setCredential] = useState(schema);
@@ -137,13 +139,14 @@ const DoctorSignUp = () => {
   const [toastMessage,setToastMessage] = useState(false);
 
   const validationSchema = {
-    name: Joi.string().min(4).required().label("Name"),
+    name: Joi.string().min(6).required().label("Name"),
     email: Joi.string().email().required().label("Email"),
-    specialization:Joi.string().required().label("Specialization"),
-    subSpecialization:Joi.string().required().label("Sub Specialization"),
-    degree:Joi.string().required().label("Degree"),
-    certificate:Joi.string().required().label("Certificate"),
+    domain:Joi.string().required().label("Domain"),
+    education:Joi.string().required().label("Degree"),
     password: Joi.string().min(6).required().label("Password"),
+    fees:Joi.number().min(0),
+    yearsOfExperience:Joi.number().min(0),
+    bio:Joi.any(),
     confirmPassword: Joi.any().valid(Joi.ref('password')).
     required().
     options({ language: { any: { allowOnly: 'must match password' } } }).
@@ -157,13 +160,18 @@ const DoctorSignUp = () => {
      });
 
      if(!check.error)
+     {
+       console.log("Clear BRUH!!");
       return true;
+    }
      const errors = {};
      check.error.details.map((item)=>{
        if(!errors[item.path[0]])
          errors[item.path[0]] = item.message;
        return 0;
      });
+
+     console.log(errors);
      setErrorObj(errors);
      return false;
   };
@@ -200,6 +208,8 @@ const DoctorSignUp = () => {
   }
 
   async function signUpDoctor(e) {
+    console.log("Signing up bruh!!");
+    console.log(credential);
     e.preventDefault();
     if(isFormValid()){
       try{
@@ -209,7 +219,7 @@ const DoctorSignUp = () => {
           "X-Requested-With": "XMLHttpRequest"
         };
 
-        const { data: response } = await axios.put(
+        const { data: response } = await axios.post(
           `${process.env.REACT_APP_API_ENDPOINT}/users/doctor/signup`,  // FILL THIS
           credential,
           header
@@ -222,6 +232,7 @@ const DoctorSignUp = () => {
           window.location = "/patient/login";//to be changed
         }
         else {
+          console.log(response.message);
           setToastMessage(response.message);
           setOpenErrorToast(true);
         }
@@ -232,6 +243,8 @@ const DoctorSignUp = () => {
         setOpenErrorToast(true);
       }
     }
+   else
+     console.log("Form not valid");
   }
 
 
@@ -263,6 +276,7 @@ const DoctorSignUp = () => {
                              Name
                           <input className={classes.input}
                           onChange = {handleChange}
+                          value={credential['name']}
                           type = "text"
                           name = "name"/>
                           </label>
@@ -281,6 +295,7 @@ const DoctorSignUp = () => {
                           <input className={classes.input}
                            type = "text"
                            name = "email"
+                           value= {credential['email']}
                            onChange={handleChange}/>
                            <div>
                              {errorObj["email"] ? (
@@ -298,6 +313,7 @@ const DoctorSignUp = () => {
                              <input className={classes.input}
                              type = "password"
                              name = "password"
+                             value={credential['password']}
                              onChange={handleChange}/>
                              <div>
                                {errorObj["password"] ? (
@@ -315,6 +331,7 @@ const DoctorSignUp = () => {
                              <input className={classes.input}
                              type = "password"
                              name = "confirmPassword"
+                             value={credential['confirmPassword']}
                               onChange={handleChange}/>
                               <div>
                                 {errorObj["confirmPassword"] ? (
@@ -338,33 +355,16 @@ const DoctorSignUp = () => {
                       <span className={classes.span3}>2/2</span>
                       <div className={classes.label}>
                         <label>
-                          Specialization
+                          Domain
                           <input
                           className={classes.input}
                            type = "text"
-                           name = "specialization"
+                           name = "domain"
+                           value={credential['domain']}
                            onChange={handleChange}/>
                            <div>
-                             {errorObj["specialization"] ? (
-                               <div className={classes.error}>* {errorObj["specialization"]}</div>
-                             ) : (
-                               <div>&nbsp; &nbsp;</div>
-                             )}
-                           </div>
-                        </label>
-                      </div>
-                      <br/>
-                      <div className={classes.label}>
-                        <label>
-                          Sub Specialization
-                          <input
-                          className={classes.input}
-                           type = "text"
-                           name = "subSpecialization"
-                           onChange={handleChange}/>
-                           <div>
-                             {errorObj["subSpecialization"] ? (
-                               <div className={classes.error}>* {errorObj["subSpecialization"]}</div>
+                             {errorObj["domain"] ? (
+                               <div className={classes.error}>* {errorObj["domain"]}</div>
                              ) : (
                                <div>&nbsp; &nbsp;</div>
                              )}
@@ -378,11 +378,12 @@ const DoctorSignUp = () => {
                           <input
                           className={classes.input}
                            type = "text"
-                           name="degree"
+                           name="education"
+                           value={credential['education']}
                            onChange={handleChange}/>
                            <div>
-                             {errorObj["degree"] ? (
-                               <div className={classes.error}>* {errorObj["degree"]}</div>
+                             {errorObj["education"] ? (
+                               <div className={classes.error}>* {errorObj["education"]}</div>
                              ) : (
                                <div>&nbsp; &nbsp;</div>
                              )}
@@ -391,20 +392,60 @@ const DoctorSignUp = () => {
                       </div>
                       <br/>
                       <div className={classes.label}>
-                          <Button  color="secondary" style={{marginLeft:'27%',marginTop:'20px',color:'#FFF3E5',width:'40%'}} variant="contained" component="label">
-                            Upload Certificate
-                            <input hidden className={classes.input}
-                            type = "file"
-                             name="Certificate"
-                             onChange={handleChange}/>
-                          </Button>
-                          <div>
-                            {errorObj["certificate"] ? (
-                              <div className={classes.error}>* {errorObj["certificate"]}</div>
-                            ) : (
-                              <div>&nbsp; &nbsp;</div>
-                            )}
-                          </div>
+                        <label>
+                          Years Of Experience
+                          <input
+                          className={classes.input}
+                           type = "number"
+                           name="yearsOfExperience"
+                           value={credential['yearsOfExperience']}
+                           onChange={handleChange}/>
+                           <div>
+                             {errorObj["yearsOfExperience"] ? (
+                               <div className={classes.error}>* {errorObj["yearsOfExperience"]}</div>
+                             ) : (
+                               <div>&nbsp; &nbsp;</div>
+                             )}
+                           </div>
+                        </label>
+                      </div>
+                      <br/>
+                      <div className={classes.label}>
+                        <label>
+                          Fee
+                          <input
+                          className={classes.input}
+                           type = "number"
+                           name="fees"
+                           value={credential['fees']}
+                           onChange={handleChange}/>
+                           <div>
+                             {errorObj["fees"] ? (
+                               <div className={classes.error}>* {errorObj["fees"]}</div>
+                             ) : (
+                               <div>&nbsp; &nbsp;</div>
+                             )}
+                           </div>
+                        </label>
+                      </div>
+                      <br/>
+                      <div className={classes.label}>
+                        <label>
+                          Bio
+                          <textarea
+                          className={classes.input}
+                          value={credential['bio']}
+                           style={{height:"140px"}}
+                           name="bio"
+                           onChange={handleChange}/>
+                           <div>
+                             {errorObj["bio"] ? (
+                               <div style={{marginTop:"150px"}} className={classes.error}>* {errorObj["bio"]}</div>
+                             ) : (
+                               <div>&nbsp; &nbsp;</div>
+                             )}
+                           </div>
+                        </label>
                       </div>
                       <br/>
                       <div>
@@ -418,6 +459,18 @@ const DoctorSignUp = () => {
                     </div>
                     }
                   </form>
+                  <SimpleToast
+                    open={openSuccess}
+                    message="Password Changed Successfully"
+                    handleCloseToast={handleCloseToast}
+                    severity="success"
+                  />
+                  <SimpleToast
+                    open={openError}
+                    message={toastMessage}
+                    handleCloseToast={handleCloseToast}
+                    severity="error"
+                  />
                 </div>
              </Card>
            </Grid>
@@ -426,4 +479,24 @@ const DoctorSignUp = () => {
     )
 }
 
-export default DoctorSignUp;
+ export default DoctorSignUp;
+
+
+//
+// <div className={classes.label}>
+//    <Button  color="secondary" style={{marginLeft:'27%',marginTop:'120px',color:'#FFF3E5',width:'40%'}} variant="contained" component="label">
+//      Upload Certificate
+//      <input hidden className={classes.input}
+//      type = "file"
+//       name="Certificate"
+//       onChange={handleChange}/>
+//    </Button>
+//    <div>
+//      {errorObj["certificate"] ? (
+//        <div className={classes.error}>* {errorObj["certificate"]}</div>
+//      ) : (
+//        <div>&nbsp; &nbsp;</div>
+//      )}
+//    </div>
+// </div>
+// <br/>

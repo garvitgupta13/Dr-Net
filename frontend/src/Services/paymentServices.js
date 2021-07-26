@@ -27,7 +27,7 @@ export const processPayment = async (paymentData, token) => {
     } catch (error) {
         console.log("error: ", error);
     }*/
-
+    
     return fetch(`${process.env.REACT_APP_API_ENDPOINT}/payment/`, {
         method: "POST",
         headers: {
@@ -43,4 +43,3 @@ export const processPayment = async (paymentData, token) => {
         })
         .catch((err) => console.log(err));
 }
-
