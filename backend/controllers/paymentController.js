@@ -32,7 +32,6 @@ exports.processPayment = (req, res) => {
             }
         },
         function (err, result) {
-            console.log(err, result);
             if (err) {
                 return res.status(500).json(error);
             } else {
