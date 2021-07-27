@@ -8,6 +8,7 @@ import axios from "axios";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import { getmeToken, processPayment } from "./../Services/paymentServices";
 import { SimpleToast } from "../components/UI/Toast";
+import Button from '@material-ui/core/Button';
 
 const drawerWidth = 220;
 
@@ -72,15 +73,19 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
     getmeToken(token).then(({ data }) => {
       if (data.error) {
         setInfo({ ...data, error: data.error });
+        setIsLoading(false);
       } else {
         const clientToken = data.clientToken;
         setInfo({ clientToken });
+        setIsLoading(false);
       }
     });
   };
 
   const showbtdropIn = () => {
     return (
+
+
       <div>
         {info.clientToken !== null ? (
           <div>
@@ -88,9 +93,9 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
               options={{ authorization: info.clientToken }}
               onInstance={(instance) => (info.instance = instance)} //set the instance of info object
             />
-            <button className="btn btn-block btn-success" onClick={onPurchase}>
+            {<Button style={{marginLeft:'41%',color:'#FFF3E5'}} variant="contained" color="secondary" disable className="btn btn-block btn-success" onClick={onPurchase}>
               Buy Now
-            </button>
+            </Button>}
           </div>
         ) : (
           <h3>Please Login </h3>
@@ -119,14 +124,16 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
               setOpenErrorToast(true);
               setToastMessage("PAYMENT FAILED");
               setTimeout(function () {
-                setReload(!reload);
+                //setReload(!reload);
+                window.location.reload(false);
               }, 2000); //force reload after 2 sec
               return;
             }
             if (data.errors) {
               setOpenErrorToast(true);
               setToastMessage(`PAYMENT FAILED: ${data.message}`);
-              setReload(!reload); //force reload
+              //setReload(!reload); //force reload
+              window.location.reload(false);
               return;
             }
             const orderData = {
@@ -137,7 +144,8 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
 
             console.log("ORDER: ", orderData);
             setOpenSuccessToast(true);
-            setReload(!reload); //force reload
+            window.location.reload(false);
+            //setReload(!reload); //force reload
             //TODO: Redirect to chat page and add the user to doctor's list
           })
           .catch((error) => {
@@ -145,14 +153,16 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
             setInfo({ success: false, loading: false });
             setOpenErrorToast(true);
             setToastMessage("PAYMENT FAILED");
-            setReload(!reload); //force reload
+            window.location.reload(false);
+            //setReload(!reload); //force reload
           });
       });
     } catch (err) {
       console.log("Error2: ", err);
       setOpenErrorToast(true);
       setToastMessage("PAYMENT FAILED");
-      setReload(!reload); //force reload
+      window.location.reload(false);
+  //    setReload(!reload); //force reload
     }
   };
 
@@ -164,7 +174,7 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
         `${process.env.REACT_APP_API_ENDPOINT}/doctor/${doctorId}`
       );
       setDoctor(request.data.data);
-      setIsLoading(false);
+      //setIsLoading(false);
     }
     fetchDoctor().catch((error) => {
       setError(error);
