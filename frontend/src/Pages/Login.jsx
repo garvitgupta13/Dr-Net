@@ -90,7 +90,7 @@ const useStyle = makeStyles({
   }
 });
 
-export function Login({ role }) {
+export function Login({ role}) {
   const classes = useStyle();
   const schema = { email: "", password: "" };
   const [credential, setCredential] = useState(schema);
@@ -167,7 +167,9 @@ export function Login({ role }) {
         );
         //Set the token in localstorage and redirect to homepage
         if (response.status === 200) {
-          localStorage.setItem("token", response.token);
+          console.log('response is', response);
+          localStorage.setItem("token", response);
+          //onIdSubmit(response.token);
           setToastMessage(response.message);
           setOpenSuccessToast(true);
           window.location = "/AllDoctors";

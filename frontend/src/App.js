@@ -13,7 +13,9 @@ import { useState, useEffect } from 'react';
 import LandingPage from './Pages/LandingPage';
 import DoctorSignUp from './Pages/DoctorSignup';
 import PatientSignUp from './Pages/PatientSignUp';
+import DChat from './Pages/DChat';
 import { Payment } from './Pages/payment';
+import useLocalStorage from './components/hooks/useLocalStorage';
 const NODE_DOMAIN = 'http://localhost:5000/api';
 
 const breakpointValues = {
@@ -52,6 +54,9 @@ const theme = createTheme({
 
 function App() {
   document.body.style = 'background: #F4E5D3;';
+
+  // const [doc_id,setDocid] = useLocalStorage('doc_id');
+  // const [p_id,setPid] = useLocalStorage('p_id');
   const [allDoctors, setAllDoctors] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -94,15 +99,21 @@ function App() {
         <ThemeProvider theme={theme}>
           <ResponsiveDrawer isLoggedIn={isLoggedIn} />
           <Switch>
+
             <Route exact path="/">
               <LandingPage />
             </Route>
+
+            <Route exact path="/DChat">
+              <DChat />
+            </Route>
+
             <Route exact path="/patient/login">
               <Login role="patient" />
             </Route>
 
             <Route exact path="/doctor/login">
-              < Login role="doctor" />
+              <Login role="doctor" />
             </Route>
 
             <Route exact path="/doctorSignUp">

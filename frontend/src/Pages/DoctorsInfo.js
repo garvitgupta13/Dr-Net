@@ -175,8 +175,7 @@ const DoctorsInfo = (props) => {
                        <span style = {{ position:"absolute",width:"100px", right:"30px",top:"10px",borderRadius:'20px',border: `1px solid ${availability}` ,display:'block',padding:'5px', color: `${availability}`,textAlign:"center" }}>{status}</span>
                    </div>
                   }
-
-                 />
+                />
             </Card>
             <Card className = {classes.main} elevation={5}>
                <Typography variant = "h5" component="h2" style={{color:'#936B3D',textAlign:'center'}}>
