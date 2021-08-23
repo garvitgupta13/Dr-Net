@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import {makeStyles} from '@material-ui/core';
 
 
@@ -51,8 +52,8 @@ const dummyMessages = [
     },
     {
       sender:"Sabo",
-      message:"I am a young single and virgin boy ....snuffles.... I am in search of someone who could give me head ..blushes.. so  ..umgh... would you mind giving me head ",
-    }
+      message:"I am a young single and virgin boy ....snuffles.... I am in search of someone who could take my head ..blushes.. so  ..umgh... would you mind taking my head ",
+    },
 ]
 const drawerWidth = 220;
 const useStyle = makeStyles(
@@ -77,11 +78,17 @@ const useStyle = makeStyles(
 const DChat = () => {
 
   const classes = useStyle();
+  const [text,setText] = useState('');
   const setRef = useCallback(node =>{
      if(node)
       node.scrollIntoView({smooth:true})
   },[])
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log('submitting bruh');
+    console.log(text);
+  }
 
     return (
       <>
@@ -133,24 +140,35 @@ const DChat = () => {
                   <div style={{display:'flex',flexDirection:'column',alignItem:'start',justifyContent:'end'}}>
                     {dummyMessages.map((message,index) => {
                       const lastMessage = dummyMessages.length-1 === index
+                      const alignSelf = message.sender === 'Dr.Luthra' ? 'flex-end': '' ;
+                      const color = message.sender === 'Dr.Luthra' ? 'blue': 'white' ;
+                      const bgColor =  message.sender === 'Dr.Luthra' ? 'skyblue': 'white' ;
+                      const you = message.sender === 'Dr.Luthra' ? 'You': `${message.sender}` ;
                       return(
                         <div
                         ref = {lastMessage?setRef:null}
                         key={index}
-                        style={{display:'flex',flexDirection:'column',alignSelf: `${message.sender} === 'Dr.Luthra' ? 'flex-end' : ''`}}
+                        style={{display:'flex',flexDirection:'column',alignSelf:`${alignSelf}`}}
                         >
-                          <div>
-                             {message.message}
-                          </div>
-                          <div>
-                             {message.sender}
-                          </div>
+                            <div style={{ border:'1px solid',borderColor:`${color}`,backgroundColor:`${bgColor}`,padding:'10px',marginTop:'10px',borderRadius:'10px',fontSize:'17px' }}>
+                               {message.message}
+                            </div>
+                            <div style={{ alignSelf:`${alignSelf}`,fontSize:'15px'}}>
+                               {you}
+                            </div>
                         </div>
                       )
                       })
                     }
                   </div>
                </div>
+               <form onSubmit = {submitHandler} style={{marginTop:'10px'}}>
+                  <textarea style={{width:'70%'}} rows="4" onChange={e=> setText(e.target.value)}>
+                  </textarea>
+                  <Button type="submit" color="secondary" variant="contained" style={{color:'#FFF3E5',width:'25%',marginLeft:'10px',marginTop:'-60px'}} >
+                      Submit
+                  </Button>
+               </form>
            </Grid>
          </Grid>
       </Container>
