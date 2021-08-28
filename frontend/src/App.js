@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import ResponsiveDrawer from './components/ResponsiveDrawer';
+import RoadToChat from './components/RoadToChat.js';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AllDoctors from './Pages/AllDoctors';
@@ -13,7 +14,6 @@ import { useState, useEffect } from 'react';
 import LandingPage from './Pages/LandingPage';
 import DoctorSignUp from './Pages/DoctorSignup';
 import PatientSignUp from './Pages/PatientSignUp';
-import DChat from './Pages/DChat';
 import { Payment } from './Pages/payment';
 import useLocalStorage from './components/hooks/useLocalStorage';
 const NODE_DOMAIN = 'http://localhost:5000/api';
@@ -104,8 +104,8 @@ function App() {
               <LandingPage />
             </Route>
 
-            <Route exact path="/DChat">
-              <DChat />
+            <Route exact path="/Chat">
+              <RoadToChat />
             </Route>
 
             <Route exact path="/patient/login">
