@@ -7,6 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import PatientList from '../components/PatientList';
 import {makeStyles} from '@material-ui/core';
 
 
@@ -29,7 +30,30 @@ const dummyData = [
 ]
 
 const dummyMessages = [
-
+    {
+      sender:'Dr.Luthra',
+      message:"Hello Sabo what's your problem",
+    },
+    {
+      sender:'Sabo',
+      message:"My pain is unexpressable",
+    },
+    {
+      sender:'Dr.Luthra',
+      message:"How can I cure you when I don't know the cause",
+    },
+    {
+      sender:"Sabo",
+      message:"Are you sure!! You can cure my pain ....finally someone...",
+    },
+    {
+       sender:"Dr.Luthra",
+       message:"Ya sure go on tell me your problem",
+    },
+    {
+      sender:"Sabo",
+      message:"I am a young single and virgin boy ....snuffles.... I am in search of someone who could take my head ..blushes.. so  ..umgh... would you mind taking my head ",
+    },
     {
       sender:'Dr.Luthra',
       message:"Hello Sabo what's your problem",
@@ -59,12 +83,11 @@ const drawerWidth = 220;
 const useStyle = makeStyles(
   {
     'container':{
-      marginTop:"90px",
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
+      marginTop:"85px",
+      float:'left',
+      overflow:'auto',
+      height:'88vh',
       ['@media (max-width:660px)']: {
-       width:"100%",
-       height:"100%",
        marginLeft:"0px",
      },
      'main':{
@@ -75,8 +98,9 @@ const useStyle = makeStyles(
    },
 });
 
-const DChat = () => {
+const Chat = ({width}) => {
 
+  console.log('width is ',width);
   const classes = useStyle();
   const [text,setText] = useState('');
   const setRef = useCallback(node =>{
@@ -91,35 +115,7 @@ const DChat = () => {
   }
 
     return (
-      <>
-      <Container className={classes.container}>
-          <Grid container  spacing={3}>
-           <Grid style={{flexDirection:'column',width:'40%'}} item xs={12} sm={6}>
-              <Typography gutterBottom variant="h5" style={{color:'#936B3D',marginLeft:'15%'}}>
-                 Patient List
-              </Typography>
-                {
-                  dummyData.map((patient,id) => (
-                    <Card className={classes.main} elevation={0} key={id}>
-                       <CardHeader
-                       avatar = {
-                         <Avatar style={{height:'45px',width:'45px'}}>
-                            {patient.name[0].toUpperCase()}
-                         </Avatar>
-                       }
-                       title={
-                       <div>
-                         <Typography gutterBottom variant="h6" component="h2" style={{color:'#936B3D'}}>
-                            {patient.name}
-                         </Typography>
-                       </div>
-                       }
-                       />
-                    </Card>
-                  ))
-                }
-           </Grid>
-           <Grid item xs={12} sm={6} style={{}}>
+         <div className={classes.container} style={{width:"100%"}}>
                <Card className={classes.main} elevation={0} key={1}>
                   <CardHeader
                   avatar = {
@@ -146,7 +142,7 @@ const DChat = () => {
                       const you = message.sender === 'Dr.Luthra' ? 'You': `${message.sender}` ;
                       return(
                         <div
-                        ref = {lastMessage?setRef:null}
+                      //  ref = {lastMessage?setRef:null}
                         key={index}
                         style={{display:'flex',flexDirection:'column',alignSelf:`${alignSelf}`}}
                         >
@@ -169,11 +165,8 @@ const DChat = () => {
                       Submit
                   </Button>
                </form>
-           </Grid>
-         </Grid>
-      </Container>
-      </>
+      </div>
     )
 };
 
-export default DChat;
+export default Chat;

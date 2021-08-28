@@ -100,7 +100,7 @@ const ResponsiveDrawer = (props) => {
     {
       text: 'Log Out',
       icon: <ExitToAppIcon fontSize="large" className={classes.darkColor}/>,
-      path: '/DChat',
+      path: '/Chat',
     },
   ];
 
