@@ -27,6 +27,19 @@
 | **GET** | /patientId | getDoctor with patientId      |                                                               | (**Authorization**,patientToken) |
 | **PUT** | /patientId | Update patient with patientId | name,age,height,weight,bloodType,education,diseaseDescription | (**Authorization**,patientToken) |
 
+### Conversation Routes `/api/conversation`
+| Type    | Route      | Description                                   | Body  | Header                           |
+| :------ | :--------- | :-------------------------------------------- | :---- | :------------------------------- |
+| **GET** | /          | getAll Conversation of logged in User         |       | (**Authorization**,patientToken) |
+| **POST**| /doctorId  | Add Conversation of logged in User with doctor|       | (**Authorization**,patientToken) |
+| **PUT** | /doctorId  | End Conversation of logged in User with doctor|       | (**Authorization**,patientToken) |
+
+
+### Message Routes `/api/messages`
+| Type     | Route           | Description                    | Body        | Header                           |
+| :------- | :-------------- | :----------------------------- | :---------- | :------------------------------- |
+| **GET**  | /conversationId | getAll messages of conversation|             |  (**Authorization**,patientToken)|
+| **POST** | /conversationId | Add mesage to conversation     | text(string)|  (**Authorization**,patientToken)|
 
 **doctorToken**: token recieved after doctor logs in
 
