@@ -1,12 +1,14 @@
 const Conversation = require('../models/Conversations');
-const User = require('../models/Users')
+const User = require('../models/Users');
+const _ = require('lodash');
+const { isEqual } = require('lodash');
 
 const addConversation = async (req, res) => {
   try {
     let patientId = req.user._id;
     let doctorId = req.params.doctorId;
-    let patient = await User.findById(patientId).select("name");
-    let doctor = await User.findById(doctorId).select("name");
+    let patient = await User.findById(patientId).select('name');
+    let doctor = await User.findById(doctorId).select('name');
 
     let conversationBetween = await Conversation.findOneAndUpdate(
       { patient, doctor },
@@ -38,10 +40,10 @@ const getConversations = async (req, res) => {
     let conversation;
 
     if (role === 'doctor') {
-      conversation = await Conversation.find({ "doctor._id": userId });
+      conversation = await Conversation.find({ 'doctor._id': userId });
     }
     if (role === 'patient') {
-      conversation = await Conversation.find({ "patient._id": userId });
+      conversation = await Conversation.find({ 'patient._id': userId });
     }
 
     res.status(200).send(conversation);
@@ -54,12 +56,14 @@ const getConversations = async (req, res) => {
 const endConversation = async (req, res) => {
   try {
     let conversationId = req.params.id;
+    let conversation = await Conversation.findById(conversationId);
+    if (!isEqual(req.user._id, conversation.doctor._id)) {
+      return res.status(401).send('ACCESS DENIED');
+    }
 
-    let conversation = await Conversation.findByIdAndUpdate(
-      conversationId,
-      { $set: { canChat: false } },
-      { new: true }
-    );
+    conversation.canChat = false;
+
+    await conversation.save();
 
     return res.status(200).send(conversation);
   } catch (err) {

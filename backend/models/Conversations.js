@@ -7,19 +7,19 @@ const UserSchema = new Schema({
     required: [true, 'Name Cannot be Blank'],
     minlength: 2,
     maxlength: 200,
-    trim: true
-  }
+    trim: true,
+  },
 });
 
 const ConversationSchema = new Schema(
   {
     patient: {
       type: UserSchema,
-      required: [true, "Patient is compulsary"]
+      required: [true, 'Patient is compulsary'],
     },
     doctor: {
       type: UserSchema,
-      required: [true, "Doctor is compulsary"]
+      required: [true, 'Doctor is compulsary'],
     },
     canChat: {
       type: Boolean,
