@@ -1,12 +1,15 @@
 const Conversation = require('../models/Conversations');
+const User = require('../models/Users')
 
 const addConversation = async (req, res) => {
   try {
     let patientId = req.user._id;
     let doctorId = req.params.doctorId;
+    let patient = await User.findById(patientId).select("name");
+    let doctor = await User.findById(doctorId).select("name");
 
     let conversationBetween = await Conversation.findOneAndUpdate(
-      { recipients: [patientId, doctorId] },
+      { patient, doctor },
       { $set: { canChat: true } },
       { new: true }
     );
@@ -15,7 +18,8 @@ const addConversation = async (req, res) => {
       return res.status(200).send(conversationBetween);
     } else {
       let newConversation = new Conversation({
-        recipients: [patientId, doctorId],
+        patient: patient,
+        doctor: doctor,
         canChat: true,
       });
       await newConversation.save();
@@ -23,18 +27,28 @@ const addConversation = async (req, res) => {
     }
   } catch (e) {
     console.log(e);
-    res.status(400).send(e.message);
+    res.status(500).send(e.message);
   }
 };
 
 const getConversations = async (req, res) => {
   try {
-    let conversation = await Conversation.find({
-      recipients: { $in: [req.user._id] },
-    });
+    let role = req.user.role;
+    let userId = req.user._id;
+    let conversation;
+
+    if (role === 'doctor') {
+      conversation = await Conversation.find({ doctor: { _id: userId } });
+    }
+    if (role === 'patient') {
+      console.log(role, userId);
+      conversation = await Conversation.find({ patient._id: userId });
+    }
+
     res.status(200).send(conversation);
-  } catch (err) {
-    res.status(500).send(err);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e.message);
   }
 };
 
@@ -50,7 +64,7 @@ const endConversation = async (req, res) => {
 
     return res.status(200).send(conversation);
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).send(err.message);
   }
 };
 
