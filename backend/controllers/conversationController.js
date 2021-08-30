@@ -38,11 +38,10 @@ const getConversations = async (req, res) => {
     let conversation;
 
     if (role === 'doctor') {
-      conversation = await Conversation.find({ doctor: { _id: userId } });
+      conversation = await Conversation.find({ "doctor._id": userId });
     }
     if (role === 'patient') {
-      console.log(role, userId);
-      conversation = await Conversation.find({ patient._id: userId });
+      conversation = await Conversation.find({ "patient._id": userId });
     }
 
     res.status(200).send(conversation);
