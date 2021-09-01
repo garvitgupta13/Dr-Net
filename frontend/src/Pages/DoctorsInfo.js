@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import CreateIcon from '@material-ui/icons/Create';
 import SaveIcon from '@material-ui/icons/Save';
+import {getDoctor} from "../Services/getUser";
 import {useState,useEffect} from 'react';
 import Review from '../components/Review';
 import Button from '@material-ui/core/Button';
@@ -71,20 +72,34 @@ const DoctorsInfo = (props) => {
   const classes = useStyle();
    const {doctorId} = params;
 
+  const getDoctorInfo = (doctorId) => {
 
+          getDoctor(doctorId).then( (data)=>{
+
+          //  console.log(data);
+
+            if(data === undefined)
+            {
+              setError("BAD REQUEST");
+            }
+            else if(data.data.error)
+            {
+              setError(data.data.error);
+            }
+            else
+            {
+               setDoctor(data.data.data);
+            }
+
+            setIsLoading(false);
+          });
+  };
 
   useEffect(()=>{
+     getDoctorInfo(doctorId);
+    },[doctorId]);
 
-    async function fetchData(){
-      setIsLoading(true);
-       const  request = await axios.get(`${NODE_DOMAIN}/doctor/${doctorId}`);
-        setDoctor(request.data.data);
-      setIsLoading(false);
-    }
-    fetchData().catch(error=>{
-      setError(error);
-    });
-  },[]);
+
 
   if(error)
   {
@@ -125,6 +140,7 @@ const DoctorsInfo = (props) => {
 
   const availability =  (doctor.doctorInfo.status === true) ? '#34A853' : '#F31313';
   const status = (doctor.doctorInfo.status === true) ? 'Available' : 'Not Available';
+
 
    let allReviews = [];
    let overallRating = 0;

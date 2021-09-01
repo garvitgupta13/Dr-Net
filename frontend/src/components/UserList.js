@@ -48,7 +48,7 @@ const useStyle = makeStyles(
     'container':{
           float:'left',
           marginLeft:'220px',
-          marginTop:'80px',
+          marginTop:'67px',
           padding:'6px',
           width:'50%',
           height:'88vh',
@@ -60,7 +60,7 @@ const useStyle = makeStyles(
 });
 
 
-const PatientList = () => {
+const UserList = () => {
 
   const classes = useStyle();
   const [text,setText] = useState('');
@@ -81,13 +81,13 @@ const PatientList = () => {
                       <Card className={classes.main} elevation={0} key={id}>
                          <CardHeader
                          avatar = {
-                           <Avatar style={{height:'45px',width:'45px'}}>
+                           <Avatar style={{height:'30px',width:'30px'}}>
                               {patient.name[0].toUpperCase()}
                            </Avatar>
                          }
                          title={
                          <div>
-                           <Typography gutterBottom variant="h6" component="h2" style={{color:'#936B3D'}}>
+                           <Typography gutterBottom variant="h6" component="h2" style={{color:'#936B3D',fontSize:'15px'}}>
                               {patient.name}
                            </Typography>
                          </div>
@@ -100,4 +100,4 @@ const PatientList = () => {
   );
 }
 
-export default PatientList;
+export default UserList;

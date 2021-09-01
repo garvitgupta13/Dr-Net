@@ -7,12 +7,12 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import axios from 'axios';
+import {getPatient} from "../Services/getUser";
 import {useState,useEffect} from 'react';
 
 const NODE_DOMAIN = 'http://localhost:5000/api';
 
 const useStyle = makeStyles({
-
     'main':{
       backgroundColor: '#F9F3EC',
       position:'relative',
@@ -39,14 +39,15 @@ const Review = ({id,reviewerId,time,star,review}) => {
   const classes = useStyle();
   const [name,setName] = useState(null);
   const [error,setError] = useState(null);
+  const token = localStorage.getItem('token');
 
-  useEffect(()=>{
-    axios.get(`${NODE_DOMAIN}/patient/${reviewerId}`).then((response)=>{
-      setName(response.data.data);
-    }).catch(error=>{
-      setError(error);
-    });
-  },[reviewerId]);
+    useEffect(()=>{
+        getPatient(reviewerId,token).then((response)=>{
+          setName(response.data.data);
+        }).catch(error=>{
+          setError(error);
+        });
+    },[reviewerId]);
 
 
    if(!name)

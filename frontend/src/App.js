@@ -15,6 +15,7 @@ import LandingPage from './Pages/LandingPage';
 import DoctorSignUp from './Pages/DoctorSignup';
 import PatientSignUp from './Pages/PatientSignUp';
 import { Payment } from './Pages/payment';
+import {allDoctorsInfo} from './Services/getUser';
 import useLocalStorage from './components/hooks/useLocalStorage';
 const NODE_DOMAIN = 'http://localhost:5000/api';
 
@@ -64,16 +65,38 @@ function App() {
   const [searchResult, setSearchResult] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // async function fetchData() {
+  //   setIsLoading(true);
+  //   const request = await axios.get(`${NODE_DOMAIN}/doctor`);
+  //   setAllDoctors(request.data.data);
+  //   setIsLoading(false);
+  // }
+  // fetchData().catch(error => {
+  //   setError(error);
+  // });
+  const getAllDoctors = () =>
+  {
+       allDoctorsInfo().then((data)=>
+       {
+           if(data === undefined)
+           {
+             setError("Error");
+           }
+           else if(data.data.error)
+           {
+             setError("Error");
+           }
+           else
+           {
+             setAllDoctors(data.data.data);
+           }
+
+           setIsLoading(false);
+       })
+  }
+
   useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      const request = await axios.get(`${NODE_DOMAIN}/doctor`);
-      setAllDoctors(request.data.data);
-      setIsLoading(false);
-    }
-    fetchData().catch(error => {
-      setError(error);
-    });
+    getAllDoctors();
   }, []);
 
   const searchHandler = (searchTerm) => {

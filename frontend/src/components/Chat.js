@@ -7,9 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import PatientList from '../components/PatientList';
 import {makeStyles} from '@material-ui/core';
-
 
 const dummyData = [
   {
@@ -83,10 +81,11 @@ const drawerWidth = 220;
 const useStyle = makeStyles(
   {
     'container':{
-      marginTop:"85px",
+      marginTop:"70px",
       float:'left',
       overflow:'auto',
       height:'88vh',
+      paddingLeft:'5px',
       ['@media (max-width:660px)']: {
        marginLeft:"0px",
      },
@@ -142,7 +141,7 @@ const Chat = ({width}) => {
                       const you = message.sender === 'Dr.Luthra' ? 'You': `${message.sender}` ;
                       return(
                         <div
-                      //  ref = {lastMessage?setRef:null}
+                        ref = {lastMessage?setRef:null}
                         key={index}
                         style={{display:'flex',flexDirection:'column',alignSelf:`${alignSelf}`}}
                         >

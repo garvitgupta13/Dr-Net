@@ -1,11 +1,13 @@
 import axios from "axios";
 
 export const getmeToken = async (token) => {
-    try {
+
+   try {
         axios.defaults.headers.common["Authorization"] = token;
         const response = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/payment/getToken`);
         return response;
     }
+
     catch (error) {
         console.log(error);
     }
@@ -20,4 +22,3 @@ export const processPayment = async (paymentData, token) => {
         console.log("error: ", error);
     }
 }
-
