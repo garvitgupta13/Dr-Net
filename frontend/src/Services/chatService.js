@@ -21,3 +21,14 @@ export const getMessages = async (conversationId) => {
         return error;
     }
 };
+
+export const sendMessage = async (conversationId, text) => {
+    try {
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+        const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/messages/${conversationId}`, { text });
+        return response;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+};

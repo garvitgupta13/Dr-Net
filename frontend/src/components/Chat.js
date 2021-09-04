@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
 import ChatContext from './Contexts/chatContext';
-import { getMessages } from '../Services/chatService';
+import { getMessages, sendMessage } from '../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
 
 const drawerWidth = 220;
@@ -43,8 +43,10 @@ const Chat = ({ width, conversation }) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        console.log('submitting bruh');
-        console.log(text);
+        if (text.trim()) {
+            sendMessage(conversation._id, text);
+        }
+        setText('');
     };
 
     useEffect(() => {
@@ -122,7 +124,13 @@ const Chat = ({ width, conversation }) => {
                 </div>
             </div>
             <form onSubmit={submitHandler} style={{ marginTop: '10px' }}>
-                <textarea style={{ width: '70%' }} rows="4" onChange={(e) => setText(e.target.value)}></textarea>
+                <textarea
+                    style={{ width: '70%' }}
+                    rows="4"
+                    placeholder="Type a message"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                ></textarea>
                 <Button
                     type="submit"
                     color="secondary"
