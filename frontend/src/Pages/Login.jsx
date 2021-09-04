@@ -172,7 +172,7 @@ export function Login({ role }) {
                     //onIdSubmit(response.token);
                     setToastMessage(response.message);
                     setOpenSuccessToast(true);
-                    // window.location = '/AllDoctors';
+                    window.location = '/AllDoctors';
                 }
                 //In case of any error throw error toast
                 else {
