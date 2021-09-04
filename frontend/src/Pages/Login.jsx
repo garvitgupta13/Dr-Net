@@ -167,7 +167,6 @@ export function Login({ role }) {
                 );
                 //Set the token in localstorage and redirect to homepage
                 if (response.status === 200) {
-                    console.log('response is', response.token);
                     localStorage.setItem('token', response.token);
                     //onIdSubmit(response.token);
                     setToastMessage(response.message);
