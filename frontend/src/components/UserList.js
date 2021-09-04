@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import Container from '@material-ui/core/Container';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
 import { getConversations } from './../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
+import ChatContext from './Contexts/chatContext';
 
 const drawerWidth = 220;
 const useStyle = makeStyles({
@@ -31,6 +32,7 @@ const UserList = () => {
     const classes = useStyle();
     const [text, setText] = useState('');
     const [conversations, setConversations] = useState([]);
+    const chatContext = useContext(ChatContext);
     const token = localStorage.getItem('token');
     const setRef = useCallback((node) => {
         if (node) node.scrollIntoView({ smooth: true });
@@ -39,7 +41,7 @@ const UserList = () => {
     const user = getCurrentUser();
 
     useEffect(() => {
-        getConversations(token)
+        getConversations()
             .then(({ data, status }) => {
                 setConversations(data);
             })
@@ -68,7 +70,14 @@ const UserList = () => {
             </Typography>
 
             {conversations.map((conversation) => (
-                <Card className={classes.main} elevation={0} key={conversation._id}>
+                <Card
+                    className={classes.main}
+                    elevation={0}
+                    key={conversation._id}
+                    onClick={() => {
+                        chatContext.handleConversation(conversation);
+                    }}
+                >
                     <CardHeader
                         avatar={
                             <Avatar style={{ height: '30px', width: '30px' }}>
