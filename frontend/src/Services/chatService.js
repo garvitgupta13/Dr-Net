@@ -22,6 +22,17 @@ export const startConversation = async (doctorId) => {
     }
 };
 
+export const endConversation = async (conversationId) => {
+    try {
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+        const response = await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/conversation/${conversationId}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+};
+
 export const getMessages = async (conversationId) => {
     try {
         axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');

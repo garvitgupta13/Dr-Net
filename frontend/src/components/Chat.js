@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
 import ChatContext from './Contexts/chatContext';
-import { getMessages, sendMessage } from '../Services/chatService';
+import { endConversation, getMessages, sendMessage } from '../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
 
 const drawerWidth = 220;
@@ -41,12 +41,32 @@ const Chat = ({ width, conversation }) => {
         if (node) node.scrollIntoView({ smooth: true });
     }, []);
 
-    const submitHandler = (e) => {
+    const handleSendMessage = (e) => {
         e.preventDefault();
         if (text.trim()) {
-            sendMessage(conversation._id, text);
+            sendMessage(conversation._id, text)
+                .then(({ data, status }) => {
+                    if (status !== 200) {
+                        console.log(status);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
         setText('');
+    };
+
+    const handleEndConversation = () => {
+        endConversation(conversation._id)
+            .then(({ data, status }) => {
+                if (status === 200) {
+                    conversation.canChat = false;
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     useEffect(() => {
@@ -67,6 +87,7 @@ const Chat = ({ width, conversation }) => {
     }, [conversation]);
 
     if (!conversation) return null;
+    if (!user) window.location = '/';
 
     return (
         <div className={classes.container} style={{ width: '100%' }}>
@@ -123,7 +144,7 @@ const Chat = ({ width, conversation }) => {
                     })}
                 </div>
             </div>
-            <form onSubmit={submitHandler} style={{ marginTop: '10px' }}>
+            <form onSubmit={handleSendMessage} style={{ marginTop: '10px' }}>
                 <textarea
                     style={{ width: '70%' }}
                     rows="4"
@@ -135,11 +156,27 @@ const Chat = ({ width, conversation }) => {
                     type="submit"
                     color="secondary"
                     variant="contained"
+                    disabled={!conversation.canChat}
                     style={{ color: '#FFF3E5', width: '25%', marginLeft: '10px', marginTop: '-60px' }}
                 >
                     Send
                 </Button>
             </form>
+            <br />
+            {user.role === 'doctor' ? (
+                <Button
+                    type="submit"
+                    color="secondary"
+                    variant="contained"
+                    disabled={!conversation.canChat}
+                    onClick={handleEndConversation}
+                    style={{ color: '#FFF3E5', width: '5%', marginLeft: '10px', marginTop: '-60px' }}
+                >
+                    End
+                </Button>
+            ) : (
+                <div />
+            )}
         </div>
     );
 };

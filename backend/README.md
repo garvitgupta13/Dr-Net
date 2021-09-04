@@ -32,7 +32,7 @@
 | :------ | :--------- | :-------------------------------------------- | :---- | :------------------------------- |
 | **GET** | /          | getAll Conversation of logged in User         |       | (**Authorization**,patientToken) |
 | **POST**| /doctorId  | Add Conversation of logged in User with doctor|       | (**Authorization**,patientToken) |
-| **PUT** | /doctorId  | End Conversation of logged in User with doctor|       | (**Authorization**,patientToken) |
+| **PUT** | /conversationId  | End Conversation of logged in User with doctor|       | (**Authorization**,patientToken) |
 
 
 ### Message Routes `/api/messages`
