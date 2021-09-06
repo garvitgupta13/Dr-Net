@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core';
 import ChatContext from './Contexts/chatContext';
 import { endConversation, getMessages, sendMessage } from '../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
+import { format } from 'timeago.js';
 
 const drawerWidth = 220;
 const useStyle = makeStyles({
@@ -46,8 +47,8 @@ const Chat = ({ width, conversation }) => {
         if (text.trim()) {
             sendMessage(conversation._id, text)
                 .then(({ data, status }) => {
-                    if (status !== 200) {
-                        console.log(status);
+                    if (status === 200) {
+                        setMessages([...messages, data]);
                     }
                 })
                 .catch((error) => {
@@ -138,7 +139,9 @@ const Chat = ({ width, conversation }) => {
                                 >
                                     {message.text}
                                 </div>
-                                <div style={{ alignSelf: `${alignSelf}`, fontSize: '15px' }}>{you}</div>
+                                <div style={{ alignSelf: `${alignSelf}`, fontSize: '15px' }}>
+                                    {format(message.createdAt)}
+                                </div>
                             </div>
                         );
                     })}
