@@ -54,8 +54,6 @@ const theme = createTheme({
 function App() {
     document.body.style = 'background: #F4E5D3;';
 
-    // const [doc_id,setDocid] = useLocalStorage('doc_id');
-    // const [p_id,setPid] = useLocalStorage('p_id');
     const [allDoctors, setAllDoctors] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -63,15 +61,6 @@ function App() {
     const [searchResult, setSearchResult] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    // async function fetchData() {
-    //   setIsLoading(true);
-    //   const request = await axios.get(`${NODE_DOMAIN}/doctor`);
-    //   setAllDoctors(request.data.data);
-    //   setIsLoading(false);
-    // }
-    // fetchData().catch(error => {
-    //   setError(error);
-    // });
     const getAllDoctors = () => {
         allDoctorsInfo().then((data) => {
             if (data === undefined) {
@@ -107,58 +96,60 @@ function App() {
 
     return (
         <div style={{ backgroundColor: '#F4E5D3', height: '100%' }}>
-            <Router>
-                <ThemeProvider theme={theme}>
-                    <ResponsiveDrawer isLoggedIn={isLoggedIn} />
-                    <Switch>
-                        <Route exact path="/">
-                            <LandingPage />
-                        </Route>
+            <SocketProvider>
+                <Router>
+                    <ThemeProvider theme={theme}>
+                        <ResponsiveDrawer isLoggedIn={isLoggedIn} />
+                        <Switch>
+                            <Route exact path="/">
+                                <LandingPage />
+                            </Route>
 
-                        <Route exact path="/Chat">
-                            <RoadToChat />
-                        </Route>
+                            <Route exact path="/Chat">
+                                <RoadToChat />
+                            </Route>
 
-                        <Route exact path="/patient/login">
-                            <Login role="patient" />
-                        </Route>
+                            <Route exact path="/patient/login">
+                                <Login role="patient" />
+                            </Route>
 
-                        <Route exact path="/doctor/login">
-                            <Login role="doctor" />
-                        </Route>
+                            <Route exact path="/doctor/login">
+                                <Login role="doctor" />
+                            </Route>
 
-                        <Route exact path="/doctorSignUp">
-                            <DoctorSignUp />
-                        </Route>
+                            <Route exact path="/doctorSignUp">
+                                <DoctorSignUp />
+                            </Route>
 
-                        <Route exact path="/patientSignUp">
-                            <PatientSignUp />
-                        </Route>
+                            <Route exact path="/patientSignUp">
+                                <PatientSignUp />
+                            </Route>
 
-                        <Route exact path="/Alldoctors">
-                            <AllDoctors
-                                term={searchTerm}
-                                error={error}
-                                isLoading={isLoading}
-                                allDoctors={searchTerm.length < 1 ? allDoctors : searchResult}
-                                searchKeyword={searchHandler}
-                            />
-                        </Route>
+                            <Route exact path="/Alldoctors">
+                                <AllDoctors
+                                    term={searchTerm}
+                                    error={error}
+                                    isLoading={isLoading}
+                                    allDoctors={searchTerm.length < 1 ? allDoctors : searchResult}
+                                    searchKeyword={searchHandler}
+                                />
+                            </Route>
 
-                        <Route exact path="/AllDoctors/:doctorId">
-                            <DoctorsInfo />
-                        </Route>
+                            <Route exact path="/AllDoctors/:doctorId">
+                                <DoctorsInfo />
+                            </Route>
 
-                        <Route exact path="/:patientId">
-                            <PatientInfo />
-                        </Route>
+                            <Route exact path="/:patientId">
+                                <PatientInfo />
+                            </Route>
 
-                        <Route exact path="/payment/:doctorId">
-                            <Payment />
-                        </Route>
-                    </Switch>
-                </ThemeProvider>
-            </Router>
+                            <Route exact path="/payment/:doctorId">
+                                <Payment />
+                            </Route>
+                        </Switch>
+                    </ThemeProvider>
+                </Router>
+            </SocketProvider>
         </div>
     );
 }

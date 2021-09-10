@@ -13,6 +13,7 @@ import { endConversation, getMessages, sendMessage } from '../Services/chatServi
 import { getCurrentUser } from './../Services/authService';
 import { format } from 'timeago.js';
 import { io } from 'socket.io-client';
+import { useSocket } from '../Contexts/socketContext';
 
 const drawerWidth = 220;
 const useStyle = makeStyles({
@@ -37,23 +38,33 @@ const Chat = ({ width, conversation }) => {
     const classes = useStyle();
     const [text, setText] = useState('');
     const [messages, setMessages] = useState([]);
-    const [sender, setSender] = useState({});
-    const socket = useRef();
+    const [receiver, setReceiver] = useState({});
+    const [receivedMessage, setReceivedMessage] = useState({});
+    const socket = useSocket();
     const user = getCurrentUser();
     const setRef = useCallback((node) => {
         if (node) node.scrollIntoView({ smooth: true });
     }, []);
 
     useEffect(() => {
-        socket.current = io('ws://localhost:5003');
+        if (socket.current) {
+            socket.current.emit('addUser', user._id);
+            socket.current.on('getUsers', (users) => {
+                // console.log(users);
+            });
+            socket.current.on('getMessage', (data) => {
+                setReceivedMessage({
+                    senderId: data.senderId,
+                    text: data.text,
+                    createdAt: Date.now(),
+                });
+            });
+        }
     }, []);
 
     useEffect(() => {
-        socket.current.emit('addUser', user._id);
-        socket.current.on('getUsers', (users) => {
-            console.log(users);
-        });
-    }, [user]);
+        receivedMessage && setMessages([...messages, receivedMessage]);
+    }, [receivedMessage]);
 
     const handleSendMessage = (e) => {
         e.preventDefault();
@@ -62,6 +73,11 @@ const Chat = ({ width, conversation }) => {
                 .then(({ data, status }) => {
                     if (status === 200) {
                         setMessages([...messages, data]);
+                        socket.current.emit('sendMessage', {
+                            senderId: user._id,
+                            receiverId: receiver._id,
+                            text,
+                        });
                     }
                 })
                 .catch((error) => {
@@ -89,9 +105,9 @@ const Chat = ({ width, conversation }) => {
                 .then(({ data, status }) => {
                     if (status === 200) {
                         setMessages(data);
-                        const msgSender =
+                        const msgReceiver =
                             conversation.patient._id === user._id ? conversation.doctor : conversation.patient;
-                        setSender(msgSender);
+                        setReceiver(msgReceiver);
                     }
                 })
                 .catch((err) => {
@@ -105,16 +121,16 @@ const Chat = ({ width, conversation }) => {
 
     return (
         <div className={classes.container} style={{ width: '100%' }}>
-            {sender.name ? (
+            {receiver.name ? (
                 <Card className={classes.main} elevation={0} key={1}>
                     <CardHeader
                         avatar={
-                            <Avatar style={{ height: '45px', width: '45px' }}>{sender.name[0].toUpperCase()}</Avatar>
+                            <Avatar style={{ height: '45px', width: '45px' }}>{receiver.name[0].toUpperCase()}</Avatar>
                         }
                         title={
                             <div>
                                 <Typography gutterBottom variant="h6" component="h2" style={{ color: '#936B3D' }}>
-                                    {sender.name}
+                                    {receiver.name}
                                 </Typography>
                             </div>
                         }
@@ -131,7 +147,7 @@ const Chat = ({ width, conversation }) => {
                         let alignSelf = message.senderId === user._id ? 'flex-end' : '';
                         let color = message.senderId === user._id ? 'blue' : 'white';
                         let bgColor = message.senderId === user._id ? 'skyblue' : 'white';
-                        let you = message.senderId === user._id ? 'You' : sender.name;
+                        let you = message.senderId === user._id ? 'You' : receiver.name;
 
                         return (
                             <div
