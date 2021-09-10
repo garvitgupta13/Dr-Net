@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import Container from '@material-ui/core/Container';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +12,7 @@ import ChatContext from './Contexts/chatContext';
 import { endConversation, getMessages, sendMessage } from '../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
 import { format } from 'timeago.js';
+import { io } from 'socket.io-client';
 
 const drawerWidth = 220;
 const useStyle = makeStyles({
@@ -37,10 +38,22 @@ const Chat = ({ width, conversation }) => {
     const [text, setText] = useState('');
     const [messages, setMessages] = useState([]);
     const [sender, setSender] = useState({});
+    const socket = useRef();
     const user = getCurrentUser();
     const setRef = useCallback((node) => {
         if (node) node.scrollIntoView({ smooth: true });
     }, []);
+
+    useEffect(() => {
+        socket.current = io('ws://localhost:5003');
+    }, []);
+
+    useEffect(() => {
+        socket.current.emit('addUser', user._id);
+        socket.current.on('getUsers', (users) => {
+            console.log(users);
+        });
+    }, [user]);
 
     const handleSendMessage = (e) => {
         e.preventDefault();
