@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
 import { getConversations } from './../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
-import ChatContext from './Contexts/chatContext';
+import ChatContext from '../Contexts/chatContext';
 
 const drawerWidth = 220;
 const useStyle = makeStyles({

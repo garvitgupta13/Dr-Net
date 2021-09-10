@@ -16,6 +16,7 @@ import DoctorSignUp from './Pages/DoctorSignup';
 import PatientSignUp from './Pages/PatientSignUp';
 import { Payment } from './Pages/payment';
 import { allDoctorsInfo } from './Services/getUser';
+import { SocketProvider } from './Contexts/socketContext';
 import useLocalStorage from './components/hooks/useLocalStorage';
 const NODE_DOMAIN = 'http://localhost:5000/api';
 

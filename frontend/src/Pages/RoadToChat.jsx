@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import UserList from '../components/UserList.js';
 import Chat from '../components/Chat.js';
-import ChatContext from '../components/Contexts/chatContext';
+import ChatContext from '../Contexts/chatContext';
 
 const RoadToChat = () => {
     const [currentConversation, setCurrentConversation] = useState(null);

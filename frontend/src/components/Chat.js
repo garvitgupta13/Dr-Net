@@ -8,7 +8,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
-import ChatContext from './Contexts/chatContext';
+import ChatContext from '../Contexts/chatContext';
 import { endConversation, getMessages, sendMessage } from '../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
 import { format } from 'timeago.js';
