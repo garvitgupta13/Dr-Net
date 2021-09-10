@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
   //Get userId and socketId from client and give them the list of online users
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
+    console.log(userId);
     io.emit("getUsers", users);
   });
 

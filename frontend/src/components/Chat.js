@@ -47,19 +47,15 @@ const Chat = ({ width, conversation }) => {
     }, []);
 
     useEffect(() => {
-        if (socket.current) {
-            socket.current.emit('addUser', user._id);
-            socket.current.on('getUsers', (users) => {
-                // console.log(users);
+        console.log(socket);
+
+        socket.current?.on('getMessage', (data) => {
+            setReceivedMessage({
+                senderId: data.senderId,
+                text: data.text,
+                createdAt: Date.now(),
             });
-            socket.current.on('getMessage', (data) => {
-                setReceivedMessage({
-                    senderId: data.senderId,
-                    text: data.text,
-                    createdAt: Date.now(),
-                });
-            });
-        }
+        });
     }, []);
 
     useEffect(() => {
