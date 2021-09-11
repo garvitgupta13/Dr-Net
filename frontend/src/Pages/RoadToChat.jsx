@@ -10,19 +10,20 @@ const RoadToChat = () => {
     const handleConversation = (conversation) => {
         setCurrentConversation(conversation);
     };
-    const socket = useSocket();
     const user = getCurrentUser();
+    const socket = useSocket();
+    const [onlineUsers, SetOnlineUsers] = useState([]);
 
     useEffect(() => {
         socket.current?.emit('addUser', user._id);
         socket.current?.on('getUsers', (users) => {
-            // console.log(users);
+            SetOnlineUsers(users);
         });
     }, []);
 
     const width = 32;
     return (
-        <ChatContext.Provider value={{ currentConversation, handleConversation }}>
+        <ChatContext.Provider value={{ currentConversation, handleConversation, onlineUsers }}>
             <div style={{ display: 'flex', height: '100%' }}>
                 <UserList width={width} />
                 <Chat width={100 - width} conversation={currentConversation} />

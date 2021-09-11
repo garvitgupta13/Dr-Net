@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core';
 import { getConversations } from './../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
 import ChatContext from '../Contexts/chatContext';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 const drawerWidth = 220;
 const useStyle = makeStyles({
@@ -33,12 +34,16 @@ const UserList = () => {
     const [text, setText] = useState('');
     const [conversations, setConversations] = useState([]);
     const chatContext = useContext(ChatContext);
-    const token = localStorage.getItem('token');
     const setRef = useCallback((node) => {
         if (node) node.scrollIntoView({ smooth: true });
     }, []);
 
     const user = getCurrentUser();
+
+    const isOnline = (userId) => {
+        console.log(chatContext.onlineUsers);
+        return chatContext.onlineUsers.find((user) => user.userId === userId);
+    };
 
     useEffect(() => {
         getConversations()
@@ -69,40 +74,40 @@ const UserList = () => {
                 Chats
             </Typography>
 
-            {conversations.map((conversation) => (
-                <Card
-                    className={classes.main}
-                    elevation={0}
-                    key={conversation._id}
-                    onClick={() => {
-                        chatContext.handleConversation(conversation);
-                    }}
-                >
-                    <CardHeader
-                        avatar={
-                            <Avatar style={{ height: '30px', width: '30px' }}>
-                                {conversation.doctor._id === user._id
-                                    ? conversation.patient.name[0].toUpperCase()
-                                    : conversation.doctor.name[0].toUpperCase()}
-                            </Avatar>
-                        }
-                        title={
-                            <div>
-                                <Typography
-                                    gutterBottom
-                                    variant="h6"
-                                    component="h2"
-                                    style={{ color: '#936B3D', fontSize: '15px' }}
-                                >
-                                    {conversation.doctor._id === user._id
-                                        ? conversation.patient.name
-                                        : conversation.doctor.name}
-                                </Typography>
-                            </div>
-                        }
-                    />
-                </Card>
-            ))}
+            {conversations.map((conversation) => {
+                const receiver = conversation.doctor._id === user._id ? conversation.patient : conversation.doctor;
+                return (
+                    <Card
+                        className={classes.main}
+                        elevation={0}
+                        key={conversation._id}
+                        onClick={() => {
+                            chatContext.handleConversation(conversation);
+                        }}
+                    >
+                        <CardHeader
+                            avatar={
+                                <Avatar style={{ height: '30px', width: '30px' }}>
+                                    {receiver.name[0].toUpperCase()}
+                                </Avatar>
+                            }
+                            title={
+                                <div>
+                                    <Typography
+                                        gutterBottom
+                                        variant="h6"
+                                        component="h2"
+                                        style={{ color: '#936B3D', fontSize: '15px' }}
+                                    >
+                                        {receiver.name}
+                                    </Typography>
+                                    {isOnline(receiver._id) && <FiberManualRecordIcon style={{ color: 'green' }} />}
+                                </div>
+                            }
+                        />
+                    </Card>
+                );
+            })}
         </div>
     );
 };

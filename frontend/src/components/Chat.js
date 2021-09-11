@@ -47,8 +47,6 @@ const Chat = ({ width, conversation }) => {
     }, []);
 
     useEffect(() => {
-        console.log(socket);
-
         socket.current?.on('getMessage', (data) => {
             setReceivedMessage({
                 senderId: data.senderId,
