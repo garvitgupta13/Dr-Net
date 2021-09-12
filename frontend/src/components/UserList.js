@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import Container from '@material-ui/core/Container';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
 import { getConversations } from './../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
@@ -41,8 +37,6 @@ const UserList = () => {
     const user = getCurrentUser();
 
     const isOnline = (userId) => {
-      //  console.log(chatContext.onlineUsers);
-        //console.log(userId);
         return chatContext.onlineUsers.find((user) => user.userId === userId);
     };
 
@@ -83,7 +77,7 @@ const UserList = () => {
                         elevation={0}
                         key={conversation._id}
                         onClick={() => {
-                          //  console.log("setting conversations ",conversations);
+                            //  console.log("setting conversations ",conversations);
                             chatContext.handleConversation(conversation);
                         }}
                     >

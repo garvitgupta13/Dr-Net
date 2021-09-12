@@ -13,7 +13,6 @@ import { endConversation, getMessages, sendMessage } from '../Services/chatServi
 import { getCurrentUser } from './../Services/authService';
 import { format } from 'timeago.js';
 import { io } from 'socket.io-client';
-import { useSocket } from '../Contexts/socketContext';
 
 const drawerWidth = 220;
 const useStyle = makeStyles({
@@ -34,99 +33,34 @@ const useStyle = makeStyles({
     },
 });
 
-const Chat = ({ width, conversation,receiver,messages,receivedMessage,handleSendMessage,handleEndConversation}) => {
-
+const Chat = ({
+    width,
+    conversation,
+    receiver,
+    messages,
+    receivedMessage,
+    handleSendMessage,
+    handleEndConversation,
+}) => {
     const classes = useStyle();
     const [text, setText] = useState('');
-    // const [messages, setMessages] = useState([]);
-    // const [receiver, setReceiver] = useState({});
-    // const [receivedMessage, setReceivedMessage] = useState({});
-    // const socket = useSocket();
     const user = getCurrentUser();
     const setRef = useCallback((node) => {
         if (node) node.scrollIntoView({ smooth: true });
     }, []);
 
-    // useEffect(() => {
-    //     socket.current?.on('getMessage', (data) => {
-    //        console.log('received message ',data);
-    //         setReceivedMessage({
-    //             senderId: data.senderId,
-    //             text: data.text,
-    //             createdAt: Date.now(),
-    //         });
-    //     });
-    // }, []);
-    //
-    // useEffect(() => {
-    //     receivedMessage && setMessages([...messages, receivedMessage]);
-    // }, [receivedMessage]);
-    //
-    // const handleSendMessage = (e) => {
-    //     e.preventDefault();
-    //     if (text.trim()) {
-    //         sendMessage(conversation._id, text)
-    //             .then(({ data, status }) => {
-    //                 if (status === 200) {
-    //                     setMessages([...messages, data]);
-    //                     console.log('sending message to ',receiver._id);
-    //                     socket.current.emit('sendMessage', {
-    //                         senderId: user._id,
-    //                         receiverId: receiver._id,
-    //                         text,
-    //                     });
-    //                 }
-    //             })
-    //             .catch((error) => {
-    //                 console.log(error);
-    //             });
-    //     }
-    //     setText('');
-    // };
-    //
-    // const handleEndConversation = () => {
-    //     endConversation(conversation._id)
-    //         .then(({ data, status }) => {
-    //             if (status === 200) {
-    //                 conversation.canChat = false;
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // };
-    //
-    // useEffect(() => {
-    //     if (conversation) {
-    //         getMessages(conversation._id)
-    //             .then(({ data, status }) => {
-    //                 if (status === 200) {
-    //                     setMessages(data);
-    //                     const msgReceiver =
-    //                         conversation.patient._id === user._id ? conversation.doctor : conversation.patient;
-    //                     setReceiver(msgReceiver);
-    //                 }
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err);
-    //             });
-    //     }
-    // }, [conversation]);
-    //
     if (!conversation) return null;
     if (!user) window.location = '/';
 
-    const handleSendMessageInner = (e) =>{
-      e.preventDefault();
-      handleSendMessage(text);
-      setText('');
-    }
+    const handleSendMessageInner = (e) => {
+        e.preventDefault();
+        handleSendMessage(text);
+        setText('');
+    };
 
     const handleEndConversationInner = () => {
-      endConversation(conversation._id);
-    }
-
-
+        endConversation(conversation._id);
+    };
 
     return (
         <div className={classes.container} style={{ width: '100%' }}>
@@ -151,7 +85,6 @@ const Chat = ({ width, conversation,receiver,messages,receivedMessage,handleSend
             <div style={{ display: 'flex', flexDirection: 'column', flexGrow: '1' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItem: 'start', justifyContent: 'end' }}>
                     {messages.map((message, index) => {
-                        let senderRole = messages.senderId === conversation.patient._id ? 'patient' : 'doctor';
                         let lastMessage = messages.length - 1 === index;
                         let alignSelf = message.senderId === user._id ? 'flex-end' : '';
                         let color = message.senderId === user._id ? 'blue' : 'white';
@@ -197,7 +130,7 @@ const Chat = ({ width, conversation,receiver,messages,receivedMessage,handleSend
                     type="submit"
                     color="secondary"
                     variant="contained"
-                  //  disabled={!conversation.canChat}
+                    disabled={!conversation.canChat}
                     style={{ color: '#FFF3E5', width: '25%', marginLeft: '10px', marginTop: '-60px' }}
                 >
                     Send
@@ -209,7 +142,7 @@ const Chat = ({ width, conversation,receiver,messages,receivedMessage,handleSend
                     type="submit"
                     color="secondary"
                     variant="contained"
-                  //  disabled={!conversation.canChat}
+                    disabled={!conversation.canChat}
                     onClick={handleEndConversationInner}
                     style={{ color: '#FFF3E5', width: '5%', marginLeft: '10px', marginTop: '-60px' }}
                 >

@@ -30,15 +30,12 @@ io.on("connection", (socket) => {
 
   //Get userId and socketId from client and give them the list of online users
   socket.on("addUser", (userId) => {
-    console.log('user requesting to add itself '+userId);
     addUser(userId, socket.id);
-    console.log("printing user id from server" + userId);
     io.emit("getUsers", users);
   });
 
   //Receive message from sender and emit it to receiver
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-    console.log('send message called by ',senderId,' to ',receiverId)
     const user = getUser(receiverId);
     io.to(user.socketId).emit("getMessage", {
       senderId,

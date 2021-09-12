@@ -9,14 +9,12 @@ import AllDoctors from './Pages/AllDoctors';
 import DoctorsInfo from './Pages/DoctorsInfo';
 import PatientInfo from './Pages/PatientInfo';
 import { Login } from './Pages/Login';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import LandingPage from './Pages/LandingPage';
 import DoctorSignUp from './Pages/DoctorSignup';
 import PatientSignUp from './Pages/PatientSignUp';
 import { Payment } from './Pages/payment';
 import { allDoctorsInfo } from './Services/getUser';
-import { SocketProvider } from './Contexts/socketContext';
 import useLocalStorage from './components/hooks/useLocalStorage';
 const NODE_DOMAIN = 'http://localhost:5000/api';
 
@@ -96,60 +94,58 @@ function App() {
 
     return (
         <div style={{ backgroundColor: '#F4E5D3', height: '100%' }}>
-            <SocketProvider>
-                <Router>
-                    <ThemeProvider theme={theme}>
-                        <ResponsiveDrawer isLoggedIn={isLoggedIn} />
-                        <Switch>
-                            <Route exact path="/">
-                                <LandingPage />
-                            </Route>
+            <Router>
+                <ThemeProvider theme={theme}>
+                    <ResponsiveDrawer isLoggedIn={isLoggedIn} />
+                    <Switch>
+                        <Route exact path="/">
+                            <LandingPage />
+                        </Route>
 
-                            <Route exact path="/Chat">
-                                <RoadToChat />
-                            </Route>
+                        <Route exact path="/Chat">
+                            <RoadToChat />
+                        </Route>
 
-                            <Route exact path="/patient/login">
-                                <Login role="patient" />
-                            </Route>
+                        <Route exact path="/patient/login">
+                            <Login role="patient" />
+                        </Route>
 
-                            <Route exact path="/doctor/login">
-                                <Login role="doctor" />
-                            </Route>
+                        <Route exact path="/doctor/login">
+                            <Login role="doctor" />
+                        </Route>
 
-                            <Route exact path="/doctorSignUp">
-                                <DoctorSignUp />
-                            </Route>
+                        <Route exact path="/doctorSignUp">
+                            <DoctorSignUp />
+                        </Route>
 
-                            <Route exact path="/patientSignUp">
-                                <PatientSignUp />
-                            </Route>
+                        <Route exact path="/patientSignUp">
+                            <PatientSignUp />
+                        </Route>
 
-                            <Route exact path="/Alldoctors">
-                                <AllDoctors
-                                    term={searchTerm}
-                                    error={error}
-                                    isLoading={isLoading}
-                                    allDoctors={searchTerm.length < 1 ? allDoctors : searchResult}
-                                    searchKeyword={searchHandler}
-                                />
-                            </Route>
+                        <Route exact path="/Alldoctors">
+                            <AllDoctors
+                                term={searchTerm}
+                                error={error}
+                                isLoading={isLoading}
+                                allDoctors={searchTerm.length < 1 ? allDoctors : searchResult}
+                                searchKeyword={searchHandler}
+                            />
+                        </Route>
 
-                            <Route exact path="/AllDoctors/:doctorId">
-                                <DoctorsInfo />
-                            </Route>
+                        <Route exact path="/AllDoctors/:doctorId">
+                            <DoctorsInfo />
+                        </Route>
 
-                            <Route exact path="/:patientId">
-                                <PatientInfo />
-                            </Route>
+                        <Route exact path="/:patientId">
+                            <PatientInfo />
+                        </Route>
 
-                            <Route exact path="/payment/:doctorId">
-                                <Payment />
-                            </Route>
-                        </Switch>
-                    </ThemeProvider>
-                </Router>
-            </SocketProvider>
+                        <Route exact path="/payment/:doctorId">
+                            <Payment />
+                        </Route>
+                    </Switch>
+                </ThemeProvider>
+            </Router>
         </div>
     );
 }
