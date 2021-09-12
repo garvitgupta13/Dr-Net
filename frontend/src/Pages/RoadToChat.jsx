@@ -103,7 +103,7 @@ const RoadToChat = () => {
             console.log('getting user '+users);
             SetOnlineUsers(users);
         });
-    }, [user]);
+    }, []);
 
     const width = 32;
     return (
