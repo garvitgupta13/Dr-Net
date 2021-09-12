@@ -48,6 +48,7 @@ const Chat = ({ width, conversation }) => {
 
     useEffect(() => {
         socket.current?.on('getMessage', (data) => {
+           console.log('received message ',data);
             setReceivedMessage({
                 senderId: data.senderId,
                 text: data.text,
@@ -67,6 +68,7 @@ const Chat = ({ width, conversation }) => {
                 .then(({ data, status }) => {
                     if (status === 200) {
                         setMessages([...messages, data]);
+                        console.log('sending message to ',receiver._id);
                         socket.current.emit('sendMessage', {
                             senderId: user._id,
                             receiverId: receiver._id,

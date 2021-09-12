@@ -42,6 +42,7 @@ const UserList = () => {
 
     const isOnline = (userId) => {
         console.log(chatContext.onlineUsers);
+        console.log(userId);
         return chatContext.onlineUsers.find((user) => user.userId === userId);
     };
 
