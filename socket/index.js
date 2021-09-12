@@ -31,16 +31,19 @@ io.on("connection", (socket) => {
   //Get userId and socketId from client and give them the list of online users
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
+    console.log(userId);
     io.emit("getUsers", users);
   });
 
   //Receive message from sender and emit it to receiver
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
     const user = getUser(receiverId);
-    io.to(user.socketId).emit("getMessage", {
-      senderId,
-      text
-    });
+    if (user) {
+      io.to(user.socketId).emit("getMessage", {
+        senderId,
+        text
+      });
+    }
   });
 
   //remove the user from users list as he disconnects

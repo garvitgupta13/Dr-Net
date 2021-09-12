@@ -86,7 +86,6 @@ const RoadToChat = () => {
 
     useEffect(() => {
         socket.current.emit('addUser', user._id);
-        console.log('requesting to add user with id ' + user._id);
         socket.current.on('getUsers', (users) => {
             SetOnlineUsers(users);
         });
