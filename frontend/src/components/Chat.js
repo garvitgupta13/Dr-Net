@@ -34,86 +34,99 @@ const useStyle = makeStyles({
     },
 });
 
-const Chat = ({ width, conversation }) => {
+const Chat = ({ width, conversation,receiver,messages,receivedMessage,handleSendMessage,handleEndConversation}) => {
+
     const classes = useStyle();
     const [text, setText] = useState('');
-    const [messages, setMessages] = useState([]);
-    const [receiver, setReceiver] = useState({});
-    const [receivedMessage, setReceivedMessage] = useState({});
-    const socket = useSocket();
+    // const [messages, setMessages] = useState([]);
+    // const [receiver, setReceiver] = useState({});
+    // const [receivedMessage, setReceivedMessage] = useState({});
+    // const socket = useSocket();
     const user = getCurrentUser();
     const setRef = useCallback((node) => {
         if (node) node.scrollIntoView({ smooth: true });
     }, []);
 
-    useEffect(() => {
-        socket.current?.on('getMessage', (data) => {
-           console.log('received message ',data);
-            setReceivedMessage({
-                senderId: data.senderId,
-                text: data.text,
-                createdAt: Date.now(),
-            });
-        });
-    }, []);
-
-    useEffect(() => {
-        receivedMessage && setMessages([...messages, receivedMessage]);
-    }, [receivedMessage]);
-
-    const handleSendMessage = (e) => {
-        e.preventDefault();
-        if (text.trim()) {
-            sendMessage(conversation._id, text)
-                .then(({ data, status }) => {
-                    if (status === 200) {
-                        setMessages([...messages, data]);
-                        console.log('sending message to ',receiver._id);
-                        socket.current.emit('sendMessage', {
-                            senderId: user._id,
-                            receiverId: receiver._id,
-                            text,
-                        });
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-        setText('');
-    };
-
-    const handleEndConversation = () => {
-        endConversation(conversation._id)
-            .then(({ data, status }) => {
-                if (status === 200) {
-                    conversation.canChat = false;
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
-    useEffect(() => {
-        if (conversation) {
-            getMessages(conversation._id)
-                .then(({ data, status }) => {
-                    if (status === 200) {
-                        setMessages(data);
-                        const msgReceiver =
-                            conversation.patient._id === user._id ? conversation.doctor : conversation.patient;
-                        setReceiver(msgReceiver);
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-    }, [conversation]);
-
+    // useEffect(() => {
+    //     socket.current?.on('getMessage', (data) => {
+    //        console.log('received message ',data);
+    //         setReceivedMessage({
+    //             senderId: data.senderId,
+    //             text: data.text,
+    //             createdAt: Date.now(),
+    //         });
+    //     });
+    // }, []);
+    //
+    // useEffect(() => {
+    //     receivedMessage && setMessages([...messages, receivedMessage]);
+    // }, [receivedMessage]);
+    //
+    // const handleSendMessage = (e) => {
+    //     e.preventDefault();
+    //     if (text.trim()) {
+    //         sendMessage(conversation._id, text)
+    //             .then(({ data, status }) => {
+    //                 if (status === 200) {
+    //                     setMessages([...messages, data]);
+    //                     console.log('sending message to ',receiver._id);
+    //                     socket.current.emit('sendMessage', {
+    //                         senderId: user._id,
+    //                         receiverId: receiver._id,
+    //                         text,
+    //                     });
+    //                 }
+    //             })
+    //             .catch((error) => {
+    //                 console.log(error);
+    //             });
+    //     }
+    //     setText('');
+    // };
+    //
+    // const handleEndConversation = () => {
+    //     endConversation(conversation._id)
+    //         .then(({ data, status }) => {
+    //             if (status === 200) {
+    //                 conversation.canChat = false;
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // };
+    //
+    // useEffect(() => {
+    //     if (conversation) {
+    //         getMessages(conversation._id)
+    //             .then(({ data, status }) => {
+    //                 if (status === 200) {
+    //                     setMessages(data);
+    //                     const msgReceiver =
+    //                         conversation.patient._id === user._id ? conversation.doctor : conversation.patient;
+    //                     setReceiver(msgReceiver);
+    //                 }
+    //             })
+    //             .catch((err) => {
+    //                 console.log(err);
+    //             });
+    //     }
+    // }, [conversation]);
+    //
     if (!conversation) return null;
     if (!user) window.location = '/';
+
+    const handleSendMessageInner = (e) =>{
+      e.preventDefault();
+      handleSendMessage(text);
+      setText('');
+    }
+
+    const handleEndConversationInner = () => {
+      endConversation(conversation._id);
+    }
+
+
 
     return (
         <div className={classes.container} style={{ width: '100%' }}>
@@ -172,7 +185,7 @@ const Chat = ({ width, conversation }) => {
                     })}
                 </div>
             </div>
-            <form onSubmit={handleSendMessage} style={{ marginTop: '10px' }}>
+            <form onSubmit={handleSendMessageInner} style={{ marginTop: '10px' }}>
                 <textarea
                     style={{ width: '70%' }}
                     rows="4"
@@ -184,7 +197,7 @@ const Chat = ({ width, conversation }) => {
                     type="submit"
                     color="secondary"
                     variant="contained"
-                    disabled={!conversation.canChat}
+                  //  disabled={!conversation.canChat}
                     style={{ color: '#FFF3E5', width: '25%', marginLeft: '10px', marginTop: '-60px' }}
                 >
                     Send
@@ -196,8 +209,8 @@ const Chat = ({ width, conversation }) => {
                     type="submit"
                     color="secondary"
                     variant="contained"
-                    disabled={!conversation.canChat}
-                    onClick={handleEndConversation}
+                  //  disabled={!conversation.canChat}
+                    onClick={handleEndConversationInner}
                     style={{ color: '#FFF3E5', width: '5%', marginLeft: '10px', marginTop: '-60px' }}
                 >
                     End

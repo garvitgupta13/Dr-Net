@@ -41,8 +41,8 @@ const UserList = () => {
     const user = getCurrentUser();
 
     const isOnline = (userId) => {
-        console.log(chatContext.onlineUsers);
-        console.log(userId);
+      //  console.log(chatContext.onlineUsers);
+        //console.log(userId);
         return chatContext.onlineUsers.find((user) => user.userId === userId);
     };
 
@@ -83,6 +83,7 @@ const UserList = () => {
                         elevation={0}
                         key={conversation._id}
                         onClick={() => {
+                          //  console.log("setting conversations ",conversations);
                             chatContext.handleConversation(conversation);
                         }}
                     >
