@@ -2,12 +2,7 @@ const Express = require('express');
 const app = Express();
 const morgan = require('morgan');
 const cors = require('cors');
-const usersRoute = require('./routes/usersRoute');
-const patientRoute = require('./routes/patientRoute');
-const doctorRoute = require('./routes/doctorRoutes');
-const paymentRoute = require('./routes/paymentRoutes');
-const conversationRoute = require('./routes/conversationRoutes');
-const messageRoutes = require('./routes/messageRoutes');
+
 const bodyParser = require('body-parser');
 
 //Connecting to DB
@@ -30,14 +25,7 @@ app.use((req, res, next) => {
 });
 
 //! Routes
-// require("./startup/routes")(app);
-
-app.use('/api/users', usersRoute);
-app.use('/api/patient', patientRoute);
-app.use('/api/doctor', doctorRoute);
-app.use('/api/payment', paymentRoute);
-app.use('/api/conversation', conversationRoute);
-app.use('/api/messages', messageRoutes);
+require('./startup/routes')(app);
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {
