@@ -426,7 +426,7 @@ const DoctorSignUp = () => {
                                <div>&nbsp; &nbsp;</div>
                              )}
                            </div>
-                        </label>
+                         </label>
                       </div>
                       <br/>
                       <div className={classes.label}>
