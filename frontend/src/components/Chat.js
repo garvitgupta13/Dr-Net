@@ -126,7 +126,7 @@ const Chat = ({
            };
 
            const { data: response } = axios.post(
-             `${process.env.REACT_APP_API_ENDPOINT}/users/doctor/signup`,  // FILL THIS
+             `${process.env.REACT_APP_API_ENDPOINT}/consultation/${user._id}/${conversation.patient_id}`,  // FILL THIS
              dataFilled,
              header
            );
