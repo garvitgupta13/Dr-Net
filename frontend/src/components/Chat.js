@@ -17,7 +17,7 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core';
 import ChatContext from '../Contexts/chatContext';
-import axios from "axios";
+import axios from 'axios';
 import { endConversation, getMessages, sendMessage } from '../Services/chatService';
 import { submitConsultant} from '../Services/consultService';
 import { getCurrentUser } from './../Services/authService';
@@ -75,9 +75,9 @@ const Chat = ({
     handleSendMessage,
 }) => {
     const classes = useStyle();
-    const [reccText,setReccTest] = useState('');
-    const [prescription,setPrescription] = useState(' ');
-    const [disease,setDisease] = useState('');
+    const [reccText, setReccTest] = useState('');
+    const [prescription, setPrescription] = useState(' ');
+    const [disease, setDisease] = useState('');
     const [text, setText] = useState('');
     const [open, setOpen] = useState(false);
     const user = getCurrentUser();
@@ -86,7 +86,6 @@ const Chat = ({
     }, []);
 
     if (!conversation) return null;
-    if (!user) window.location = '/';
 
     const handleSendMessageInner = (e) => {
         e.preventDefault();
@@ -140,101 +139,116 @@ const Chat = ({
                 <div></div>
             )}
             <div>
-               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
-                 <DialogContent style = {{height:'60vh'}}>
-                    <form onSubmit={handleSubmit}>
-                      <div className={classes.label}
-                      style={{  color: '#936B3D',
-                        fontSize: '20px',
-                        position: 'relative',
-                        marginTop: '10px',
-                        marginLeft:'20px'}}>
-                        <label>
-                          Prescription
-                          <textarea
-                             required
-                             className={classes.input}
-                             value = {prescription}
-                             cols="50"
-                             style={{marginTop:'5px',height:"140px",marginLeft:'5px',fontSize:'20px'}}
-
-                             name="prescription"
-                             onChange={(e) => setPrescription(e.target.value)}
-                           />
-                        </label>
-                      </div>
-                      <div className={classes.label}
-                      style={{  color: '#936B3D',
-                        fontSize: '20px',
-                        position: 'relative',
-                        marginTop: '10px',
-                        marginLeft:'20px'}}>
-                          <label>
-                              Disease
-                              <input
-                                  required
-                                  className={classes.input}
-                                  style={{
-                                    position: 'absolute',
-                                    outline: 'none',
-                                    height: '30px',
+                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
+                    <DialogContent style={{ height: '60vh' }}>
+                        <form onSubmit={handleSubmit}>
+                            <div
+                                className={classes.label}
+                                style={{
+                                    color: '#936B3D',
                                     fontSize: '20px',
-                                    marginTop: '20px',
-                                    width: '70%',
-                                    left: '-55px',
-                                    top: '15px',
-                                    marginLeft: '10%',
-                                  }}
-                                  value={disease}
-                                  type="text"
-                                  name="disease"
-                                  onChange={(e) => setDisease(e.target.value)}
-                              />
-                          </label>
-                      </div>
-                      <div className={classes.label}
-                      style={{
-                        color: '#936B3D',
-                        fontSize: '20px',
-                        position: 'relative',
-                        marginTop: '40px',
-                        marginLeft:'20px'}}>
-                          <label>
-                              Recommended Test
-                              <input
-                                  required
-                                  className={classes.input}
-                                  value={reccText}
-                                  type="text"
-                                  name="reccText"
-                                  onChange={(e) => setReccTest(e.target.value)}
-                                  style={{
-                                    position: 'absolute',
-                                    outline: 'none',
-                                    height: '30px',
+                                    position: 'relative',
+                                    marginTop: '10px',
+                                    marginLeft: '20px',
+                                }}
+                            >
+                                <label>
+                                    Prescription
+                                    <textarea
+                                        required
+                                        className={classes.input}
+                                        value={prescription}
+                                        cols="50"
+                                        style={{
+                                            marginTop: '5px',
+                                            height: '140px',
+                                            marginLeft: '5px',
+                                            fontSize: '20px',
+                                        }}
+                                        name="prescription"
+                                        onChange={(e) => setPrescription(e.target.value)}
+                                    />
+                                </label>
+                            </div>
+                            <div
+                                className={classes.label}
+                                style={{
+                                    color: '#936B3D',
                                     fontSize: '20px',
-                                    marginTop: '20px',
-                                    width: '70%',
-                                    left: '-55px',
-                                    top: '15px',
-                                    marginLeft: '10%',
-                                  }}
-                              />
-                          </label>
-                      </div>
-                      <Button
-                          type="submit"
-                          className={classes.Button1}
-                          color="secondary"
-                          variant="contained"
-                          style={{ color: '#FFF3E5',marginTop:'45px',marginLeft:'25px' }}
-                      >
-                          Submit
-                      </Button>
-                    </form>
-                 </DialogContent>
-               </Dialog>
-           </div>
+                                    position: 'relative',
+                                    marginTop: '10px',
+                                    marginLeft: '20px',
+                                }}
+                            >
+                                <label>
+                                    Disease
+                                    <input
+                                        required
+                                        className={classes.input}
+                                        style={{
+                                            position: 'absolute',
+                                            outline: 'none',
+                                            height: '30px',
+                                            fontSize: '20px',
+                                            marginTop: '20px',
+                                            width: '70%',
+                                            left: '-55px',
+                                            top: '15px',
+                                            marginLeft: '10%',
+                                        }}
+                                        value={disease}
+                                        type="text"
+                                        name="disease"
+                                        onChange={(e) => setDisease(e.target.value)}
+                                    />
+                                </label>
+                            </div>
+                            <div
+                                className={classes.label}
+                                style={{
+                                    color: '#936B3D',
+                                    fontSize: '20px',
+                                    position: 'relative',
+                                    marginTop: '40px',
+                                    marginLeft: '20px',
+                                }}
+                            >
+                                <label>
+                                    Recommended Test
+                                    <input
+                                        required
+                                        className={classes.input}
+                                        value={reccText}
+                                        type="text"
+                                        name="reccText"
+                                        onChange={(e) => setReccTest(e.target.value)}
+                                        style={{
+                                            position: 'absolute',
+                                            outline: 'none',
+                                            height: '30px',
+                                            fontSize: '20px',
+                                            marginTop: '20px',
+                                            width: '70%',
+                                            left: '-55px',
+                                            top: '15px',
+                                            marginLeft: '10%',
+                                        }}
+                                    />
+                                </label>
+                            </div>
+                            <Button
+                                type="submit"
+                                className={classes.Button1}
+                                color="secondary"
+                                variant="contained"
+                                style={{ color: '#FFF3E5', marginTop: '45px', marginLeft: '25px' }}
+                            >
+                                Submit
+                            </Button>
+                        </form>
+                    </DialogContent>
+                </Dialog>
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', flexGrow: '1' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItem: 'start', justifyContent: 'end' }}>
                     {messages.map((message, index) => {
