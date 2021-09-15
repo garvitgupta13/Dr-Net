@@ -144,7 +144,7 @@ const Chat = ({
     return (
         <div className={classes.container} style={{ width: '100%' }}>
             {receiver.name ? (
-                <Card className={classes.main} elevation={0} key={1}>
+                <Card className={classes.main} elevation={0} key={1} style={{ position: 'fixed', width: '100%' }}>
                     <CardHeader
                         avatar={
                             <Avatar style={{ height: '45px', width: '45px' }}>{receiver.name[0].toUpperCase()}</Avatar>
