@@ -19,6 +19,7 @@ import { makeStyles } from '@material-ui/core';
 import ChatContext from '../Contexts/chatContext';
 import axios from 'axios';
 import { endConversation, getMessages, sendMessage } from '../Services/chatService';
+import { submitConsultant} from '../Services/consultService';
 import { getCurrentUser } from './../Services/authService';
 import { format } from 'timeago.js';
 import { io } from 'socket.io-client';
@@ -72,7 +73,6 @@ const Chat = ({
     messages,
     receivedMessage,
     handleSendMessage,
-    handleEndConversation,
 }) => {
     const classes = useStyle();
     const [reccText, setReccTest] = useState('');
@@ -93,52 +93,29 @@ const Chat = ({
         setText('');
     };
 
-    const handleEndConversationInner = () => {
-        //  endConversation(conversation._id);
-        setOpen(true);
-    };
-
-    const handleOpen = () => {
-        setOpen(true);
+    const handleEndConversation = () => {
+      setOpen(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+      setOpen(false);
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('submitted');
-        console.log(prescription, ' ', reccText, ' ', disease);
+         e.preventDefault();
+         const dataFilled = {
+           'prescription':prescription,
+           'disease':disease,
+           'recommendedTests':reccText
+         }
 
-        const dataFilled = {
-            prescription: prescription,
-            disease: disease,
-            recommendedTests: reccText,
-        };
+         const response = submitConsultant(dataFilled,user._id,conversation.patient._id)
+         setOpen(false);
 
-        try {
-            const header = {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            };
-
-            const { data: response } = axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}/consultation/${user._id}/${conversation.patient_id}`, // FILL THIS
-                dataFilled,
-                header
-            );
-        } catch (error) {
-            console.log('error');
-        }
-        setOpen(false);
-
-        setPrescription('');
-        setReccTest('');
-        setDisease('');
-        endConversation(conversation._id);
-        //now can end the conversation
+         setPrescription('');
+         setReccTest('');
+         setDisease('');
+         endConversation(conversation._id);
     };
 
     return (
@@ -333,7 +310,7 @@ const Chat = ({
                     color="secondary"
                     variant="contained"
                     disabled={!conversation.canChat}
-                    onClick={handleEndConversationInner}
+                    onClick={handleEndConversation}
                     style={{ color: '#FFF3E5', width: '5%', marginLeft: '0px', marginTop: '-25px' }}
                 >
                     End
