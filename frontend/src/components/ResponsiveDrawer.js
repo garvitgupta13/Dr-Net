@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,6 +21,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { getCurrentUser } from './../Services/authService';
 
 const drawerWidth = 220;
 
@@ -76,41 +77,54 @@ const ResponsiveDrawer = (props) => {
     const history = useHistory();
     //const location = useLocation();
     const classes = useStyles();
+    const user = getCurrentUser();
 
     const menuItems = [
         {
             text: 'Home',
             icon: <HomeIcon fontSize="large" className={classes.darkColor} />,
             path: '/',
+            visible: !user,
         },
         {
             text: 'Profile',
             icon: <PersonIcon fontSize="large" className={classes.darkColor} />,
             path: `/profile`,
+            visible: user,
         },
         {
             text: 'Doctors',
             icon: <LocalHospitalIcon fontSize="large" className={classes.darkColor} />,
             path: '/Alldoctors',
+            visible: true,
         },
         {
             text: 'Chats',
             icon: <ChatIcon fontSize="large" className={classes.darkColor} />,
             path: '/Chat',
+            visible: user,
         },
         {
             text: 'Logout',
             icon: <ExitToAppIcon fontSize="large" className={classes.darkColor} />,
             path: '/logout',
+            visible: user,
         },
     ];
 
     const { window } = props;
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
-
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
+    };
+
+    const handleLogout = () => {
+        if (user) {
+            localStorage.removeItem('token');
+            // window.location = '/';
+            <Redirect to={{ pathname: '/' }} />;
+        }
     };
 
     const drawer = (
@@ -118,24 +132,28 @@ const ResponsiveDrawer = (props) => {
             <h1 className={classes.logo}>Logo</h1>
             <div className={classes.toolbar} />
             <List>
-                {menuItems.map((item) => (
-                    <ListItem
-                        button
-                        className={classes.listItem}
-                        key={item.text}
-                        onClick={() => history.push(item.path)}
-                    >
-                        <ListItemIcon>{item.icon}</ListItemIcon>
-                        <ListItemText
-                            disableTypography
-                            primary={
-                                <Typography variant="h6" style={{ color: '#936B3D' }}>
-                                    {item.text}
-                                </Typography>
-                            }
-                        />
-                    </ListItem>
-                ))}
+                {menuItems.map((item) => {
+                    if (item.visible) {
+                        return (
+                            <ListItem
+                                button
+                                className={classes.listItem}
+                                key={item.text}
+                                onClick={item.text === 'Logout' ? handleLogout : () => history.push(item.path)}
+                            >
+                                <ListItemIcon>{item.icon}</ListItemIcon>
+                                <ListItemText
+                                    disableTypography
+                                    primary={
+                                        <Typography variant="h6" style={{ color: '#936B3D' }}>
+                                            {item.text}
+                                        </Typography>
+                                    }
+                                />
+                            </ListItem>
+                        );
+                    }
+                })}
             </List>
         </div>
     );
