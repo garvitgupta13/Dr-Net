@@ -67,12 +67,6 @@ const DoctorCard = ({ id, name, years, speciality, status, timing, pay, educatio
                             </Typography>
                         </Link>
                     }
-                    subheader={
-                        <div>
-                            <p style={{ color: '#E1701A', margin: '0px' }}>{`${years} years`}</p>
-                            <p style={{ color: '#E1701A', margin: '0px' }}>{`${education} `}</p>
-                        </div>
-                    }
                 />
 
                 <CardContent>
@@ -83,7 +77,7 @@ const DoctorCard = ({ id, name, years, speciality, status, timing, pay, educatio
                     <ListItem>
                         <h3 className={classes.heading}>Experience :</h3>
                         <span style={{ marginLeft: '110px' }} className={classes.underheading}>
-                            {years}
+                            {years}years
                         </span>
                     </ListItem>
                     <ListItem>
