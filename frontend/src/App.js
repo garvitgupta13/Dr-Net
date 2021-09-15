@@ -16,6 +16,7 @@ import PatientSignUp from './Pages/PatientSignUp';
 import { Payment } from './Pages/payment';
 import { allDoctorsInfo } from './Services/getUser';
 import useLocalStorage from './components/hooks/useLocalStorage';
+import PrivateRoute from './components/PrivateRoutes';
 const NODE_DOMAIN = 'http://localhost:5000/api';
 
 const breakpointValues = {
@@ -102,9 +103,7 @@ function App() {
                             <LandingPage />
                         </Route>
 
-                        <Route exact path="/Chat">
-                            <RoadToChat />
-                        </Route>
+                        <PrivateRoute exact path="/Chat" component={RoadToChat} />
 
                         <Route exact path="/patient/login">
                             <Login role="patient" />
@@ -136,13 +135,9 @@ function App() {
                             <DoctorsInfo />
                         </Route>
 
-                        <Route exact path="/:patientId">
-                            <PatientInfo />
-                        </Route>
+                        <PrivateRoute exact path="/:patientId" component={PatientInfo} />
 
-                        <Route exact path="/payment/:doctorId">
-                            <Payment />
-                        </Route>
+                        <PrivateRoute exact path="/payment/:doctorId" component={Payment} />
                     </Switch>
                 </ThemeProvider>
             </Router>
