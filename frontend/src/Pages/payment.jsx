@@ -101,7 +101,7 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
                                 className="btn btn-block btn-success"
                                 onClick={onPurchase}
                             >
-                                Buy Now
+                                Pay ₹{doctor.doctorInfo.fees}
                             </Button>
                         }
                     </div>
@@ -217,7 +217,6 @@ export function Payment({ setReload = (f) => f, reload = undefined }) {
 
     return (
         <Container className={classes.container}>
-            <h3>Fees: ₹{doctor.doctorInfo.fees}</h3>
             {showbtdropIn()}
             <SimpleToast
                 open={openSuccess}
