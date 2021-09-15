@@ -165,7 +165,6 @@ const PatientInfo = () => {
                   recommendedTests={history.recommendedTests}
                   doctorId={history.doctorId}
                   prescription={history.prescription}
-                  additionalMeasures={history.additionalMeasures}
                 />
               ))
             }

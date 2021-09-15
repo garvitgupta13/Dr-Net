@@ -55,18 +55,6 @@ const RoadToChat = () => {
         }
     };
 
-    const handleEndConversation = () => {
-        endConversation(conversation._id)
-            .then(({ data, status }) => {
-                if (status === 200) {
-                    conversation.canChat = false;
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
     useEffect(() => {
         if (conversation) {
             getMessages(conversation._id)
@@ -103,7 +91,6 @@ const RoadToChat = () => {
                     messages={messages}
                     handleSendMessage={handleSendMessage}
                     receivedMessage={receivedMessage}
-                    handleEndConversation={handleEndConversation}
                 />
             </div>
         </ChatContext.Provider>
