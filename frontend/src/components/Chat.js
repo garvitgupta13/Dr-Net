@@ -19,7 +19,7 @@ import { makeStyles } from '@material-ui/core';
 import ChatContext from '../Contexts/chatContext';
 import axios from 'axios';
 import { endConversation, getMessages, sendMessage } from '../Services/chatService';
-import { submitConsultant} from '../Services/consultService';
+import { submitConsultant } from '../Services/consultService';
 import { getCurrentUser } from './../Services/authService';
 import { format } from 'timeago.js';
 import { io } from 'socket.io-client';
@@ -66,14 +66,7 @@ const useStyle = makeStyles({
     },
 });
 
-const Chat = ({
-    width,
-    conversation,
-    receiver,
-    messages,
-    receivedMessage,
-    handleSendMessage,
-}) => {
+const Chat = ({ width, conversation, receiver, messages, receivedMessage, handleSendMessage }) => {
     const classes = useStyle();
     const [reccText, setReccTest] = useState('');
     const [prescription, setPrescription] = useState(' ');
@@ -94,28 +87,28 @@ const Chat = ({
     };
 
     const handleEndConversation = () => {
-      setOpen(true);
+        setOpen(true);
     };
 
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
 
     const handleSubmit = (e) => {
-         e.preventDefault();
-         const dataFilled = {
-           'prescription':prescription,
-           'disease':disease,
-           'recommendedTests':reccText
-         }
+        e.preventDefault();
+        const dataFilled = {
+            prescription: prescription,
+            disease: disease,
+            recommendedTests: reccText,
+        };
 
-         const response = submitConsultant(dataFilled,user._id,conversation.patient._id)
-         setOpen(false);
+        const response = submitConsultant(dataFilled, user._id, conversation.patient._id);
+        setOpen(false);
 
-         setPrescription('');
-         setReccTest('');
-         setDisease('');
-         endConversation(conversation._id);
+        setPrescription('');
+        setReccTest('');
+        setDisease('');
+        endConversation(conversation._id);
     };
 
     return (

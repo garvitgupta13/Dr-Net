@@ -94,7 +94,7 @@ const useStyle = makeStyles({
     },
 });
 
-export function Login({ role }) {
+export function Login({ role, logInHandler }) {
     const classes = useStyle();
     const schema = { email: '', password: '' };
     const [credential, setCredential] = useState(schema);
@@ -176,7 +176,7 @@ export function Login({ role }) {
                     //onIdSubmit(response.token);
                     setToastMessage(response.message);
                     setOpenSuccessToast(true);
-                    window.location = '/AllDoctors';
+                    logInHandler();
                 }
                 //In case of any error throw error toast
                 else {

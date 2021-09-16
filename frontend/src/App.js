@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
+import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import ResponsiveDrawer from './components/ResponsiveDrawer';
 import RoadToChat from './Pages/RoadToChat';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -15,9 +16,9 @@ import DoctorSignUp from './Pages/DoctorSignup';
 import PatientSignUp from './Pages/PatientSignUp';
 import { Payment } from './Pages/payment';
 import { allDoctorsInfo } from './Services/getUser';
+import { getCurrentUser } from './Services/authService';
 import useLocalStorage from './components/hooks/useLocalStorage';
 import PrivateRoute from './components/PrivateRoutes';
-const NODE_DOMAIN = 'http://localhost:5000/api';
 
 const breakpointValues = {
     xs: 0,
@@ -60,6 +61,21 @@ function App() {
     const [searchResult, setSearchResult] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    const user = getCurrentUser();
+
+    if (user !== null) {
+        if (!isLoggedIn) setIsLoggedIn(true);
+    }
+
+    const logOutHandler = () => {
+        setIsLoggedIn(false);
+    };
+
+    const logInHandler = () => {
+        setIsLoggedIn(true);
+        window.location = '/AllDoctors';
+    };
+
     const getAllDoctors = () => {
         allDoctorsInfo().then((data) => {
             if (data === undefined) {
@@ -97,7 +113,7 @@ function App() {
         <div style={{ backgroundColor: '#F4E5D3', height: '100%' }}>
             <Router>
                 <ThemeProvider theme={theme}>
-                    <ResponsiveDrawer isLoggedIn={isLoggedIn} />
+                    <ResponsiveDrawer isLoggedIn={isLoggedIn} logOut={logOutHandler} />
                     <Switch>
                         <Route exact path="/">
                             <LandingPage />
@@ -106,11 +122,11 @@ function App() {
                         <PrivateRoute exact path="/Chat" component={RoadToChat} />
 
                         <Route exact path="/patient/login">
-                            <Login role="patient" />
+                            <Login role="patient" logInHandler={logInHandler} />
                         </Route>
 
                         <Route exact path="/doctor/login">
-                            <Login role="doctor" />
+                            <Login role="doctor" logInHandler={logInHandler} />
                         </Route>
 
                         <Route exact path="/doctorSignUp">

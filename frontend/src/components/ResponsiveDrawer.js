@@ -78,6 +78,7 @@ const ResponsiveDrawer = (props) => {
     //const location = useLocation();
     const classes = useStyles();
     const user = getCurrentUser();
+    const [redirect,setRedirect] = useState('');
 
     const menuItems = [
         {
@@ -120,10 +121,10 @@ const ResponsiveDrawer = (props) => {
     };
 
     const handleLogout = () => {
+      console.log("logging out");
         if (user) {
             localStorage.removeItem('token');
-            // window.location = '/';
-            <Redirect to={{ pathname: '/' }} />;
+            props.logOut();
         }
     };
 

@@ -88,7 +88,7 @@ const UserList = () => {
                                 </Avatar>
                             }
                             title={
-                                <div style={{position:'relative'}}>
+                                <div style={{ position: 'relative' }}>
                                     <Typography
                                         gutterBottom
                                         variant="h6"
@@ -97,7 +97,11 @@ const UserList = () => {
                                     >
                                         {receiver.name}
                                     </Typography>
-                                    {isOnline(receiver._id) && <FiberManualRecordIcon style={{ position:'absolute',left:'80px',top:'0px',color: 'green' }} />}
+                                    {isOnline(receiver._id) && (
+                                        <FiberManualRecordIcon
+                                            style={{ position: 'absolute', left: '80px', top: '0px', color: 'green' }}
+                                        />
+                                    )}
                                 </div>
                             }
                         />
