@@ -1,21 +1,27 @@
-# Dr-Net
+# 🩺 Dr-Net
 
-Ever faced the need of getting consultation from a medical professional but dont want to go to clinic for it.
+Ever faced the need of getting quick consultation from a medical professional but dont want to go to clinic for it.
 
-So here comes Dr-Net a web-portal where you can chat with any medical professional as per you choice and get consulted.
+So here comes Dr-Net a web-portal where you can chat with any medical professional as per you choice and pay his/her consulation fees and get access to chat with him/her and resolve your queries.
 
-## Features
+## ⭐ Features
+
+- ✅ Easy signin/signup.
+- ✅ Simple and quick payment.
+- ✅ Shows the online activity of user.
+- ✅ Realtime Chat.
+- ✅ Simple UI.
 
 
 
 
 
-## Tech Stack 🗃
+## 🗃 Tech Stack 
 
  <img src="https://img.shields.io/badge/-MongoDB-yellow?style=flat&logo=mongoDB"> <img src="https://img.shields.io/badge/-ExpressJS-grey?style=flat&logo=express&logoColor=white"> <img src="https://img.shields.io/badge/ReactJS%20-%2320232a.svg?logo=react" >   <img src="https://img.shields.io/badge/-NodeJS%20-%2320232a?style=flat&logo=node.js"> 
  
 
-##  Getting Started 👨‍💻
+## 👨‍💻 Getting Started 
 ### Setup the repository to your local environment.
 
 1. `Fork` the repository  - Creates a replica of repository to your local environment.
@@ -27,7 +33,7 @@ So here comes Dr-Net a web-portal where you can chat with any medical profession
   ```sh
   cd Dr-Net
   ```
-  ## Frontend ⚛️
+  ## ⚛️Frontend 
 
 Following are the steps to run the frontend of the Dr-Net on your local. All the frontend code will go in the `frontend` directory. 
 
@@ -48,7 +54,7 @@ Following are the steps to run the frontend of the Dr-Net on your local. All the
   http://localhost:3000
   ```
 
-  ## Backend 💻
+  ## 💻 Backend 
 
 Following are the steps to run the backend of the Dr-Net on your local. All the backend code will go in the `backend` folder.
 
@@ -75,7 +81,7 @@ BRAINTREE_PRIVATE_KEY=
   http://localhost:5000
   ```
 
-## Socket 💬
+## 💬 Socket Server
 
 Following are the steps to run the socket server of the Dr-Net on your local. All the socket code will go in the `socket` folder.
 
@@ -96,7 +102,7 @@ Following are the steps to run the socket server of the Dr-Net on your local. Al
   http://localhost:5003
   ```
 
-## Testing Credentials 🤖
+## 🤖 Testing Credentials 
 
 dummy login credential (patient)
 ```
