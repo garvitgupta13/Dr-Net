@@ -78,7 +78,7 @@ const ResponsiveDrawer = (props) => {
     //const location = useLocation();
     const classes = useStyles();
     const user = getCurrentUser();
-    const [redirect,setRedirect] = useState('');
+    const [redirect, setRedirect] = useState('');
 
     const menuItems = [
         {
@@ -90,7 +90,7 @@ const ResponsiveDrawer = (props) => {
         {
             text: 'Profile',
             icon: <PersonIcon fontSize="large" className={classes.darkColor} />,
-            path: `/profile`,
+            path: user ? (user.role === 'doctor' ? `/AllDoctors/${user._id}` : `/profile`) : null,
             visible: user,
         },
         {
@@ -121,7 +121,7 @@ const ResponsiveDrawer = (props) => {
     };
 
     const handleLogout = () => {
-      console.log("logging out");
+        console.log('logging out');
         if (user) {
             localStorage.removeItem('token');
             props.logOut();
