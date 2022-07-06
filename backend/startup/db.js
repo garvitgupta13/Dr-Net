@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const config = require("../config");
+const mongoose = require('mongoose');
+const config = require('../config');
 
 module.exports = async function () {
   const db = config.MONGO_DB_URL;
@@ -8,10 +8,10 @@ module.exports = async function () {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
-      useCreateIndex: true
+      useCreateIndex: true,
     })
     .then(() => console.log(`Connected to DB `))
     .catch((err) => {
-      console.error("Unable to connect to db ", err);
+      console.error('Unable to connect to db ', err);
     });
 };
