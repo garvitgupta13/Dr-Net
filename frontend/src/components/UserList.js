@@ -8,6 +8,37 @@ import { getConversations } from './../Services/chatService';
 import { getCurrentUser } from './../Services/authService';
 import ChatContext from '../Contexts/chatContext';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import Badge from '@material-ui/core/Badge';
+import { withStyles } from '@material-ui/core/styles';
+
+const StyledBadge = withStyles((theme) => ({
+    badge: {
+        backgroundColor: '#44b700',
+        color: '#44b700',
+        boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+        '&::after': {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            animation: '$ripple 1.2s infinite ease-in-out',
+            border: '1px solid currentColor',
+            content: '""',
+        },
+    },
+    '@keyframes ripple': {
+        '0%': {
+            transform: 'scale(.8)',
+            opacity: 1,
+        },
+        '100%': {
+            transform: 'scale(2.4)',
+            opacity: 0,
+        },
+    },
+}))(Badge);
 
 const drawerWidth = 220;
 const useStyle = makeStyles({
@@ -77,15 +108,29 @@ const UserList = () => {
                         elevation={0}
                         key={conversation._id}
                         onClick={() => {
-                            //  console.log("setting conversations ",conversations);
                             chatContext.handleConversation(conversation);
                         }}
                     >
                         <CardHeader
                             avatar={
-                                <Avatar style={{ height: '30px', width: '30px' }}>
-                                    {receiver.name[0].toUpperCase()}
-                                </Avatar>
+                                isOnline(receiver._id) ? (
+                                    <StyledBadge
+                                        overlap="circular"
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'right',
+                                        }}
+                                        variant="dot"
+                                    >
+                                        <Avatar style={{ height: '30px', width: '30px' }}>
+                                            {receiver.name[0].toUpperCase()}
+                                        </Avatar>
+                                    </StyledBadge>
+                                ) : (
+                                    <Avatar style={{ height: '30px', width: '30px' }}>
+                                        {receiver.name[0].toUpperCase()}
+                                    </Avatar>
+                                )
                             }
                             title={
                                 <div style={{ position: 'relative' }}>
@@ -97,11 +142,6 @@ const UserList = () => {
                                     >
                                         {receiver.name}
                                     </Typography>
-                                    {isOnline(receiver._id) && (
-                                        <FiberManualRecordIcon
-                                            style={{ position: 'absolute', left: '80px', top: '0px', color: 'green' }}
-                                        />
-                                    )}
                                 </div>
                             }
                         />
