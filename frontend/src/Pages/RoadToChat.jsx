@@ -22,7 +22,7 @@ const RoadToChat = () => {
     const [receivedMessage, setReceivedMessage] = useState({});
 
     useEffect(() => {
-        socket.current = io('http://localhost:5003');
+        socket.current = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`);
         socket.current?.on('getMessage', (data) => {
             setReceivedMessage({
                 senderId: data.senderId,
