@@ -11,10 +11,12 @@ So here comes Dr-Net a web-portal where you can chat with any medical profession
 ![image](https://user-images.githubusercontent.com/70805691/178355243-e4860609-2686-4b43-a3db-b96051b5fc09.png)
 - ✅ Simple and quick payment.
 ![image](https://user-images.githubusercontent.com/70805691/178361134-9ea338d1-eb76-4b1a-adf4-2f6d5d1e1d30.png)
-- ✅ Shows the online activity of user.
-- ✅ Realtime Chat.
+- ✅ Shows the online activity of user and realtime chat.
+![image](https://user-images.githubusercontent.com/70805691/178368213-bf6b452b-604d-4184-b400-f27f0f8f8d1a.png)
 - ✅ Simple UI.
 ![image](https://user-images.githubusercontent.com/70805691/178361245-f35b00fd-1953-4a08-8cd7-a953a33ccfc4.png)
+![image](https://user-images.githubusercontent.com/70805691/178368583-6005befc-3df7-4b32-a34e-7031597152c9.png)
+
 
 
 
