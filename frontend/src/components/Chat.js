@@ -243,74 +243,87 @@ const Chat = ({ width, conversation, receiver, messages, receivedMessage, handle
                 </Dialog>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', flexGrow: '1' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItem: 'start', justifyContent: 'end' }}>
-                    {messages.map((message, index) => {
-                        let lastMessage = messages.length - 1 === index;
-                        let alignSelf = message.senderId === user._id ? 'flex-end' : '';
-                        let color = message.senderId === user._id ? 'blue' : 'white';
-                        let bgColor = message.senderId === user._id ? 'skyblue' : 'white';
-                        let you = message.senderId === user._id ? 'You' : receiver.name;
+                {messages.length > 0 ? (
+                    <div
+                        style={{ display: 'flex', flexDirection: 'column', alignItem: 'start', justifyContent: 'end' }}
+                    >
+                        {messages.map((message, index) => {
+                            let lastMessage = messages.length - 1 === index;
+                            let alignSelf = message.senderId === user._id ? 'flex-end' : '';
+                            let color = message.senderId === user._id ? 'blue' : 'white';
+                            let bgColor = message.senderId === user._id ? 'skyblue' : 'white';
+                            let you = message.senderId === user._id ? 'You' : receiver.name;
 
-                        return (
-                            <div
-                                ref={lastMessage ? setRef : null}
-                                key={index}
-                                style={{ display: 'flex', flexDirection: 'column', alignSelf: `${alignSelf}` }}
-                            >
+                            return (
                                 <div
-                                    style={{
-                                        border: '1px solid',
-                                        borderColor: `${color}`,
-                                        backgroundColor: `${bgColor}`,
-                                        padding: '10px',
-                                        marginTop: '10px',
-                                        borderRadius: '10px',
-                                        fontSize: '17px',
-                                    }}
+                                    ref={lastMessage ? setRef : null}
+                                    key={index}
+                                    style={{ display: 'flex', flexDirection: 'column', alignSelf: `${alignSelf}` }}
                                 >
-                                    {message.text}
+                                    <div
+                                        style={{
+                                            border: '1px solid',
+                                            borderColor: `${color}`,
+                                            backgroundColor: `${bgColor}`,
+                                            padding: '10px',
+                                            marginTop: '10px',
+                                            borderRadius: '10px',
+                                            fontSize: '17px',
+                                        }}
+                                    >
+                                        {message.text}
+                                    </div>
+                                    <div style={{ alignSelf: `${alignSelf}`, fontSize: '15px' }}>
+                                        {format(message.createdAt)}
+                                    </div>
                                 </div>
-                                <div style={{ alignSelf: `${alignSelf}`, fontSize: '15px' }}>
-                                    {format(message.createdAt)}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                    </div>
+                )}
             </div>
-            <form onSubmit={handleSendMessageInner} style={{ marginTop: '10px' }}>
-                <textarea
-                    style={{ width: '70%' }}
-                    rows="4"
-                    placeholder="Type a message"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                ></textarea>
-                <Button
-                    type="submit"
-                    color="secondary"
-                    variant="contained"
-                    disabled={!conversation.canChat}
-                    style={{ color: '#FFF3E5', width: '25%', marginLeft: '10px', marginTop: '-60px' }}
-                >
-                    Send
-                </Button>
-            </form>
-            <br />
-            {user.role === 'doctor' ? (
-                <Button
-                    type="submit"
-                    color="secondary"
-                    variant="contained"
-                    disabled={!conversation.canChat}
-                    onClick={handleEndConversation}
-                    style={{ color: '#FFF3E5', width: '5%', marginLeft: '0px', marginTop: '-25px' }}
-                >
-                    End
-                </Button>
-            ) : (
-                <div />
-            )}
+            <div style={{ marginBottom: '10px', position: 'fixed', bottom: 0, width: '90%' }}>
+                <form onSubmit={handleSendMessageInner} style={{ marginTop: '10px' }}>
+                    <textarea
+                        style={{ width: '55%' }}
+                        rows="4"
+                        placeholder="Type a message"
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                    ></textarea>
+                    <Button
+                        type="submit"
+                        color="secondary"
+                        variant="contained"
+                        disabled={!conversation.canChat}
+                        style={{ color: '#FFF3E5', marginLeft: '10px', marginTop: '-60px' }}
+                    >
+                        Send
+                    </Button>
+                </form>
+                <br />
+                {user.role === 'doctor' ? (
+                    <Button
+                        type="submit"
+                        color="secondary"
+                        variant="contained"
+                        disabled={!conversation.canChat}
+                        onClick={handleEndConversation}
+                        style={{ color: '#FFF3E5', width: '5%', marginLeft: '0px', marginTop: '-25px' }}
+                    >
+                        End
+                    </Button>
+                ) : (
+                    <div />
+                )}
+            </div>
         </div>
     );
 };

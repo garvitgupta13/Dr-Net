@@ -10,7 +10,8 @@ import axios from 'axios';
 import {getPatient} from "../Services/getUser";
 import {useState,useEffect} from 'react';
 
-const NODE_DOMAIN = 'http://localhost:5000/api';
+const NODE_DOMAIN = process.env.REACT_APP_API_ENDPOINT;
+
 
 const useStyle = makeStyles({
     'main':{

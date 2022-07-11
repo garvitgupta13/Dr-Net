@@ -1,13 +1,9 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import Rating from '@material-ui/lab/Rating';
 import axios from 'axios';
 import {useState,useEffect} from 'react';
-const NODE_DOMAIN = 'http://localhost:5000/api';
+const NODE_DOMAIN = process.env.REACT_APP_API_ENDPOINT;
 
 const useStyle =  makeStyles({
   'main':{

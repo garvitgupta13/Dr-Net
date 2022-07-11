@@ -18,7 +18,7 @@ import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import axios from 'axios';
 
-const NODE_DOMAIN = 'http://localhost:5000/api';
+const NODE_DOMAIN = process.env.REACT_APP_API_ENDPOINT;
 const drawerWidth = 220;
 
 const useStyle = makeStyles({
@@ -213,7 +213,7 @@ const DoctorsInfo = (props) => {
                             </span>
                         </div>
                     </Card>
-                    <Card className={classes.main} elevation={5}>
+                    {/* <Card className={classes.main} elevation={5}>
                         <form style={{ position: 'relative' }} onSubmit={formSubmitHandler}>
                             <Typography variant="h5" component="h2" style={{ color: '#936B3D', textAlign: 'center' }}>
                                 Available During
@@ -232,7 +232,7 @@ const DoctorsInfo = (props) => {
                             )}
                             <div className={classes.controlGroup}></div>
                         </form>
-                    </Card>
+                    </Card> */}
                     <Link to={`/payment/${doctorId}`}>
                         <Button
                             variant="contained"

@@ -15,7 +15,8 @@ import MedicalHistory from '../components/MedicalHistory';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import { getCurrentUser } from './../Services/authService';
 
-const NODE_DOMAIN = 'http://localhost:5000/api';
+
+const NODE_DOMAIN = process.env.REACT_APP_API_ENDPOINT;
 const drawerWidth = 220;
 
 const useStyle = makeStyles({

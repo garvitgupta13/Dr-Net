@@ -1,15 +1,12 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Card from '../components/UI/Card';
 import {makeStyles} from '@material-ui/core';
-import {useEffect} from 'react';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
-import axios from 'axios';
-import {useState,useRef} from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 
-const NODE_DOMAIN = 'http://localhost:5000/api';
+const NODE_DOMAIN = process.env.REACT_APP_API_ENDPOINT;
 
 const drawerWidth = 220;
 const useStyle = makeStyles(
