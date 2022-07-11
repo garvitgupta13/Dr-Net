@@ -47,13 +47,9 @@ For testing payment related info please refer [this](https://developer.paypal.co
 ## 👨‍💻 Getting Started 
 ### Setup the repository to your local environment.
 
-1. `Fork` the repository  - Creates a replica of repository to your local environment.
-2. Clone the repository - Downloads all repo files to your machine, using
   ```git
+  Fork repo
   git clone https://github.com/YOUR-USERNAME/Dr-Net
-  ``` 
-3. Set working directory to the root directory of the project.
-  ```sh
   cd Dr-Net
   ```
   ## ⚛️Frontend Setup
@@ -62,7 +58,7 @@ For testing payment related info please refer [this](https://developer.paypal.co
   npm install
   npm start
   ```
-4. [Click here](http://localhost:3000) to view it in the browser OR navigate to
+[Click here](http://localhost:3000) to view it in the browser OR navigate to
   ```text
   http://localhost:3000
   ```
@@ -82,7 +78,7 @@ Run the server.
   ```node
   npm start
   ```
-4. [Click here](http://localhost:5000) to see the backend server runing in the browser OR navigate to
+[Click here](http://localhost:5000) to see the backend server runing in the browser OR navigate to
   ```text
   http://localhost:5000
   ```
@@ -91,13 +87,13 @@ Run the server.
 
 Following are the steps to run the socket server of the Dr-Net on your local. All the socket code will go in the `socket` folder.
 
-1. Navigate to `socket` folder.
+Navigate to `socket` folder.
   ```sh
   cd socket
   npm install
   npm start
   ```
-4. [Click here](http://localhost:5003) to see the socket server runing in the browser OR navigate to
+[Click here](http://localhost:5003) to see the socket server runing in the browser OR navigate to
   ```text
   http://localhost:5003
   ```
