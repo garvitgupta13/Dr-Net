@@ -1,3 +1,4 @@
+
 # 🩺 Dr-Net
 
 Ever faced the need of getting quick consultation from a medical professional but dont want to go to clinic for it.
@@ -7,12 +8,34 @@ So here comes Dr-Net a web-portal where you can chat with any medical profession
 ## ⭐ Features
 
 - ✅ Easy signin/signup.
+![image](https://user-images.githubusercontent.com/70805691/178355243-e4860609-2686-4b43-a3db-b96051b5fc09.png)
 - ✅ Simple and quick payment.
-- ✅ Shows the online activity of user.
-- ✅ Realtime Chat.
+![image](https://user-images.githubusercontent.com/70805691/178361134-9ea338d1-eb76-4b1a-adf4-2f6d5d1e1d30.png)
+- ✅ Shows the online activity of user and realtime chat.
+![image](https://user-images.githubusercontent.com/70805691/178369000-4b497bdd-bf89-4f7b-8546-9e571505d8fa.png)
 - ✅ Simple UI.
+![image](https://user-images.githubusercontent.com/70805691/178361245-f35b00fd-1953-4a08-8cd7-a953a33ccfc4.png)
+![image](https://user-images.githubusercontent.com/70805691/178368583-6005befc-3df7-4b32-a34e-7031597152c9.png)
 
 
+## 🤖 Testing Credentials 
+
+dummy login credential (patient)
+```
+email : dummypatient@gmail.com
+pssword: 123456
+```
+
+dummy login credential (doctor)
+```
+email : demo_doc1@gmail.com
+pssword: 123456
+```
+For testing payment related info please refer [this](https://developer.paypal.com/braintree/docs/reference/general/testing#test-value-4500600000000061)
+| Purpose | Test Card Number| Extra Info |
+|--|--|--|
+| successful transaction | 4500600000000061  | Valid expiry date and amount bwteen 0.01 to 1999.99 |
+| unsuccessful transaction | 4000111111111115 | Invalid Expiry date or amount between 2000 to 2999 |
 
 
 
@@ -24,59 +47,38 @@ So here comes Dr-Net a web-portal where you can chat with any medical profession
 ## 👨‍💻 Getting Started 
 ### Setup the repository to your local environment.
 
-1. `Fork` the repository  - Creates a replica of repository to your local environment.
-2. Clone the repository - Downloads all repo files to your machine, using
   ```git
+  Fork repo
   git clone https://github.com/YOUR-USERNAME/Dr-Net
-  ``` 
-3. Set working directory to the root directory of the project.
-  ```sh
   cd Dr-Net
   ```
-  ## ⚛️Frontend 
-
-Following are the steps to run the frontend of the Dr-Net on your local. All the frontend code will go in the `frontend` directory. 
-
-1. Navigate to `frontend` folder.
+  ## ⚛️Frontend Setup
   ```sh
   cd frontend
-  ```
-2. Install all the required packages and dependencies.
-  ```node
   npm install
-  ```
-3. Run the server.
-  ```node
   npm start
   ```
-4. [Click here](http://localhost:3000) to view it in the browser OR navigate to
+[Click here](http://localhost:3000) to view it in the browser OR navigate to
   ```text
   http://localhost:3000
   ```
 
-  ## 💻 Backend 
-
-Following are the steps to run the backend of the Dr-Net on your local. All the backend code will go in the `backend` folder.
-
-1. Navigate to `backend` folder.
+  ## 💻 Backend Setup
   ```sh
   cd backend
-  ```
-2. Install all the required packages and dependencies.
-  ```node
   npm install
   ```
-4. Create your account at [braintree](https://sandbox.braintreegateway.com/login) and get your api keys from [API section](https://sandbox.braintreegateway.com/merchants/82mh3grtnb22rfpz/users/dyk5dscspsbd9tby/api_keys) and save them in .env file of backend
+Create your account at [braintree](https://sandbox.braintreegateway.com/login) and get your api keys from [API section](https://sandbox.braintreegateway.com/merchants/82mh3grtnb22rfpz/users/dyk5dscspsbd9tby/api_keys) and save them in .env file of backend
 ```
 BRAINTREE_MERCHANT_ID=
 BRAINTREE_PUBLIC_KEY=
 BRAINTREE_PRIVATE_KEY=
 ```  
-3. Run the server.
+Run the server.
   ```node
   npm start
   ```
-4. [Click here](http://localhost:5000) to see the backend server runing in the browser OR navigate to
+[Click here](http://localhost:5000) to see the backend server runing in the browser OR navigate to
   ```text
   http://localhost:5000
   ```
@@ -85,34 +87,13 @@ BRAINTREE_PRIVATE_KEY=
 
 Following are the steps to run the socket server of the Dr-Net on your local. All the socket code will go in the `socket` folder.
 
-1. Navigate to `socket` folder.
+Navigate to `socket` folder.
   ```sh
   cd socket
-  ```
-2. Install all the required packages and dependencies.
-  ```node
   npm install
-  ```
-3. Run the server.
-  ```node
   npm start
   ```
-4. [Click here](http://localhost:5003) to see the socket server runing in the browser OR navigate to
+[Click here](http://localhost:5003) to see the socket server runing in the browser OR navigate to
   ```text
   http://localhost:5003
   ```
-
-## 🤖 Testing Credentials 
-
-dummy login credential (patient)
-```
-email : authtest@gmail.com
-pssword: authtest
-```
-
-dummy login credential (doctor)
-```
-email : doctor2@gmail.com
-pssword: doctor2
-```
-For testing payment related info please refer [this](https://developer.paypal.com/braintree/docs/reference/general/testing#test-value-4500600000000061)
