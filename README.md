@@ -18,7 +18,24 @@ So here comes Dr-Net a web-portal where you can chat with any medical profession
 ![image](https://user-images.githubusercontent.com/70805691/178368583-6005befc-3df7-4b32-a34e-7031597152c9.png)
 
 
+## 🤖 Testing Credentials 
 
+dummy login credential (patient)
+```
+email : dummypatient@gmail.com
+pssword: 123456
+```
+
+dummy login credential (doctor)
+```
+email : demo_doc1@gmail.com
+pssword: 123456
+```
+For testing payment related info please refer [this](https://developer.paypal.com/braintree/docs/reference/general/testing#test-value-4500600000000061)
+| Purpose | Test Card Number| Extra Info |
+|--|--|--|
+| successful transaction | 4500600000000061  | Valid expiry date and amount bwteen 0.01 to 1999.99 |
+| unsuccessful transaction | 4000111111111115 | Invalid Expiry date or amount between 2000 to 2999 |
 
 
 
@@ -84,22 +101,3 @@ Following are the steps to run the socket server of the Dr-Net on your local. Al
   ```text
   http://localhost:5003
   ```
-
-## 🤖 Testing Credentials 
-
-dummy login credential (patient)
-```
-email : dummypatient@gmail.com
-pssword: 123456
-```
-
-dummy login credential (doctor)
-```
-email : demo_doc1@gmail.com
-pssword: 123456
-```
-For testing payment related info please refer [this](https://developer.paypal.com/braintree/docs/reference/general/testing#test-value-4500600000000061)
-| Purpose | Test Card Number| Extra Info |
-|--|--|--|
-| successful transaction | 4500600000000061  | Valid expiry date and amount bwteen 0.01 to 1999.99 |
-| unsuccessful transaction | 4000111111111115 | Invalid Expiry date or amount between 2000 to 2999 |
