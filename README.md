@@ -58,10 +58,6 @@ For testing payment related info please refer [this](https://developer.paypal.co
   npm install
   npm start
   ```
-[Click here](http://localhost:3000) to view it in the browser OR navigate to
-  ```text
-  http://localhost:3000
-  ```
 
   ## 💻 Backend Setup
   ```sh
@@ -78,10 +74,6 @@ Run the server.
   ```node
   npm start
   ```
-[Click here](http://localhost:5000) to see the backend server runing in the browser OR navigate to
-  ```text
-  http://localhost:5000
-  ```
 
 ## 💬 Socket Server
 
@@ -92,8 +84,4 @@ Navigate to `socket` folder.
   cd socket
   npm install
   npm start
-  ```
-[Click here](http://localhost:5003) to see the socket server runing in the browser OR navigate to
-  ```text
-  http://localhost:5003
   ```
