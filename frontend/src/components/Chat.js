@@ -1,30 +1,18 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import Container from '@material-ui/core/Container';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
+import React, { useState, useCallback } from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core';
-import ChatContext from '../Contexts/chatContext';
-import axios from 'axios';
-import { endConversation, getMessages, sendMessage } from '../Services/chatService';
+import { endConversation } from '../Services/chatService';
 import { submitConsultant } from '../Services/consultService';
 import { getCurrentUser } from './../Services/authService';
 import { format } from 'timeago.js';
-import { io } from 'socket.io-client';
+import Grid from '@material-ui/core/Grid';
 
-const drawerWidth = 220;
 const useStyle = makeStyles({
     container: {
         marginTop: '70px',
@@ -63,6 +51,10 @@ const useStyle = makeStyles({
             top: '15px',
             marginLeft: '10%',
         },
+    },
+    container2: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(12, 1fr)',
     },
 });
 
@@ -242,7 +234,7 @@ const Chat = ({ width, conversation, receiver, messages, receivedMessage, handle
                     </DialogContent>
                 </Dialog>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', flexGrow: '1' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', flexGrow: '1', marginBottom: '15%' }}>
                 {messages.length > 0 ? (
                     <div
                         style={{ display: 'flex', flexDirection: 'column', alignItem: 'start', justifyContent: 'end' }}
@@ -289,24 +281,30 @@ const Chat = ({ width, conversation, receiver, messages, receivedMessage, handle
                     </div>
                 )}
             </div>
-            <div style={{ marginBottom: '10px', position: 'fixed', bottom: 0, width: '90%' }}>
+            <div style={{ position: 'fixed', bottom: 0, width: '55%' }}>
                 <form onSubmit={handleSendMessageInner} style={{ marginTop: '10px' }}>
-                    <textarea
-                        style={{ width: '55%' }}
-                        rows="4"
-                        placeholder="Type a message"
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                    ></textarea>
-                    <Button
-                        type="submit"
-                        color="secondary"
-                        variant="contained"
-                        disabled={!conversation.canChat}
-                        style={{ color: '#FFF3E5', marginLeft: '10px', marginTop: '-60px' }}
-                    >
-                        Send
-                    </Button>
+                    <Grid container>
+                        <Grid item xs={10}>
+                            <textarea
+                                style={{ width: '100%' }}
+                                rows="4"
+                                placeholder="Type a message"
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                            ></textarea>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Button
+                                type="submit"
+                                color="secondary"
+                                variant="contained"
+                                disabled={!conversation.canChat}
+                                style={{ color: '#FFF3E5', marginLeft: '10px', marginTop: '10px' }}
+                            >
+                                Send
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </form>
                 <br />
                 {user.role === 'doctor' ? (
